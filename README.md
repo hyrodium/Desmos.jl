@@ -4,8 +4,6 @@ Generate Desmos script (JSON) with Julia language.
 # Example
 ```julia
 using Desmos
-using IntervalSet
-using Colors
 using JSON
 
 state = @desmos begin

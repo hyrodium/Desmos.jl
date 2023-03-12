@@ -29,7 +29,7 @@ struct DesmosState
     expressions::Vector{DesmosElement}
 end
 
-macro desmos_variable(ex1, ex2)
+macro variable(ex1, ex2)
     ex1.head === :(=) || error("invalid variable definition")
     if ex2.args[1] === :(..)
         return DesmosContinuousVariable(latexify(ex1), eval(ex2))
@@ -38,13 +38,13 @@ macro desmos_variable(ex1, ex2)
     end
 end
 
-macro desmos_variable(ex1)
+macro variable(ex1)
     ex1.head === :(=) || error("invalid variable definition")
     v = ex1.args[2]
     return DesmosContinuousVariable(latexify(ex1), v..v)
 end
 
-macro desmos_color(ex1, ex2)
+macro color(ex1, ex2)
     return DesmosExpression(eval(ex2), latexify(ex1))
 end
 

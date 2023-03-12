@@ -38,6 +38,12 @@ macro desmos_variable(ex1, ex2)
     end
 end
 
+macro desmos_variable(ex1)
+    ex1.head === :(=) || error("invalid variable definition")
+    v = ex1.args[2]
+    return DesmosContinuousVariable(latexify(ex1), v..v)
+end
+
 macro desmos_color(ex1, ex2)
     return DesmosExpression(eval(ex2), latexify(ex1))
 end
@@ -81,7 +87,7 @@ function convert_dict(i::Integer, e::DesmosContinuousVariable)
     return Dict([
         "type" => "expression",
         "id" => string(i),
-        "latex" => e.latex[nextind(e.latex,begin):prevind(e.latex,end)],
+        "latex" => removedollar(e.latex),
         "slider" => Dict([
             "hardMin" => true,
             "hardMax" => true,
@@ -95,7 +101,7 @@ function convert_dict(i::Integer, e::DesmosDiscreteVariable)
     return Dict([
         "type" => "expression",
         "id" => string(i),
-        "latex" => e.latex[nextind(e.latex,begin):prevind(e.latex,end)],
+        "latex" => removedollar(e.latex),
         "slider" => Dict([
             "hardMin" => true,
             "hardMax" => true,
@@ -116,4 +122,4 @@ function JSON.lower(state::DesmosState)
     ])
 end
 
-end
+end # module

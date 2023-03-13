@@ -48,7 +48,20 @@ macro color(ex1, ex2)
     return DesmosExpression(eval(ex2), latexify(ex1))
 end
 
+eval_dollar!(::Module, ex) = ex
+function eval_dollar!(target_module::Module, ex::Expr)
+    if ex.head === :($)
+        return Core.eval(target_module, Expr(:quote, ex))
+    elseif ex.head !== :quote
+        for i in 1:length(ex.args)
+            ex.args[i] = eval_dollar!(target_module, ex.args[i])
+        end
+    end
+    return ex
+end
+
 macro desmos(ex)
+    eval_dollar!(__module__, ex)
     v = DesmosElement[]
     for e in ex.args
         if e isa Expr

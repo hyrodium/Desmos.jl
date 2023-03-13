@@ -60,6 +60,9 @@ macro desmos(ex)
                 push!(v, DesmosExpression(RGB(0,0,0), LaTeXString("\$("*removedollar(latexify(e))*")\$")))
             elseif e.head === :call
                 push!(v, DesmosExpression(RGB(0,0,0), latexify(e)))
+            else
+                @warn "unsupported element"
+                dump(e)
             end
         elseif e isa Integer
             push!(v, DesmosExpression(RGB(0,0,0), latexify(e)))

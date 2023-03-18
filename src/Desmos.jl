@@ -5,6 +5,9 @@ using LaTeXStrings
 using Latexify
 using IntervalSets
 using JSON
+using ImageIO
+using FileIO
+using Base64
 
 export @desmos
 
@@ -23,6 +26,12 @@ end
 struct DesmosContinuousVariable <: DesmosElement
     latex::LaTeXString
     range::ClosedInterval
+end
+
+struct DesmosImage <: DesmosElement
+    url::String
+    width::Float64
+    height::Float64
 end
 
 struct DesmosState
@@ -46,6 +55,21 @@ end
 
 macro color(ex1, ex2)
     return DesmosExpression(eval(ex2), latexify(ex1))
+end
+
+macro image(ex)
+    return DesmosImage(create_url(ex), 2, 2)
+end
+
+function create_url(url::AbstractString)
+    return url
+end
+
+function create_url(img::AbstractMatrix{<:Colorant})
+    img_buf = IOBuffer()
+    save(Stream{format"PNG"}(img_buf), img)
+    url = "data:image/png;base64, $(base64encode(take!(img_buf)))"
+    return url
 end
 
 eval_dollar!(::Module, ex) = ex
@@ -125,6 +149,18 @@ function convert_dict(i::Integer, e::DesmosDiscreteVariable)
             "max" => maximum(e.range),
             "step" => step(e.range),
         ])
+    ])
+end
+
+function convert_dict(i::Integer, e::DesmosImage)
+    return Dict([
+        "type" => "image",
+        "id" => string(i),
+        "image_url" => e.url,
+        "name" => "image from Desmos.jl",
+        "center"=> "\\left(0,0\\right)",
+        "width" => "$(e.width)",
+        "height" => "$(e.height)",
     ])
 end
 

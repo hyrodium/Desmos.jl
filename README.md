@@ -21,15 +21,7 @@ clipboard(JSON.json(state))
 ```
 ![](docs/src/img/screenshot.gif)
 
-Note that this package requires [DesmosTextIO chrome extension](https://chrome.google.com/webstore/detail/desmos-text-io/ndjdcebpigpfidnilppdpcdkibidfmaa).
+Note that this package requires [Desmos Text I/O extension](https://github.com/hyrodium/DesmosTextIO).
 
-# TODO
-* [ ] Support Tables (DataFrames.jl)
-* [ ] Support images
-* [ ] Support parametric curves
-* [ ] Support lists
-* [ ] Replacing arguments of a function to avoid conflicts
-* [ ] Replacing variables in `@desmos begin ... end` with values
-* [ ] Support Symbolics.jl
-* [ ] Support more settings such as polar plots
-* [ ] Support Regressions
+* [Chrome Web Store](https://chrome.google.com/webstore/detail/desmos-text-io/ndjdcebpigpfidnilppdpcdkibidfmaa)
+* [Firefox ADD-ONS](https://addons.mozilla.org/en-US/firefox/addon/desmos-text-i-o/)

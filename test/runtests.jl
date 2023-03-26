@@ -8,10 +8,19 @@ Aqua.test_all(Desmos; ambiguities=false)
 b = 3
 url_img = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/b3fcb1f935439d671e3ddb3eb3b19fd261f6b067/example1a.png"
 
+path_base = joinpath(@__DIR__, "base.html")
+path_result = joinpath(@__DIR__, "result.html")
+cp(path_base, path_result, force=true)
+
+function update_result(title, json)
+    lines = readlines(path_result)
+    i_begin = findfirst(line->occursin("<!-- begin", line), lines)
+    i_end = findfirst(line->occursin("end -->", line), lines)
+    block = replace(join(lines[i_begin+1:i_end-1], "\n"), "state ="=>"state = $(json)", "TITLE"=>title)
+    write(joinpath(@__DIR__, "result.html"), join(vcat(lines[begin:i_begin-1], split(block, "\n"), lines[i_begin:end]), "\n"))
+end
+
 @testset "Desmos.jl" begin
-    path_base = joinpath(@__DIR__, "base.html")
-    path_result = joinpath(@__DIR__, "result.html")
-    cp(path_base, path_result, force=true)
 
     @testset "basic" begin
         title = "BasicFunctions"
@@ -21,12 +30,7 @@ url_img = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/
             tan(x)
         end
         json = JSON.json(state)
-        lines = readlines(joinpath(@__DIR__, "base.html"))
-        lines = readlines(joinpath(@__DIR__, "result.html"))
-        i_begin = findfirst(line->occursin("<!-- begin", line), lines)
-        i_end = findfirst(line->occursin("end -->", line), lines)
-        block = replace(join(lines[i_begin+1:i_end-1], "\n"), "state ="=>"state = $(json)", "TITLE"=>title)
-        write(joinpath(@__DIR__, "result.html"), join(vcat(lines[begin:i_begin-1], split(block, "\n"), lines[i_begin:end]), "\n"))
+        update_result(title, json)
     end
 
     @testset "variables" begin
@@ -38,12 +42,7 @@ url_img = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/
             sin($(2b)*a-cx)
         end
         json = JSON.json(state)
-        lines = readlines(joinpath(@__DIR__, "base.html"))
-        lines = readlines(joinpath(@__DIR__, "result.html"))
-        i_begin = findfirst(line->occursin("<!-- begin", line), lines)
-        i_end = findfirst(line->occursin("end -->", line), lines)
-        block = replace(join(lines[i_begin+1:i_end-1], "\n"), "state ="=>"state = $(json)", "TITLE"=>title)
-        write(joinpath(@__DIR__, "result.html"), join(vcat(lines[begin:i_begin-1], split(block, "\n"), lines[i_begin:end]), "\n"))
+        update_result(title, json)
     end
 
     @testset "Newton's method" begin
@@ -83,11 +82,6 @@ url_img = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/
             @image $url_img width=20 height=20
         end
         json = JSON.json(state)
-        lines = readlines(joinpath(@__DIR__, "base.html"))
-        lines = readlines(joinpath(@__DIR__, "result.html"))
-        i_begin = findfirst(line->occursin("<!-- begin", line), lines)
-        i_end = findfirst(line->occursin("end -->", line), lines)
-        block = replace(join(lines[i_begin+1:i_end-1], "\n"), "state ="=>"state = $(json)", "TITLE"=>title)
-        write(joinpath(@__DIR__, "result.html"), join(vcat(lines[begin:i_begin-1], split(block, "\n"), lines[i_begin:end]), "\n"))
+        update_result(title, json)
     end
 end

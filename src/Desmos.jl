@@ -35,6 +35,10 @@ struct DesmosImage <: DesmosElement
     center::LaTeXString
 end
 
+struct DesmosTable <: DesmosElement
+    column::Vector{LaTeXString}
+end
+
 struct DesmosState
     expressions::Vector{DesmosElement}
 end
@@ -58,6 +62,10 @@ macro color(ex1, ex2)
     return DesmosExpression(eval(ex2), _latexify(ex1))
 end
 
+macro raw_expression(ex)
+    return DesmosExpression(RGB(0,0,0), eval(ex))
+end
+
 macro image(ex, kwargs...)
     width = :(2)
     height = :(2)
@@ -74,6 +82,18 @@ macro image(ex, kwargs...)
         end
     end
     return DesmosImage(create_url(ex), _latexify(width), _latexify(height), _latexify(center))
+end
+
+macro table(args...)
+    return DesmosTable([_latexify.(args)...])
+end
+
+function _latexify(ex::Number)
+    return latexify(ex)
+end
+
+function _latexify(ex::Symbol)
+    return latexify(ex)
 end
 
 function _latexify(ex)
@@ -148,7 +168,7 @@ function convert_dict(i::Integer, e::DesmosExpression)
         "id" => string(i),
         "color" => "#$(hex(e.color))",
         "latex" => removedollar(e.latex)
-    ])
+    ]), i+1
 end
 
 function convert_dict(i::Integer, e::DesmosContinuousVariable)
@@ -162,7 +182,7 @@ function convert_dict(i::Integer, e::DesmosContinuousVariable)
             "min" => minimum(e.range),
             "max" => maximum(e.range),
         ])
-    ])
+    ]), i+1
 end
 
 function convert_dict(i::Integer, e::DesmosDiscreteVariable)
@@ -177,7 +197,7 @@ function convert_dict(i::Integer, e::DesmosDiscreteVariable)
             "max" => maximum(e.range),
             "step" => step(e.range),
         ])
-    ])
+    ]), i+1
 end
 
 function convert_dict(i::Integer, e::DesmosImage)
@@ -189,16 +209,36 @@ function convert_dict(i::Integer, e::DesmosImage)
         "center"=> removedollar(e.center),
         "width" => removedollar(e.width),
         "height" => removedollar(e.height),
-    ])
+    ]), i+1
+end
+
+function convert_dict(i::Integer, e::DesmosTable)
+    return Dict([
+        "type" => "table",
+        "id" => string(i+length(e.column)),
+        "columns" => [
+            Dict([
+                "latex" => removedollar(e.column[j]),
+                "id" => string(i+j),
+                "lines" => true,
+                "color" => "#000000",
+            ])
+            for j in eachindex(e.column)
+        ]
+    ]), i+length(e.column)+1
 end
 
 function JSON.lower(state::DesmosState)
     v = state.expressions
+    list = Dict[]
+    i = 1
+    for e in v
+        dict, i = convert_dict(i, e)
+        push!(list, dict)
+    end
     Dict([
         "version" => 10,
-        "expressions" => Dict(["list" => [
-            convert_dict(i, e)
-        for (i, e) in enumerate(v)]])
+        "expressions" => Dict(["list" => list])
     ])
 end
 

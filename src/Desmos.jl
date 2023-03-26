@@ -58,6 +58,18 @@ macro variable(ex1)
     return DesmosContinuousVariable(_latexify(ex1), v..v)
 end
 
+macro expression(ex, kwargs...)
+    color = :(RGB(0,0,0))
+    for kwarg in kwargs
+        if kwarg.head == :(=)
+            if kwarg.args[1] == :color
+                color = kwarg.args[2]
+            end
+        end
+    end
+    return DesmosExpression(eval(color), _latexify(ex))
+end
+
 macro color(ex1, ex2)
     return DesmosExpression(eval(ex2), _latexify(ex1))
 end

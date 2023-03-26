@@ -30,8 +30,9 @@ end
 
 struct DesmosImage <: DesmosElement
     url::String
-    width::Float64
-    height::Float64
+    width::LaTeXString
+    height::LaTeXString
+    center::LaTeXString
 end
 
 struct DesmosState
@@ -57,8 +58,32 @@ macro color(ex1, ex2)
     return DesmosExpression(eval(ex2), latexify(ex1))
 end
 
-macro image(ex)
-    return DesmosImage(create_url(ex), 2, 2)
+macro image(ex, kwargs...)
+    width = :(2)
+    height = :(2)
+    center = :((0,0))
+    for kwarg in kwargs
+        if kwarg.head == :(=)
+            if kwarg.args[1] == :width
+                width = kwarg.args[2]
+            elseif kwarg.args[1] == :height
+                height = kwarg.args[2]
+            elseif kwarg.args[1] == :center
+                center = kwarg.args[2]
+            end
+        end
+    end
+    center_latex = LaTeXString("\$("*removedollar(latexify(center))*")\$")
+    return DesmosImage(create_url(ex), latexify(width), latexify(height), center_latex)
+end
+
+function _latexify(ex)
+    lstr = latexify(ex)
+    if ex.head === :(tuple)
+        lstr = removedollar(lstr)
+        lstr = LaTeXString("\$("*lstr*")\$")
+    end
+    lstr = remove_mathrm(lstr)
 end
 
 function create_url(url::AbstractString)
@@ -92,11 +117,11 @@ macro desmos(ex)
             if e.head === :macrocall
                 push!(v, eval(e))
             elseif e.head === :(=)
-                push!(v, DesmosExpression(RGB(0,0,0), latexify(e)))
+                push!(v, DesmosExpression(RGB(0,0,0), _latexify(e)))
             elseif e.head === :(tuple)
-                push!(v, DesmosExpression(RGB(0,0,0), LaTeXString("\$("*removedollar(latexify(e))*")\$")))
+                push!(v, DesmosExpression(RGB(0,0,0), _latexify(e)))
             elseif e.head === :call
-                push!(v, DesmosExpression(RGB(0,0,0), latexify(e)))
+                push!(v, DesmosExpression(RGB(0,0,0), _latexify(e)))
             else
                 @warn "unsupported element"
                 dump(e)
@@ -112,6 +137,10 @@ end
 
 function removedollar(s::LaTeXString)
     return chopsuffix(chopprefix(s, "\$"), "\$")
+end
+
+function remove_mathrm(s::Union{LaTeXString, SubString{LaTeXStrings.LaTeXString}})
+    return replace(s, "\\mathrm"=>"")
 end
 
 function convert_dict(i::Integer, e::DesmosExpression)
@@ -158,9 +187,9 @@ function convert_dict(i::Integer, e::DesmosImage)
         "id" => string(i),
         "image_url" => e.url,
         "name" => "image from Desmos.jl",
-        "center"=> "\\left(0,0\\right)",
-        "width" => "$(e.width)",
-        "height" => "$(e.height)",
+        "center"=> removedollar(e.center),
+        "width" => removedollar(e.width),
+        "height" => removedollar(e.height),
     ])
 end
 

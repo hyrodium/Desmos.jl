@@ -107,6 +107,15 @@ macro folder(title, ex)
     return DesmosFolder(title, v)
 end
 
+macro folder(ex)
+    eval_dollar!(__module__, ex)
+    v = DesmosElement[]
+    for e in ex.args
+        add_elem!(v, e)
+    end
+    return DesmosFolder("", v)
+end
+
 macro table(args...)
     return DesmosTable([_latexify.(args)...])
 end

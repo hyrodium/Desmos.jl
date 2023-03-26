@@ -42,20 +42,20 @@ end
 macro variable(ex1, ex2)
     ex1.head === :(=) || error("invalid variable definition")
     if ex2.args[1] === :(..)
-        return DesmosContinuousVariable(latexify(ex1), eval(ex2))
+        return DesmosContinuousVariable(_latexify(ex1), eval(ex2))
     else
-        return DesmosDiscreteVariable(latexify(ex1), eval(ex2))
+        return DesmosDiscreteVariable(_latexify(ex1), eval(ex2))
     end
 end
 
 macro variable(ex1)
     ex1.head === :(=) || error("invalid variable definition")
     v = ex1.args[2]
-    return DesmosContinuousVariable(latexify(ex1), v..v)
+    return DesmosContinuousVariable(_latexify(ex1), v..v)
 end
 
 macro color(ex1, ex2)
-    return DesmosExpression(eval(ex2), latexify(ex1))
+    return DesmosExpression(eval(ex2), _latexify(ex1))
 end
 
 macro image(ex, kwargs...)
@@ -73,8 +73,7 @@ macro image(ex, kwargs...)
             end
         end
     end
-    center_latex = LaTeXString("\$("*removedollar(latexify(center))*")\$")
-    return DesmosImage(create_url(ex), latexify(width), latexify(height), center_latex)
+    return DesmosImage(create_url(ex), _latexify(width), _latexify(height), _latexify(center))
 end
 
 function _latexify(ex)
@@ -127,9 +126,9 @@ macro desmos(ex)
                 dump(e)
             end
         elseif e isa Integer
-            push!(v, DesmosExpression(RGB(0,0,0), latexify(e)))
+            push!(v, DesmosExpression(RGB(0,0,0), _latexify(e)))
         elseif e isa Symbol
-            push!(v, DesmosExpression(RGB(0,0,0), latexify(e)))
+            push!(v, DesmosExpression(RGB(0,0,0), _latexify(e)))
         end
     end
     return DesmosState(v)

@@ -12,8 +12,8 @@ state = @desmos begin
     @variable γ₁₃ = 0.2 -0.5..1
     3
     (a,b)
-    @color f(x) = sin(a/x) RGB(1,0,0)
-    @color g(x) = x*(b/a) RGB(0,1,0.5)
+    @expression f(x) = sin(a/x) color=RGB(1,0,0)
+    @expression g(x) = x*(b/a) color=RGB(0,1,0.5)
     sin(y)*cos(x) - γ₁₃ = 0
     a*b
 end

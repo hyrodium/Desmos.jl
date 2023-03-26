@@ -71,10 +71,6 @@ macro expression(ex, kwargs...)
     return DesmosExpression(eval(color), _latexify(ex))
 end
 
-macro color(ex1, ex2)
-    return DesmosExpression(eval(ex2), _latexify(ex1))
-end
-
 macro raw_expression(ex)
     return DesmosExpression(RGB(0,0,0), eval(ex))
 end

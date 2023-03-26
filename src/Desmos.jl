@@ -8,13 +8,14 @@ using JSON
 using ImageIO
 using FileIO
 using Base64
+using FixedPointNumbers
 
 export @desmos
 
 abstract type DesmosElement end
 
 struct DesmosExpression <: DesmosElement
-    color::Color
+    color::RGB{N0f8}
     latex::LaTeXString
 end
 

@@ -40,6 +40,11 @@ struct DesmosTable <: DesmosElement
     column::Vector{LaTeXString}
 end
 
+struct DesmosFolder <: DesmosElement
+    title::String
+    expressions::Vector{DesmosElement}
+end
+
 struct DesmosState
     expressions::Vector{DesmosElement}
 end
@@ -93,6 +98,15 @@ macro image(ex, kwargs...)
     return DesmosImage(create_url(ex), _latexify(width), _latexify(height), _latexify(center))
 end
 
+macro folder(title, ex)
+    eval_dollar!(__module__, ex)
+    v = DesmosElement[]
+    for e in ex.args
+        add_elem!(v, e)
+    end
+    return DesmosFolder(title, v)
+end
+
 macro table(args...)
     return DesmosTable([_latexify.(args)...])
 end
@@ -141,26 +155,33 @@ macro desmos(ex)
     eval_dollar!(__module__, ex)
     v = DesmosElement[]
     for e in ex.args
-        if e isa Expr
-            if e.head === :macrocall
-                push!(v, eval(e))
-            elseif e.head === :(=)
-                push!(v, DesmosExpression(RGB(0,0,0), _latexify(e)))
-            elseif e.head === :(tuple)
-                push!(v, DesmosExpression(RGB(0,0,0), _latexify(e)))
-            elseif e.head === :call
-                push!(v, DesmosExpression(RGB(0,0,0), _latexify(e)))
-            else
-                @warn "unsupported element"
-                dump(e)
-            end
-        elseif e isa Integer
-            push!(v, DesmosExpression(RGB(0,0,0), _latexify(e)))
-        elseif e isa Symbol
-            push!(v, DesmosExpression(RGB(0,0,0), _latexify(e)))
-        end
+        add_elem!(v, e)
     end
     return DesmosState(v)
+end
+
+function add_elem!(v, ::LineNumberNode)
+    return v
+end
+function add_elem!(v, ex::Expr)
+    if ex.head === :macrocall
+        push!(v, eval(ex))
+    elseif ex.head === :(=)
+        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex)))
+    elseif ex.head === :(tuple)
+        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex)))
+    elseif ex.head === :call
+        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex)))
+    else
+        @warn "unsupported element"
+        dump(e)
+    end
+end
+function add_elem!(v, ex::Integer)
+    push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex)))
+end
+function add_elem!(v, ex::Symbol)
+    push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex)))
 end
 
 function removedollar(s::LaTeXString)
@@ -237,13 +258,35 @@ function convert_dict(i::Integer, e::DesmosTable)
     ]), i+length(e.column)+1
 end
 
+function add_elem_dict!(list, i, e::DesmosElement; i_folder=nothing)
+    dict, i = convert_dict(i, e)
+    if !isnothing(i_folder)
+        dict["folderId"] = string(i_folder)
+    end
+    push!(list, dict)
+    return i
+end
+
+function add_elem_dict!(list, i, folder::DesmosFolder)
+    i_folder = i
+    list_in_folder = [Dict([
+        "type" => "folder",
+        "title" => folder.title,
+        "id" => i_folder,
+    ])]
+    i = i_folder + 1
+    for e in folder.expressions
+        i = add_elem_dict!(list_in_folder, i ,e, i_folder=i_folder)
+    end
+    append!(list, list_in_folder)
+    return i
+end
+
 function JSON.lower(state::DesmosState)
-    v = state.expressions
     list = Dict[]
     i = 1
-    for e in v
-        dict, i = convert_dict(i, e)
-        push!(list, dict)
+    for e in state.expressions
+        i = add_elem_dict!(list, i ,e)
     end
     Dict([
         "version" => 10,

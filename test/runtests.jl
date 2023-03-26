@@ -1,6 +1,9 @@
 using Desmos
 using Test
 using JSON
+using Aqua
+
+Aqua.test_all(Desmos; ambiguities=false)
 
 b = 3
 url_img = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/b3fcb1f935439d671e3ddb3eb3b19fd261f6b067/example1a.png"

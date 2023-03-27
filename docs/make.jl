@@ -1,5 +1,6 @@
 using Documenter
 using Desmos
+using JSON
 
 # Setup for doctests in docstrings
 DocMeta.setdocmeta!(Desmos, :DocTestSetup, :(using Desmos))
@@ -14,6 +15,7 @@ makedocs(;
     ),
     pages = [
         "Home" => "index.md",
+        "Examples" => "examples.md",
     ],
     repo = "https://github.com/hyrodium/Desmos.jl/blob/{commit}{path}#L{line}",
     sitename = "Desmos.jl",

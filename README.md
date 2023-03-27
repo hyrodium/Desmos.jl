@@ -25,5 +25,7 @@ See [documentation](https://hyrodium.github.io/Desmos.jl/dev/) for more informat
 ## Desmos Text I/O
 Note that this package requires [Desmos Text I/O extension](https://github.com/hyrodium/DesmosTextIO).
 
+[![](https://raw.githubusercontent.com/hyrodium/desmos-text-io/main/logo.svg)](https://github.com/hyrodium/DesmosTextIO)
+
 * [Chrome Web Store](https://chrome.google.com/webstore/detail/desmos-text-io/ndjdcebpigpfidnilppdpcdkibidfmaa)
 * [Firefox ADD-ONS](https://addons.mozilla.org/en-US/firefox/addon/desmos-text-i-o/)

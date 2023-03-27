@@ -20,7 +20,7 @@ clipboard(JSON.json(state, 4))
 
 https://user-images.githubusercontent.com/7488140/227839138-7aabfb64-3be1-4ef6-88f8-543c9fc5421a.mp4
 
-See [documentation](https://hyrodium.github.io/Desmos.jl/dev/) for more information.\
+See [documentation](https://hyrodium.github.io/Desmos.jl/dev/) for more information.
 
 ## Desmos Text I/O
 Note that this package requires [Desmos Text I/O extension](https://github.com/hyrodium/DesmosTextIO).

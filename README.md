@@ -7,7 +7,7 @@ Generate Desmos script (JSON) with Julia language.
 [![codecov](https://codecov.io/gh/hyrodium/Desmos.jl/branch/main/graph/badge.svg?token=dJBiR91dCD)](https://codecov.io/gh/hyrodium/Desmos.jl)
 [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
-# First example
+## First example
 ```julia
 using Desmos, JSON
 state = @desmos begin
@@ -21,6 +21,8 @@ clipboard(JSON.json(state, 4))
 https://user-images.githubusercontent.com/7488140/227839138-7aabfb64-3be1-4ef6-88f8-543c9fc5421a.mp4
 
 See [documentation](https://hyrodium.github.io/Desmos.jl/dev/) for more information.\
+
+## Desmos Text I/O
 Note that this package requires [Desmos Text I/O extension](https://github.com/hyrodium/DesmosTextIO).
 
 * [Chrome Web Store](https://chrome.google.com/webstore/detail/desmos-text-io/ndjdcebpigpfidnilppdpcdkibidfmaa)

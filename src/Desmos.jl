@@ -40,6 +40,10 @@ struct DesmosTable <: DesmosElement
     column::Vector{LaTeXString}
 end
 
+struct DesmosNote <: DesmosElement
+    note::String
+end
+
 struct DesmosFolder <: DesmosElement
     title::String
     expressions::Vector{DesmosElement}
@@ -114,6 +118,10 @@ macro folder(ex)
         add_elem!(v, e)
     end
     return DesmosFolder("", v)
+end
+
+macro note(ex)
+    return DesmosNote(string(ex))
 end
 
 macro table(args...)
@@ -265,6 +273,14 @@ function convert_dict(i::Integer, e::DesmosTable)
             for j in eachindex(e.column)
         ]
     ]), i+length(e.column)+1
+end
+
+function convert_dict(i::Integer, e::DesmosNote)
+    return Dict([
+        "type" => "text",
+        "id" => string(i),
+        "text" => e.note,
+    ]), i+1
 end
 
 function add_elem_dict!(list, i, e::DesmosElement; i_folder=nothing)

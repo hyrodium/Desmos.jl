@@ -4,6 +4,7 @@
 ```@example
 using Desmos, JSON
 state = @desmos begin
+    @note "Trigonometric functions"
     @expression cos(x) color=RGB(1,0,0)
     @expression sin(x) color=RGB(0,0,1)
     tan(x)

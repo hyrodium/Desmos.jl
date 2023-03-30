@@ -77,11 +77,15 @@ macro expression(ex, kwargs...)
             end
         end
     end
-    return DesmosExpression(eval(color), _latexify(ex))
-end
-
-macro raw_expression(ex)
-    return DesmosExpression(RGB(0,0,0), eval(ex))
+    if ex.head === :macrocall
+        if ex.args[1] === Symbol("@L_str")
+            DesmosExpression(eval(color), eval(ex))
+        else
+            error("Unsupported expression $(ex)")
+        end
+    else
+        return DesmosExpression(eval(color), _latexify(ex))
+    end
 end
 
 macro image(ex, kwargs...)

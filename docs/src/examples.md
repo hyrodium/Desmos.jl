@@ -84,8 +84,8 @@ state = @desmos begin
         b₅=B(a₄,b₄)
         a₆=A(a₅,b₅)
         b₆=B(a₅,b₅)
-        @raw_expression L"a = [a_{0},a_{1},a_{2},a_{3},a_{4},a_{5},a_{6}]"
-        @raw_expression L"b = [b_{0},b_{1},b_{2},b_{3},b_{4},b_{5},b_{6}]"
+        @expression L"a = [a_{0},a_{1},a_{2},a_{3},a_{4},a_{5},a_{6}]"
+        @expression L"b = [b_{0},b_{1},b_{2},b_{3},b_{4},b_{5},b_{6}]"
         (a₀,b₀)
         (a,b)
     end

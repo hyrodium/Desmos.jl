@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+</head>
+<body>
+    <div id="BasicFunctions" style="width: 100%; height: 400px;"></div>
+    <script>
+        var elt = document.getElementById('BasicFunctions');
+        var calculator = Desmos.GraphingCalculator(elt);
+        state = {"version":10,"expressions":{"list":[{"id":"1","text":"Trigonometric functions","type":"text"},{"latex":"\\cos\\left( x \\right)","id":"2","color":"#FF0000","lines":"#true","type":"expression"},{"latex":"\\sin\\left( x \\right)","id":"3","color":"#0000FF","lines":"#true","type":"expression"},{"latex":"\\tan\\left( x \\right)","id":"4","color":"#000000","lines":"#true","type":"expression"}]}}
+        calculator.setState(state)
+    </script>
+</body>
+</html>

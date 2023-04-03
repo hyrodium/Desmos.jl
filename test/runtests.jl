@@ -30,6 +30,7 @@ end
             @expression sin(x) color=RGB(0,0,1)
             tan(x)
             @expression cot(x) lines=false
+            @expression (cosh(t), sinh(t)) domain=-2..3
         end
         json = JSON.json(state)
         update_result(title, json)

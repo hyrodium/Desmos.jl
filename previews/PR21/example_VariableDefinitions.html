@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+</head>
+<body>
+    <div id="VariableDefinitions" style="width: 100%; height: 400px;"></div>
+    <script>
+        var elt = document.getElementById('VariableDefinitions');
+        var calculator = Desmos.GraphingCalculator(elt);
+        state = {"version":10,"expressions":{"list":[{"latex":"a = 4","id":"1","color":"#000000","lines":true,"type":"expression"},{"slider":{"max":6.0,"hardMin":1.0,"min":2.0,"hardMax":1.0},"latex":"b = 5","id":"2","type":"expression"},{"slider":{"step":1,"max":8,"hardMin":1,"min":1,"hardMax":1},"latex":"c = 5","id":"3","type":"expression"},{"slider":{"max":7.0,"hardMin":1.0,"min":7.0,"hardMax":1.0},"latex":"d = 7","id":"4","type":"expression"},{"latex":"4","id":"5","color":"#000000","lines":true,"type":"expression"},{"latex":"\\sin\\left( 6 \\cdot a - cx \\right)","id":"6","color":"#000000","lines":true,"type":"expression"}]}}
+        calculator.setState(state)
+    </script>
+</body>
+</html>

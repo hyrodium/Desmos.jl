@@ -39,8 +39,8 @@ end
         title = "VariableDefinitions"
         state = @desmos begin
             a = 4
-            @variable b = 5 2..6
-            @variable c = 5 1:8
+            @variable b = 5 domain = 2..6
+            @variable c = 5 domain = 1:8
             @variable d = 7
             $(2+2)
             sin($(2b)*a-cx)

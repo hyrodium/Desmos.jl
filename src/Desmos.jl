@@ -54,12 +54,17 @@ struct DesmosState
     expressions::Vector{DesmosElement}
 end
 
-macro variable(ex1, ex2)
+macro variable(ex1, kwarg)
     ex1.head === :(=) || error("invalid variable definition")
-    if ex2.args[1] === :(..)
-        return DesmosContinuousVariable(_latexify(ex1), eval(ex2))
+    if kwarg.head == :(=)
+        if kwarg.args[1] == :domain
+            domain = kwarg.args[2]
+        end
+    end
+    if domain.args[1] === :(..)
+        return DesmosContinuousVariable(_latexify(ex1), eval(domain))
     else
-        return DesmosDiscreteVariable(_latexify(ex1), eval(ex2))
+        return DesmosDiscreteVariable(_latexify(ex1), eval(domain))
     end
 end
 

@@ -76,7 +76,7 @@ macro expression(ex, kwargs...)
         if kwarg.head == :(=)
             if kwarg.args[1] == :color
                 color = kwarg.args[2]
-            elseif kwarg.args[1] == :line
+            elseif kwarg.args[1] == :lines
                 line = kwarg.args[2]
             end
         end
@@ -222,7 +222,7 @@ function convert_dict(i::Integer, e::DesmosExpression)
         "type" => "expression",
         "id" => string(i),
         "color" => "#$(hex(e.color))",
-        "lines" => "#$(e.lines)",
+        "lines" => e.lines,
         "latex" => removedollar(e.latex)
     ]), i+1
 end

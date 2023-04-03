@@ -29,6 +29,7 @@ end
             @expression cos(x) color=RGB(1,0,0)
             @expression sin(x) color=RGB(0,0,1)
             tan(x)
+            @expression cot(x) lines=false
         end
         json = JSON.json(state)
         update_result(title, json)

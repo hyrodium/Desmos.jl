@@ -17,6 +17,7 @@ abstract type DesmosElement end
 struct DesmosExpression <: DesmosElement
     color::RGB{N0f8}
     latex::LaTeXString
+    lines::Bool
 end
 
 struct DesmosDiscreteVariable <: DesmosElement
@@ -70,21 +71,24 @@ end
 
 macro expression(ex, kwargs...)
     color = :(RGB(0,0,0))
+    line = :(true)
     for kwarg in kwargs
         if kwarg.head == :(=)
             if kwarg.args[1] == :color
                 color = kwarg.args[2]
+            elseif kwarg.args[1] == :lines
+                line = kwarg.args[2]
             end
         end
     end
     if ex.head === :macrocall
         if ex.args[1] === Symbol("@L_str")
-            DesmosExpression(eval(color), eval(ex))
+            DesmosExpression(eval(color), eval(ex), line)
         else
             error("Unsupported expression $(ex)")
         end
     else
-        return DesmosExpression(eval(color), _latexify(ex))
+        return DesmosExpression(eval(color), _latexify(ex), line)
     end
 end
 
@@ -188,21 +192,21 @@ function add_elem!(v, ex::Expr)
     if ex.head === :macrocall
         push!(v, eval(ex))
     elseif ex.head === :(=)
-        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex)))
+        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true))
     elseif ex.head === :(tuple)
-        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex)))
+        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true))
     elseif ex.head === :call
-        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex)))
+        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true))
     else
         @warn "unsupported element"
         dump(e)
     end
 end
 function add_elem!(v, ex::Integer)
-    push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex)))
+    push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true))
 end
 function add_elem!(v, ex::Symbol)
-    push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex)))
+    push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true))
 end
 
 function removedollar(s::LaTeXString)
@@ -218,6 +222,7 @@ function convert_dict(i::Integer, e::DesmosExpression)
         "type" => "expression",
         "id" => string(i),
         "color" => "#$(hex(e.color))",
+        "lines" => e.lines,
         "latex" => removedollar(e.latex)
     ]), i+1
 end

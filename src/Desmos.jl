@@ -18,6 +18,7 @@ struct DesmosExpression <: DesmosElement
     color::RGB{N0f8}
     latex::LaTeXString
     lines::Bool
+    domain::Union{Nothing, ClosedInterval{Float64}}
 end
 
 struct DesmosDiscreteVariable <: DesmosElement
@@ -27,7 +28,7 @@ end
 
 struct DesmosContinuousVariable <: DesmosElement
     latex::LaTeXString
-    range::ClosedInterval
+    range::ClosedInterval{Float64}
 end
 
 struct DesmosImage <: DesmosElement
@@ -54,12 +55,17 @@ struct DesmosState
     expressions::Vector{DesmosElement}
 end
 
-macro variable(ex1, ex2)
+macro variable(ex1, kwarg)
     ex1.head === :(=) || error("invalid variable definition")
-    if ex2.args[1] === :(..)
-        return DesmosContinuousVariable(_latexify(ex1), eval(ex2))
+    if kwarg.head == :(=)
+        if kwarg.args[1] == :domain
+            domain = kwarg.args[2]
+        end
+    end
+    if domain.args[1] === :(..)
+        return DesmosContinuousVariable(_latexify(ex1), eval(domain))
     else
-        return DesmosDiscreteVariable(_latexify(ex1), eval(ex2))
+        return DesmosDiscreteVariable(_latexify(ex1), eval(domain))
     end
 end
 
@@ -72,23 +78,26 @@ end
 macro expression(ex, kwargs...)
     color = :(RGB(0,0,0))
     line = :(true)
+    domain = :(nothing)
     for kwarg in kwargs
         if kwarg.head == :(=)
             if kwarg.args[1] == :color
                 color = kwarg.args[2]
             elseif kwarg.args[1] == :lines
                 line = kwarg.args[2]
+            elseif kwarg.args[1] == :domain
+                domain = kwarg.args[2]
             end
         end
     end
     if ex.head === :macrocall
         if ex.args[1] === Symbol("@L_str")
-            DesmosExpression(eval(color), eval(ex), line)
+            DesmosExpression(eval(color), eval(ex), line, eval(domain))
         else
             error("Unsupported expression $(ex)")
         end
     else
-        return DesmosExpression(eval(color), _latexify(ex), line)
+        return DesmosExpression(eval(color), _latexify(ex), line, eval(domain))
     end
 end
 
@@ -192,21 +201,21 @@ function add_elem!(v, ex::Expr)
     if ex.head === :macrocall
         push!(v, eval(ex))
     elseif ex.head === :(=)
-        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true))
+        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true, nothing))
     elseif ex.head === :(tuple)
-        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true))
+        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true, nothing))
     elseif ex.head === :call
-        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true))
+        push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true, nothing))
     else
         @warn "unsupported element"
         dump(e)
     end
 end
 function add_elem!(v, ex::Integer)
-    push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true))
+    push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true, nothing))
 end
 function add_elem!(v, ex::Symbol)
-    push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true))
+    push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true, nothing))
 end
 
 function removedollar(s::LaTeXString)
@@ -218,13 +227,20 @@ function remove_mathrm(s::Union{LaTeXString, SubString{LaTeXStrings.LaTeXString}
 end
 
 function convert_dict(i::Integer, e::DesmosExpression)
-    return Dict([
+    dict = Dict([
         "type" => "expression",
         "id" => string(i),
         "color" => "#$(hex(e.color))",
         "lines" => e.lines,
         "latex" => removedollar(e.latex)
-    ]), i+1
+    ])
+    if !isnothing(e.domain)
+        dict["parametricDomain"] = Dict([
+            "min"=>string(minimum(e.domain)),
+            "max"=>string(maximum(e.domain)),
+        ])
+    end
+    return dict, i+1
 end
 
 function convert_dict(i::Integer, e::DesmosContinuousVariable)

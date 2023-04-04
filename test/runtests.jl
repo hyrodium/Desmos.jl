@@ -45,6 +45,10 @@ end
             @variable d = 7
             $(2+2)
             sin($(2b)*a-cx)
+            # This for statement is not supported yet.
+            for i in 1:3
+                sin(i*x)
+            end
         end
         json = JSON.json(state)
         update_result(title, json)

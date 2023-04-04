@@ -208,7 +208,7 @@ function add_elem!(v, ex::Expr)
         push!(v, DesmosExpression(RGB(0,0,0), _latexify(ex), true, nothing))
     else
         @warn "unsupported element"
-        dump(e)
+        dump(ex)
     end
 end
 function add_elem!(v, ex::Integer)

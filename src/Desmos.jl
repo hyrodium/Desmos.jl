@@ -120,7 +120,6 @@ macro image(ex, kwargs...)
 end
 
 macro folder(title, ex)
-    eval_dollar!(__module__, ex)
     v = DesmosElement[]
     for e in ex.args
         add_elem!(v, e)
@@ -129,7 +128,6 @@ macro folder(title, ex)
 end
 
 macro folder(ex)
-    eval_dollar!(__module__, ex)
     v = DesmosElement[]
     for e in ex.args
         add_elem!(v, e)

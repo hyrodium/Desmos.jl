@@ -183,6 +183,28 @@ function eval_dollar!(target_module::Module, ex::Expr)
     return ex
 end
 
+"""
+    @desmos expr
+
+Define Desmos expressions from Julia expressions
+
+# Example
+```julia-repl
+julia> using Desmos, JSON
+
+julia> state = @desmos begin
+           @note "Trigonometric functions"
+           @expression cos(x) color=RGB(1,0,0)
+           @expression sin(x) color=RGB(0,0,1)
+           tan(x)
+           @expression cot(x) lines=false
+           @expression (cosh(t), sinh(t)) domain=-2..3
+       end;
+
+julia> json = JSON.json(state);
+```
+
+"""
 macro desmos(ex)
     eval_dollar!(__module__, ex)
     v = DesmosElement[]

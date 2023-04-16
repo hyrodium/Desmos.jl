@@ -55,6 +55,25 @@ struct DesmosState
     expressions::Vector{DesmosElement}
 end
 
+@doc raw"""
+    @variable expr
+
+Define Desmos variable
+
+# Examples
+```jldoctest
+julia> Desmos.@variable a=3
+Desmos.DesmosContinuousVariable(L"$a = 3$", 3.0 .. 3.0)
+
+julia> Desmos.@variable a=3 domain=-2:3
+Desmos.DesmosDiscreteVariable(L"$a = 3$", -2:3)
+
+julia> Desmos.@variable a=3 domain=-2..3
+Desmos.DesmosContinuousVariable(L"$a = 3$", -2.0 .. 3.0)
+```
+"""
+macro variable end
+
 macro variable(ex1, kwarg)
     ex1.head === :(=) || error("invalid variable definition")
     if kwarg.head == :(=)
@@ -75,6 +94,20 @@ macro variable(ex1)
     return DesmosContinuousVariable(_latexify(ex1), v..v)
 end
 
+@doc raw"""
+    @expression expr
+
+Define Desmos variable
+
+# Examples
+```jldoctest
+julia> Desmos.@expression tan(x) color=RGB(1,1,0)
+Desmos.DesmosExpression(RGB{N0f8}(1.0,1.0,0.0), L"$\tan\left( x \right)$", true, nothing)
+
+julia> Desmos.@expression (cos(t), sin(t)) domain=-2..3
+Desmos.DesmosExpression(RGB{N0f8}(0.0,0.0,0.0), L"$(\cos\left( t \right), \sin\left( t \right))$", true, -2.0 .. 3.0)
+```
+"""
 macro expression(ex, kwargs...)
     color = :(RGB(0,0,0))
     line = :(true)
@@ -183,6 +216,28 @@ function eval_dollar!(target_module::Module, ex::Expr)
     return ex
 end
 
+@doc raw"""
+    @desmos expr
+
+Define Desmos expressions from Julia expressions
+
+# Example
+```julia-repl
+julia> using Desmos, JSON
+
+julia> state = @desmos begin
+           @note "Trigonometric functions"
+           @expression cos(x) color=RGB(1,0,0)
+           @expression sin(x) color=RGB(0,0,1)
+           tan(x)
+           @expression cot(x) lines=false
+           @expression (cosh(t), sinh(t)) domain=-2..3
+       end;
+
+julia> json = JSON.json(state);
+```
+
+"""
 macro desmos(ex)
     eval_dollar!(__module__, ex)
     v = DesmosElement[]

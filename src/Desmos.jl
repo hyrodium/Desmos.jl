@@ -55,7 +55,7 @@ struct DesmosState
     expressions::Vector{DesmosElement}
 end
 
-"""
+@doc raw"""
     @variable expr
 
 Define Desmos variable
@@ -94,7 +94,7 @@ macro variable(ex1)
     return DesmosContinuousVariable(_latexify(ex1), v..v)
 end
 
-"""
+@doc raw"""
     @expression expr
 
 Define Desmos variable
@@ -216,7 +216,7 @@ function eval_dollar!(target_module::Module, ex::Expr)
     return ex
 end
 
-"""
+@doc raw"""
     @desmos expr
 
 Define Desmos expressions from Julia expressions

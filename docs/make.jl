@@ -15,6 +15,7 @@ makedocs(;
     ),
     pages = [
         "Home" => "index.md",
+        "API" => "api.md",
         "Examples" => "examples.md",
     ],
     repo = "https://github.com/hyrodium/Desmos.jl/blob/{commit}{path}#L{line}",

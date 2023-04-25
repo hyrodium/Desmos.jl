@@ -23,7 +23,7 @@ ImageIO = "0.6"
 IntervalSets = "0.7"
 JSON = "0.21"
 LaTeXStrings = "1"
-Latexify = "0.15"
+Latexify = "0.15, 0.16"
 julia = "1.8"
 
 [extras]

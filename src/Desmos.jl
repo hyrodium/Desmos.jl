@@ -1,10 +1,11 @@
 module Desmos
 
+using JSON
+using StructUtils
 using Colors
 using LaTeXStrings
 using Latexify
 using IntervalSets
-using JSON
 using ImageIO
 using FileIO
 using Base64

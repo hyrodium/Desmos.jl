@@ -1,7 +1,8 @@
 module Desmos
 
 using JSON
-using StructUtils
+# https://github.com/JuliaIO/JSON.jl/pull/418
+using JSON.StructUtils: @kwarg
 using Colors
 using LaTeXStrings
 using Latexify

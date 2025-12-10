@@ -21,7 +21,7 @@ function update_result(title, json)
     return write(joinpath(@__DIR__, "result.html"), join(vcat(lines[begin:(i_begin - 1)], split(block, "\n"), lines[i_begin:end]), "\n"))
 end
 
-@testset "Desmos.jl" begin
+@testset "Export HTML" begin
 
     @testset "basic" begin
         title = "BasicFunctions"
@@ -78,5 +78,17 @@ end
         end
         json = JSON.json(state)
         update_result(title, json)
+    end
+end
+
+@testset "JSON I/O" begin
+    # Broken for i = 3
+    @testset "example$i.json" for i in 1:3
+        path_json = joinpath(@__DIR__, "json_example", "example$i.json")
+        state = JSON.parse(read(path_json, String), DesmosState)
+        jo1 = JSON.parse(read(path_json, String))
+        jo2 = JSON.parse(JSON.json(state, 4))
+        delete!(jo1.graph, "__v12ViewportLatexStash")
+        @test jo2 == jo1
     end
 end

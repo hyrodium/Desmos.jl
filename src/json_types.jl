@@ -1,15 +1,14 @@
 abstract type AbstractDesmosExpression end
 
-@kwarg struct DesmosColumn
+@omit_null @kwarg struct DesmosColumn
     id::String
     color::String = "#000000"
     values::Union{Vector{String}, Nothing} = nothing
     latex::Union{LaTeXString, Nothing} = nothing
     hidden::Union{Bool, Nothing} = nothing
 end
-JSON.omit_null(::Type{DesmosColumn}) = true
 
-@kwarg struct DesmosSlider
+@omit_null @kwarg struct DesmosSlider
     hard_min::Bool & (json = (name = "hardMin",),)
     hard_max::Bool & (json = (name = "hardMax",),)
     animation_period::Union{Float64, Nothing} = nothing & (json = (name = "animationPeriod",),)
@@ -18,26 +17,22 @@ JSON.omit_null(::Type{DesmosColumn}) = true
     max::String
     step::Union{String, Nothing} = nothing
 end
-JSON.omit_null(::Type{DesmosSlider}) = true
 
-@kwarg struct DesmosParametricDomain
+@omit_null @kwarg struct DesmosParametricDomain
     min::String
     max::String
 end
-JSON.omit_null(::Type{DesmosParametricDomain}) = true
 
-@kwarg struct DesmosDomain
+@omit_null @kwarg struct DesmosDomain
     min::LaTeXString
     max::LaTeXString
 end
-JSON.omit_null(::Type{DesmosDomain}) = true
 
-@kwarg struct DesmosClickableInfo
+@omit_null @kwarg struct DesmosClickableInfo
     enabled::Bool
 end
-JSON.omit_null(::Type{DesmosClickableInfo}) = true
 
-@kwarg struct DesmosExpression <: AbstractDesmosExpression
+@omit_null @kwarg struct DesmosExpression <: AbstractDesmosExpression
     type::String = "expression"
     id::String
     color::String = "#000000"
@@ -56,16 +51,14 @@ JSON.omit_null(::Type{DesmosClickableInfo}) = true
     parametric_domain::Union{DesmosParametricDomain, Nothing} = nothing & (json = (name = "parametricDomain",),)
     folder_id::Union{String, Nothing} = nothing & (json = (name = "folderId",),)
 end
-JSON.omit_null(::Type{DesmosExpression}) = true
 
-@kwarg struct DesmosTable <: AbstractDesmosExpression
+@omit_null @kwarg struct DesmosTable <: AbstractDesmosExpression
     type::String = "table"
     id::String
     columns::Vector{DesmosColumn}
 end
-JSON.omit_null(::Type{DesmosTable}) = true
 
-@kwarg struct DesmosImage <: AbstractDesmosExpression
+@omit_null @kwarg struct DesmosImage <: AbstractDesmosExpression
     type::String = "image"
     id::String
     image_url::String
@@ -79,42 +72,38 @@ JSON.omit_null(::Type{DesmosTable}) = true
     description::Union{String, Nothing} = nothing
     folder_id::Union{String, Nothing} = nothing & (json = (name = "folderId",),)
 end
-JSON.omit_null(::Type{DesmosImage}) = true
 
-@kwarg struct DesmosText <: AbstractDesmosExpression
+@omit_null @kwarg struct DesmosText <: AbstractDesmosExpression
     type::String = "text"
     id::String
     text::Union{String, Nothing} = nothing
     folder_id::Union{String, Nothing} = nothing & (json = (name = "folderId",),)
 end
-JSON.omit_null(::Type{DesmosText}) = true
 
-@kwarg struct DesmosFolder <: AbstractDesmosExpression
+@omit_null @kwarg struct DesmosFolder <: AbstractDesmosExpression
     type::String = "folder"
     id::String
     title::Union{String, Nothing} = nothing
 end
-JSON.omit_null(::Type{DesmosFolder}) = true
 
-@kwarg struct DesmosExpressions
+@omit_null @kwarg struct DesmosExpressions
     list::Vector{AbstractDesmosExpression}
 end
 
-@kwarg struct DesmosViewport
+@omit_null @kwarg struct DesmosViewport
     xmin::Float64
     ymin::Float64
     xmax::Float64
     ymax::Float64
 end
 
-@kwarg struct DesmosGraph
+@omit_null @kwarg struct DesmosGraph
     viewport::Union{DesmosViewport, Nothing} = nothing
     user_locked_viewport::Union{Bool, Nothing} = nothing & (json = (name = "userLockedViewport",),)
     complex::Union{Bool, Nothing} = nothing
 end
-JSON.omit_null(::Type{<:DesmosGraph}) = true
 
-@kwarg struct DesmosState
+@omit_null @kwarg struct DesmosState
     version::Int = 11
     random_seed::String = "00000000000000000000000000000000" & (json = (name = "randomSeed",),)
     graph::DesmosGraph = DesmosGraph()
@@ -122,7 +111,6 @@ JSON.omit_null(::Type{<:DesmosGraph}) = true
     include_function_parameters_in_random_seed::Bool = true & (json = (name = "includeFunctionParametersInRandomSeed",),)
     do_not_migrate_movable_point_style::Bool = true & (json = (name = "doNotMigrateMovablePointStyle",),)
 end
-JSON.omit_null(::Type{<:DesmosState}) = true
 
 JSON.@choosetype AbstractDesmosExpression x -> if x.type[] == "expression"
     DesmosExpression

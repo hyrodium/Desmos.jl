@@ -2,11 +2,12 @@ using Desmos
 using Test
 using JSON
 using Aqua
+using Colors
 
 Aqua.test_all(Desmos; ambiguities=false)
 
 b = 3
-url_img = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/b3fcb1f935439d671e3ddb3eb3b19fd261f6b067/example1a.png"
+image_url = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/b3fcb1f935439d671e3ddb3eb3b19fd261f6b067/example1a.png"
 
 path_base = joinpath(@__DIR__, "base.html")
 path_result = joinpath(@__DIR__, "result.html")
@@ -25,12 +26,12 @@ end
     @testset "basic" begin
         title = "BasicFunctions"
         state = @desmos begin
-            @note "Trigonometric functions"
-            @expression cos(x) color=RGB(1,0,0)
+            @text "Trigonometric functions"
+            @expression cos(x) color=$(RGB(1,0,0))
             @expression sin(x) color=RGB(0,0,1)
             tan(x)
-            @expression cot(x) lines=false
-            @expression (cosh(t), sinh(t)) domain=-2..3
+            @expression cot(x) hidden=true
+            @expression (cosh(t), sinh(t)) parametric_domain=-2..3
         end
         json = JSON.json(state)
         update_result(title, json)
@@ -40,15 +41,11 @@ end
         title = "VariableDefinitions"
         state = @desmos begin
             a = 4
-            @variable b = 5 domain = 2..6
-            @variable c = 5 domain = 1:8
-            @variable d = 7
+            @expression b = 5 slider = 2..6
+            @expression c = 5 slider = 1:8
+            @expression d = 7
             $(2+2)
             sin($(2b)*a-cx)
-            # This for statement is not supported yet.
-            for i in 1:3
-                sin(i*x)
-            end
         end
         json = JSON.json(state)
         update_result(title, json)
@@ -68,27 +65,16 @@ end
             d(x,y)=f_x(x,y)*g_y(x,y)-f_y(x,y)*g_x(x,y)
             A(x,y)=x-(g_y(x,y)*f(x,y)-f_y(x,y)*g(x,y))/d(x,y)
             B(x,y)=y-(-g_x(x,y)*f(x,y)+f_x(x,y)*g(x,y))/d(x,y)
-            @folder "Point sequence" begin
-                a₀=1
-                b₀=1
-                a₁=A(a₀,b₀)
-                b₁=B(a₀,b₀)
-                a₂=A(a₁,b₁)
-                b₂=B(a₁,b₁)
-                a₃=A(a₂,b₂)
-                b₃=B(a₂,b₂)
-                a₄=A(a₃,b₃)
-                b₄=B(a₃,b₃)
-                a₅=A(a₄,b₄)
-                b₅=B(a₄,b₄)
-                a₆=A(a₅,b₅)
-                b₆=B(a₅,b₅)
-                @expression L"a = [a_{0},a_{1},a_{2},a_{3},a_{4},a_{5},a_{6}]"
-                @expression L"b = [b_{0},b_{1},b_{2},b_{3},b_{4},b_{5},b_{6}]"
-                (a₀,b₀)
-                (a,b)
-            end
-            @image $url_img width=20 height=20
+            a₀=1
+            b₀=1
+            a(0)=a₀
+            b(0)=b₀
+            a(i)=A(a(i-1),b(i-1))
+            b(i)=B(a(i-1),b(i-1))
+            @expression L"I = [0,...,10]"
+            (a₀,b₀)
+            @expression (a(I),b(I)) lines=true
+            @image image_url=$image_url width=20 height=20 name="regions" hidden=true
         end
         json = JSON.json(state)
         update_result(title, json)

@@ -12,11 +12,11 @@ JSON.omit_null(::Type{DesmosColumn}) = true
 @kwarg struct DesmosSlider
     hard_min::Bool &(json=(name="hardMin",),)
     hard_max::Bool &(json=(name="hardMax",),)
-    animation_period::Float64 &(json=(name="animationPeriod",),)
-    loop_mode::String &(json=(name="loopMode",),)
+    animation_period::Union{Float64, Nothing} = nothing &(json=(name="animationPeriod",),)
+    loop_mode::Union{String, Nothing} = nothing &(json=(name="loopMode",),)
     min::String
     max::String
-    step::String
+    step::Union{String, Nothing} = nothing
 end
 JSON.omit_null(::Type{DesmosSlider}) = true
 
@@ -27,8 +27,8 @@ end
 JSON.omit_null(::Type{DesmosParametricDomain}) = true
 
 @kwarg struct DesmosDomain
-    min::String
-    max::String
+    min::LaTeXString
+    max::LaTeXString
 end
 JSON.omit_null(::Type{DesmosDomain}) = true
 
@@ -36,6 +36,7 @@ JSON.omit_null(::Type{DesmosDomain}) = true
     type::String = "expression"
     id::String
     color::String = "#000000"
+    hidden::Union{Bool, Nothing} = nothing
     latex::Union{LaTeXString, Nothing} = nothing
     slider::Union{DesmosSlider, Nothing} = nothing
     domain::Union{DesmosDomain, Nothing} = nothing

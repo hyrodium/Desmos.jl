@@ -1,7 +1,7 @@
 name = "Desmos"
 uuid = "4511bacd-46ac-4e41-b5d2-355eeb7547f4"
-authors = ["hyrodium <hyrodium@gmail.com> and contributors"]
 version = "0.1.0-DEV"
+authors = ["hyrodium <hyrodium@gmail.com> and contributors"]
 
 [deps]
 Base64 = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
@@ -13,7 +13,6 @@ IntervalSets = "8197267c-284f-5f27-9208-e0e47529a953"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 Latexify = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
-StructUtils = "ec057cc2-7a8d-4b58-b3b3-92acb9f63b42"
 
 [compat]
 Aqua = "0.6"
@@ -25,7 +24,6 @@ IntervalSets = "0.7"
 JSON = "1"
 LaTeXStrings = "1"
 Latexify = "0.15, 0.16"
-StructUtils = "2.6.0"
 julia = "1.8"
 
 [extras]

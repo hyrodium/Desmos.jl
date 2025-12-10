@@ -1,7 +1,6 @@
 module Desmos
 
 using JSON
-using StructUtils
 using Colors
 using LaTeXStrings
 using Latexify

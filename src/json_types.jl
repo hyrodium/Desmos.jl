@@ -35,7 +35,7 @@ JSON.omit_null(::Type{DesmosDomain}) = true
 @kwarg struct DesmosClickableInfo
     enabled::Bool
 end
-JSON.omit_null(::Type{DesmosDomain}) = true
+JSON.omit_null(::Type{DesmosClickableInfo}) = true
 
 @kwarg struct DesmosExpression <: AbstractDesmosExpression
     type::String = "expression"

@@ -12,6 +12,7 @@ using Base64
 using FixedPointNumbers
 
 export @desmos
+export DesmosState
 
 include("json_types.jl")
 include("show.jl")

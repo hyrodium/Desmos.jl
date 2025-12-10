@@ -103,6 +103,59 @@ end
     complex::Union{Bool, Nothing} = nothing
 end
 
+"""
+    DesmosState
+
+Represents the complete state of a Desmos graph, including all expressions, viewport settings, and configuration options.
+
+`DesmosState` is typically created using the [`@desmos`](@ref) macro rather than constructed directly.
+The state object can be serialized to JSON format compatible with the Desmos API, and can be displayed directly in Jupyter notebooks or VSCode.
+
+# Fields
+
+- `version::Int`: Desmos API version (default: 11)
+- `random_seed::String`: Random seed for reproducibility (default: "00000000000000000000000000000000")
+- `graph::DesmosGraph`: Graph configuration including viewport settings
+- `expressions::DesmosExpressions`: Collection of all expressions, text, images, etc.
+
+# Examples
+
+```julia
+using Desmos
+
+# Create using @desmos macro (recommended)
+state = @desmos begin
+    @text "Example graph"
+    sin(x)
+    cos(x)
+end
+
+# Serialize to JSON
+using JSON
+json_string = JSON.json(state)
+
+# Display in Jupyter/VSCode
+display(state)  # Shows interactive Desmos graph
+```
+
+# JSON I/O
+
+`DesmosState` can be parsed from JSON files exported from Desmos:
+
+```julia
+using JSON
+
+# Read from file
+json_data = read("graph.json", String)
+state = JSON.parse(json_data, DesmosState)
+
+# Write to file
+write("graph.json", JSON.json(state, 4))
+```
+
+# See also
+- [`@desmos`](@ref): Macro for creating `DesmosState` objects
+"""
 @omit_null @kwarg struct DesmosState
     version::Int = 11
     random_seed::String = "00000000000000000000000000000000" & (json = (name = "randomSeed",),)

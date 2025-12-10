@@ -7,7 +7,7 @@ function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+        <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     </head>
     <body>
         <div id="NAME" style="width: 800px; height: 400px;"></div>

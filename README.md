@@ -23,9 +23,19 @@ https://user-images.githubusercontent.com/7488140/227839138-7aabfb64-3be1-4ef6-8
 See [documentation](https://hyrodium.github.io/Desmos.jl/dev/) for more information.
 
 ## Desmos Text I/O
-Note that this package requires [Desmos Text I/O extension](https://github.com/hyrodium/DesmosTextIO).
+You can also use [Desmos Text I/O extension](https://github.com/hyrodium/DesmosTextIO) to import/export the desmos-graph.
 
 [![](https://raw.githubusercontent.com/hyrodium/desmos-text-io/main/logo.svg)](https://github.com/hyrodium/DesmosTextIO)
 
 * [Chrome Web Store](https://chrome.google.com/webstore/detail/desmos-text-io/ndjdcebpigpfidnilppdpcdkibidfmaa)
 * [Firefox ADD-ONS](https://addons.mozilla.org/en-US/firefox/addon/desmos-text-i-o/)
+
+## TODO
+
+- [ ] Add support for folders
+- [ ] Add support for more fields
+- [ ] Add support for actions
+- [ ] Add support for 3D plot
+- [ ] Add support for tables
+- [ ] Add support for ticker
+- [ ] Add support for API versioning

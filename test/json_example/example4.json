@@ -1,0 +1,93 @@
+{
+  "version": 11,
+  "randomSeed": "9780e381efa10d86ca7d80381fa104dd",
+  "graph": {
+    "viewport": {
+      "xmin": -7.273581579042849,
+      "ymin": -5.3768198929110325,
+      "xmax": 6.627748749624477,
+      "ymax": 5.494081439455726
+    },
+    "__v12ViewportLatexStash": {
+      "xmin": "-7.273581579042849",
+      "xmax": "6.627748749624477",
+      "ymin": "-5.3768198929110325",
+      "ymax": "5.494081439455726"
+    }
+  },
+  "expressions": {
+    "list": [
+      {
+        "type": "expression",
+        "id": "1",
+        "color": "#c74440",
+        "latex": "a=189",
+        "slider": {
+          "hardMin": true,
+          "playDirection": -1,
+          "min": "b",
+          "max": "206"
+        }
+      },
+      {
+        "type": "expression",
+        "id": "3",
+        "color": "#388c46",
+        "latex": "b=5.2",
+        "hidden": true
+      },
+      {
+        "type": "expression",
+        "id": "2",
+        "color": "#2d70b3",
+        "latex": "f=a\\to a+1"
+      },
+      {
+        "type": "expression",
+        "id": "4",
+        "color": "#6042a6",
+        "latex": "\\sin\\left(x\\right)",
+        "hidden": true
+      },
+      {
+        "type": "expression",
+        "id": "8",
+        "color": "#388c46",
+        "latex": "\\sin\\left(x\\right)",
+        "lineStyle": "DASHED",
+        "lineOpacity": "0.2",
+        "lineWidth": "b"
+      },
+      {
+        "type": "expression",
+        "id": "6",
+        "color": "#c74440",
+        "latex": "\\cos\\left(y^{2}-xy\\right)>0.1"
+      },
+      {
+        "type": "expression",
+        "id": "7",
+        "color": "#388c46",
+        "latex": "\\cos\\left(y^{2}-xy-1\\right)>0.1",
+        "fillOpacity": "0.2",
+        "clickableInfo": {
+          "enabled": true,
+          "latex": "g"
+        }
+      },
+      {
+        "type": "expression",
+        "id": "5",
+        "color": "#000000",
+        "latex": "g=a\\to a-1"
+      }
+    ],
+    "ticker": {
+      "handlerLatex": "f",
+      "minStepLatex": "10",
+      "open": true
+    }
+  },
+  "includeFunctionParametersInRandomSeed": true,
+  "doNotMigrateMovablePointStyle": true
+}

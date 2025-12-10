@@ -9,14 +9,12 @@ Generate Desmos script (JSON) with Julia language.
 
 ## First example
 ```julia
-using Desmos, JSON
+using Desmos
 
 state = @desmos begin
-    @text "Trigonometric functions"
-    @expression cos(x) color=RGB(0, 0.5, 1)
-    tan(x)
-    @expression cot(x) lines=false
-    @expression (cosh(t), sinh(t)) parametric_domain=-2..3 color="#f0f"
+    @text "First example"
+    @expression cos(x) color=RGB(0, 0.5, 1) color="#f0f"
+    @expression (cosh(t), sinh(t)) parametric_domain=-2..3
 end
 ```
 

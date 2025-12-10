@@ -1,28 +1,70 @@
 macro expression(ex, kwargs...)
-    color = desmos_color(RGB(0,0,0))
-    domain = nothing
     id = "0"
-    hidden = nothing
+    color = desmos_color(RGB(0,0,0))
     slider = nothing
+    lines = nothing
+    hidden = nothing
+    domain = nothing
     parametric_domain = nothing
     for kwarg in kwargs
         if kwarg.head == :(=)
-            if kwarg.args[1] == :color
-                color = desmos_color(eval(kwarg.args[2]))
-            elseif kwarg.args[1] == :domain
-                domain = desmos_domain(eval(kwarg.args[2]))
-            elseif kwarg.args[1] == :id
+            if kwarg.args[1] == :id
                 id = string(eval(kwarg.args[2]))
-            elseif kwarg.args[1] == :hidden
-                hidden = eval(kwarg.args[2])
+            elseif kwarg.args[1] == :color
+                color = desmos_color(eval(kwarg.args[2]))
             elseif kwarg.args[1] == :slider
                 slider = desmos_slider(eval(kwarg.args[2]))
+            elseif kwarg.args[1] == :lines
+                @show lines
+                lines = eval(kwarg.args[2])
+                @show lines
+            elseif kwarg.args[1] == :hidden
+                hidden = eval(kwarg.args[2])
+            elseif kwarg.args[1] == :domain
+                domain = desmos_domain(eval(kwarg.args[2]))
             elseif kwarg.args[1] == :parametric_domain
                 parametric_domain = desmos_parametric_domain(eval(kwarg.args[2]))
             end
         end
     end
-    return DesmosExpression(latex=removedollar(_latexify(ex)); color, id, hidden, domain, slider, parametric_domain)
+    if ex.head === :macrocall
+        if ex.args[1] === Symbol("@L_str")
+            latex=removedollar(eval(ex))
+        else
+            error("Unsupported expression $(ex)")
+        end
+    else
+        latex=removedollar(_latexify(ex))
+    end
+    @show lines
+    return DesmosExpression(; latex, id, color, slider, lines, hidden, domain, parametric_domain)
+end
+
+macro image(kwargs...)
+    id = "0"
+    image_url = ""
+    hidden = nothing
+    name = nothing
+    width = nothing
+    height = nothing
+    for kwarg in kwargs
+        if kwarg.head == :(=)
+            if kwarg.args[1] == :id
+                id = string(eval(kwarg.args[2]))
+            elseif kwarg.args[1] == :image_url
+                image_url = eval(kwarg.args[2])
+            elseif kwarg.args[1] == :hidden
+                hidden = eval(kwarg.args[2])
+            elseif kwarg.args[1] == :name
+                name = eval(kwarg.args[2])
+            elseif kwarg.args[1] == :width
+                width = LaTeXString(string(eval(kwarg.args[2])))
+            elseif kwarg.args[1] == :height
+                height = LaTeXString(string(eval(kwarg.args[2])))
+            end
+        end
+    end
+    return DesmosImage(; id, image_url, hidden, name, width, height)
 end
 
 macro text(ex, kwargs...)

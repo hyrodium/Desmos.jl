@@ -32,10 +32,23 @@ JSON.omit_null(::Type{DesmosParametricDomain}) = true
 end
 JSON.omit_null(::Type{DesmosDomain}) = true
 
+@kwarg struct DesmosClickableInfo
+    enabled::Bool
+end
+JSON.omit_null(::Type{DesmosDomain}) = true
+
 @kwarg struct DesmosExpression <: AbstractDesmosExpression
     type::String = "expression"
     id::String
     color::String = "#000000"
+    show_label::Union{Bool, Nothing} = nothing &(json=(name="showLabel",),)
+    lines::Union{Bool, Nothing} = nothing
+    line_style::Union{String, Nothing} = nothing &(json=(name="lineStyle",),)
+    point_style::Union{String, Nothing} = nothing &(json=(name="pointStyle",),)
+    point_outline::Union{Bool, Nothing} = nothing &(json=(name="pointOutline",),)
+    line_opacity::Union{LaTeXString, Nothing} = nothing &(json=(name="lineOpacity",),)
+    line_width::Union{LaTeXString, Nothing} = nothing &(json=(name="lineWidth",),)
+    clickable_info::Union{DesmosClickableInfo, Nothing} = nothing &(json=(name="clickableInfo",),)
     hidden::Union{Bool, Nothing} = nothing
     latex::Union{LaTeXString, Nothing} = nothing
     slider::Union{DesmosSlider, Nothing} = nothing
@@ -56,8 +69,14 @@ JSON.omit_null(::Type{DesmosTable}) = true
     type::String = "image"
     id::String
     image_url::String
-    name::String
-    height::String
+    hidden::Union{Bool, Nothing} = nothing
+    name::Union{String, Nothing} = nothing
+    width::Union{String, Nothing} = nothing
+    height::Union{String, Nothing} = nothing
+    center::Union{LaTeXString, Nothing} = nothing
+    forground::Union{Bool, Nothing} = nothing
+    draggable::Union{Bool, Nothing} = nothing
+    description::Union{String, Nothing} = nothing
     folder_id::Union{String, Nothing} = nothing &(json=(name="folderId",),)
 end
 JSON.omit_null(::Type{DesmosImage}) = true

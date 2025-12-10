@@ -9,11 +9,37 @@ abstract type AbstractDesmosExpression end
 end
 JSON.omit_null(::Type{DesmosColumn}) = true
 
+@defaults struct DesmosSlider
+    hard_min::Bool &(json=(name="hardMin",),)
+    hard_max::Bool &(json=(name="hardMax",),)
+    animation_period::Float64 &(json=(name="animationPeriod",),)
+    loop_mode::String &(json=(name="loopMode",),)
+    min::String
+    max::String
+    step::String
+end
+JSON.omit_null(::Type{DesmosSlider}) = true
+
+@defaults struct DesmosParametricDomain
+    min::String
+    max::String
+end
+JSON.omit_null(::Type{DesmosParametricDomain}) = true
+
+@defaults struct DesmosDomain
+    min::String
+    max::String
+end
+JSON.omit_null(::Type{DesmosDomain}) = true
+
 @defaults struct DesmosExpression <: AbstractDesmosExpression
     type::String
     id::String
     color::String
     latex::Union{LaTeXString, Nothing} = nothing
+    slider::Union{DesmosSlider, Nothing} = nothing
+    domain::Union{DesmosDomain, Nothing} = nothing
+    parametric_domain::Union{DesmosParametricDomain, Nothing} = nothing &(json=(name="parametricDomain",),)
     folder_id::Union{String, Nothing} = nothing &(json=(name="folderId",),)
 end
 JSON.omit_null(::Type{DesmosExpression}) = true
@@ -29,6 +55,8 @@ JSON.omit_null(::Type{DesmosTable}) = true
     type::String
     id::String
     image_url::String
+    name::String
+    height::String
     folder_id::Union{String, Nothing} = nothing &(json=(name="folderId",),)
 end
 JSON.omit_null(::Type{DesmosImage}) = true
@@ -86,33 +114,4 @@ elseif x.type[] == "text"
     DesmosText
 elseif x.type[] == "folder"
     DesmosFolder
-end
-
-function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
-    # Desmos Calculator APIを使ったHTMLを生成
-    # TODO: update json
-    html = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
-    </head>
-    <body>
-        <div id="NAME" style="width: 800px; height: 400px;"></div>
-        <script>
-            var elt = document.getElementById('NAME');
-            var calculator = Desmos.GraphingCalculator(elt);
-            state = $(JSON.json(state))
-            calculator.setState(state)
-        </script>
-    </body>
-    </html>
-    """
-    write(io, html)
-end
-
-function Base.show(io::IO, ::MIME"juliavscode/html", agif::DesmosState)
-    show(io, MIME("text/html"), agif)
 end

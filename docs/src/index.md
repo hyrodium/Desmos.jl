@@ -9,24 +9,21 @@ Generate Desmos script (JSON) with Julia language.
 
 ## First example
 ```julia
-using Desmos, JSON
+using Desmos
+
 state = @desmos begin
-    @expression cos(x) color=RGB(1,0,0)
-    @expression sin(x) color=RGB(0,0,1)
-    tan(x)
+    @text "First example"
+    @expression cos(x) color=RGB(0, 0.5, 1) color="#f0f"
+    @expression (cosh(t), sinh(t)) parametric_domain=-2..3
 end
-clipboard(JSON.json(state, 4))
 ```
 
-```@raw html
-<video controls>
-  <source src="https://user-images.githubusercontent.com/7488140/227839138-7aabfb64-3be1-4ef6-88f8-543c9fc5421a.mp4" type="video/mp4">
-</video>
-```
+![](vscode.png)
 
 ## Desmos Text I/O
+You can also use [Desmos Text I/O extension](https://github.com/hyrodium/DesmosTextIO) to import/export the desmos-graph.
 
-Note that this package requires [Desmos Text I/O extension](https://github.com/hyrodium/DesmosTextIO).
+[![](https://raw.githubusercontent.com/hyrodium/desmos-text-io/main/logo.svg)](https://github.com/hyrodium/DesmosTextIO)
 
 * [Chrome Web Store](https://chrome.google.com/webstore/detail/desmos-text-io/ndjdcebpigpfidnilppdpcdkibidfmaa)
 * [Firefox ADD-ONS](https://addons.mozilla.org/en-US/firefox/addon/desmos-text-i-o/)

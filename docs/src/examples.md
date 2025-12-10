@@ -2,7 +2,7 @@
 
 ## Basic function definitions
 ```@example
-using Desmos, JSON, Colors
+using Desmos, Colors
 state = @desmos begin
     @text "Trigonometric functions"
     @expression cos(x) color = $(RGB(1,0,0))
@@ -15,7 +15,7 @@ end
 
 ## Variable definitions
 ```@example
-using Desmos, JSON
+using Desmos
 b = 3
 state = @desmos begin
     a = 4
@@ -31,7 +31,7 @@ end
 This example may not work correctly in Firefox.
 Please try running code with [julia-vscode](https://github.com/julia-vscode/julia-vscode) or [desmos-text-io](https://github.com/hyrodium/desmos-text-io) if you encounter any problems.
 ```@example
-using Desmos, JSON
+using Desmos
 image_url = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/b3fcb1f935439d671e3ddb3eb3b19fd261f6b067/example1a.png"
 state = @desmos begin
     f(x,y) = x^2+y^2-3.9-x/2
@@ -54,6 +54,6 @@ state = @desmos begin
     @expression L"I = [0,...,10]"
     (a₀,b₀)
     @expression (a(I),b(I)) lines = true
-    @image image_url = $image_url width = 20 height = 20 name = "regions" hidden = true
+    @image image_url = $image_url width = 20 height = 20 name = "regions"
 end
 ```

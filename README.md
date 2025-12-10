@@ -9,16 +9,16 @@ Generate Desmos script (JSON) with Julia language.
 
 ## First example
 ```julia
-using Desmos, JSON
+using Desmos
+
 state = @desmos begin
-    @expression cos(x) color=RGB(1,0,0)
-    @expression sin(x) color=RGB(0,0,1)
-    tan(x)
+    @text "First example"
+    @expression cos(x) color=RGB(0, 0.5, 1) color="#f0f"
+    @expression (cosh(t), sinh(t)) parametric_domain=-2..3
 end
-clipboard(JSON.json(state, 4))
 ```
 
-https://user-images.githubusercontent.com/7488140/227839138-7aabfb64-3be1-4ef6-88f8-543c9fc5421a.mp4
+![](docs/src/vscode.png)
 
 See [documentation](https://hyrodium.github.io/Desmos.jl/dev/) for more information.
 

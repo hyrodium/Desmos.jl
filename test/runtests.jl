@@ -74,7 +74,7 @@ end
             @expression L"I = [0,...,10]"
             (a₀,b₀)
             @expression (a(I),b(I)) lines=true
-            @image image_url=$image_url width=20 height=20 name="regions" hidden=true
+            @image image_url=$image_url width=20 height=20 name="regions"
         end
         json = JSON.json(state)
         update_result(title, json)

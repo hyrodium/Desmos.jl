@@ -89,7 +89,6 @@ end
         jo1 = JSON.parse(read(path_json, String))
         jo2 = JSON.parse(JSON.json(state, 4))
         delete!(jo1.graph, "__v12ViewportLatexStash")
-        @test jo2==jo1
+        @test jo2 == jo1
     end
 end
-

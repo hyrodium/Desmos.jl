@@ -28,6 +28,8 @@ end
 ```
 
 ## Newton's method
+This example may not work correctly in Firefox.
+Please try running code with [julia-vscode](https://github.com/julia-vscode/julia-vscode) or [desmos-text-io](https://github.com/hyrodium/desmos-text-io) if you encounter any problems.
 ```@example
 using Desmos, JSON
 image_url = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/b3fcb1f935439d671e3ddb3eb3b19fd261f6b067/example1a.png"

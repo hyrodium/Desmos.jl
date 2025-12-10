@@ -15,9 +15,7 @@ macro expression(ex, kwargs...)
             elseif kwarg.args[1] == :slider
                 slider = desmos_slider(eval(kwarg.args[2]))
             elseif kwarg.args[1] == :lines
-                @show lines
                 lines = eval(kwarg.args[2])
-                @show lines
             elseif kwarg.args[1] == :hidden
                 hidden = eval(kwarg.args[2])
             elseif kwarg.args[1] == :domain
@@ -36,7 +34,6 @@ macro expression(ex, kwargs...)
     else
         latex=removedollar(_latexify(ex))
     end
-    @show lines
     return DesmosExpression(; latex, id, color, slider, lines, hidden, domain, parametric_domain)
 end
 
@@ -83,7 +80,6 @@ macro desmos(ex)
     eval_dollar!(__module__, ex)
     expressions = DesmosExpressions(list=AbstractDesmosExpression[])
     id = 1
-    @show ex.args
     for e in ex.args
         if e isa LineNumberNode
             continue

@@ -1,5 +1,5 @@
 # Desmos.jl
-Generate Desmos script (JSON) with Julia language.
+Unofficial Julia package for Desmos.
 
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://hyrodium.github.io/Desmos.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://hyrodium.github.io/Desmos.jl/dev)

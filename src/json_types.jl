@@ -5,15 +5,15 @@ abstract type AbstractDesmosExpression end
     color::String = "#000000"
     values::Union{Vector{String}, Nothing} = nothing
     latex::Union{LaTeXString, Nothing} = nothing
-    hidden::Union{Bool,Nothing} = nothing
+    hidden::Union{Bool, Nothing} = nothing
 end
 JSON.omit_null(::Type{DesmosColumn}) = true
 
 @kwarg struct DesmosSlider
-    hard_min::Bool &(json=(name="hardMin",),)
-    hard_max::Bool &(json=(name="hardMax",),)
-    animation_period::Union{Float64, Nothing} = nothing &(json=(name="animationPeriod",),)
-    loop_mode::Union{String, Nothing} = nothing &(json=(name="loopMode",),)
+    hard_min::Bool & (json = (name = "hardMin",),)
+    hard_max::Bool & (json = (name = "hardMax",),)
+    animation_period::Union{Float64, Nothing} = nothing & (json = (name = "animationPeriod",),)
+    loop_mode::Union{String, Nothing} = nothing & (json = (name = "loopMode",),)
     min::String
     max::String
     step::Union{String, Nothing} = nothing
@@ -35,26 +35,26 @@ JSON.omit_null(::Type{DesmosDomain}) = true
 @kwarg struct DesmosClickableInfo
     enabled::Bool
 end
-JSON.omit_null(::Type{DesmosDomain}) = true
+JSON.omit_null(::Type{DesmosClickableInfo}) = true
 
 @kwarg struct DesmosExpression <: AbstractDesmosExpression
     type::String = "expression"
     id::String
     color::String = "#000000"
-    show_label::Union{Bool, Nothing} = nothing &(json=(name="showLabel",),)
+    show_label::Union{Bool, Nothing} = nothing & (json = (name = "showLabel",),)
     lines::Union{Bool, Nothing} = nothing
-    line_style::Union{String, Nothing} = nothing &(json=(name="lineStyle",),)
-    point_style::Union{String, Nothing} = nothing &(json=(name="pointStyle",),)
-    point_outline::Union{Bool, Nothing} = nothing &(json=(name="pointOutline",),)
-    line_opacity::Union{LaTeXString, Nothing} = nothing &(json=(name="lineOpacity",),)
-    line_width::Union{LaTeXString, Nothing} = nothing &(json=(name="lineWidth",),)
-    clickable_info::Union{DesmosClickableInfo, Nothing} = nothing &(json=(name="clickableInfo",),)
+    line_style::Union{String, Nothing} = nothing & (json = (name = "lineStyle",),)
+    point_style::Union{String, Nothing} = nothing & (json = (name = "pointStyle",),)
+    point_outline::Union{Bool, Nothing} = nothing & (json = (name = "pointOutline",),)
+    line_opacity::Union{LaTeXString, Nothing} = nothing & (json = (name = "lineOpacity",),)
+    line_width::Union{LaTeXString, Nothing} = nothing & (json = (name = "lineWidth",),)
+    clickable_info::Union{DesmosClickableInfo, Nothing} = nothing & (json = (name = "clickableInfo",),)
     hidden::Union{Bool, Nothing} = nothing
     latex::Union{LaTeXString, Nothing} = nothing
     slider::Union{DesmosSlider, Nothing} = nothing
     domain::Union{DesmosDomain, Nothing} = nothing
-    parametric_domain::Union{DesmosParametricDomain, Nothing} = nothing &(json=(name="parametricDomain",),)
-    folder_id::Union{String, Nothing} = nothing &(json=(name="folderId",),)
+    parametric_domain::Union{DesmosParametricDomain, Nothing} = nothing & (json = (name = "parametricDomain",),)
+    folder_id::Union{String, Nothing} = nothing & (json = (name = "folderId",),)
 end
 JSON.omit_null(::Type{DesmosExpression}) = true
 
@@ -77,7 +77,7 @@ JSON.omit_null(::Type{DesmosTable}) = true
     forground::Union{Bool, Nothing} = nothing
     draggable::Union{Bool, Nothing} = nothing
     description::Union{String, Nothing} = nothing
-    folder_id::Union{String, Nothing} = nothing &(json=(name="folderId",),)
+    folder_id::Union{String, Nothing} = nothing & (json = (name = "folderId",),)
 end
 JSON.omit_null(::Type{DesmosImage}) = true
 
@@ -85,7 +85,7 @@ JSON.omit_null(::Type{DesmosImage}) = true
     type::String = "text"
     id::String
     text::Union{String, Nothing} = nothing
-    folder_id::Union{String, Nothing} = nothing &(json=(name="folderId",),)
+    folder_id::Union{String, Nothing} = nothing & (json = (name = "folderId",),)
 end
 JSON.omit_null(::Type{DesmosText}) = true
 
@@ -109,18 +109,18 @@ end
 
 @kwarg struct DesmosGraph
     viewport::Union{DesmosViewport, Nothing} = nothing
-    user_locked_viewport::Union{Bool,Nothing} = nothing &(json=(name="userLockedViewport",),)
-    complex::Union{Bool,Nothing} = nothing
+    user_locked_viewport::Union{Bool, Nothing} = nothing & (json = (name = "userLockedViewport",),)
+    complex::Union{Bool, Nothing} = nothing
 end
 JSON.omit_null(::Type{<:DesmosGraph}) = true
 
 @kwarg struct DesmosState
     version::Int = 11
-    random_seed::String = "00000000000000000000000000000000" &(json=(name="randomSeed",),)
+    random_seed::String = "00000000000000000000000000000000" & (json = (name = "randomSeed",),)
     graph::DesmosGraph = DesmosGraph()
     expressions::DesmosExpressions
-    include_function_parameters_in_random_seed::Bool = true &(json=(name="includeFunctionParametersInRandomSeed",),)
-    do_not_migrate_movable_point_style::Bool = true &(json=(name="doNotMigrateMovablePointStyle",),)
+    include_function_parameters_in_random_seed::Bool = true & (json = (name = "includeFunctionParametersInRandomSeed",),)
+    do_not_migrate_movable_point_style::Bool = true & (json = (name = "doNotMigrateMovablePointStyle",),)
 end
 JSON.omit_null(::Type{<:DesmosState}) = true
 

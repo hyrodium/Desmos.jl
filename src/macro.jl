@@ -1,6 +1,6 @@
 macro expression(ex, kwargs...)
     id = "0"
-    color = desmos_color(RGB(0,0,0))
+    color = desmos_color(RGB(0, 0, 0))
     slider = nothing
     lines = nothing
     hidden = nothing
@@ -27,12 +27,12 @@ macro expression(ex, kwargs...)
     end
     if ex.head === :macrocall
         if ex.args[1] === Symbol("@L_str")
-            latex=removedollar(eval(ex))
+            latex = removedollar(eval(ex))
         else
             error("Unsupported expression $(ex)")
         end
     else
-        latex=removedollar(_latexify(ex))
+        latex = removedollar(_latexify(ex))
     end
     return DesmosExpression(; latex, id, color, slider, lines, hidden, domain, parametric_domain)
 end
@@ -73,12 +73,12 @@ macro text(ex, kwargs...)
             end
         end
     end
-    return DesmosText(text=ex; id)
+    return DesmosText(text = ex; id)
 end
 
 macro desmos(ex)
     eval_dollar!(__module__, ex)
-    expressions = DesmosExpressions(list=AbstractDesmosExpression[])
+    expressions = DesmosExpressions(list = AbstractDesmosExpression[])
     id = 1
     for e in ex.args
         if e isa LineNumberNode
@@ -88,6 +88,6 @@ macro desmos(ex)
         push!(expressions.list, expression)
         id = id + 1
     end
-    state = DesmosState(expressions=expressions)
+    state = DesmosState(expressions = expressions)
     return state
 end

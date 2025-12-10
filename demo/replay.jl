@@ -16,4 +16,4 @@ instructions = [
     "clipboard(JSON.json(state, 4))",
 ]
 
-replay(instructions, use_ghostwriter=true)
+replay(instructions, use_ghostwriter = true)

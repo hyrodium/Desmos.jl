@@ -8,10 +8,10 @@ DocMeta.setdocmeta!(Desmos, :DocTestSetup, :(using Desmos))
 makedocs(;
     modules = [Desmos],
     format = Documenter.HTML(
-        ansicolor=true,
+        ansicolor = true,
         canonical = "https://hyrodium.github.io/Desmos.jl/stable/",
         assets = ["assets/favicon.ico", "assets/custom.css"],
-        edit_link="main",
+        edit_link = "main",
     ),
     pages = [
         "Home" => "index.md",
@@ -26,5 +26,5 @@ makedocs(;
 deploydocs(
     repo = "github.com/hyrodium/Desmos.jl",
     push_preview = true,
-    devbranch="main",
+    devbranch = "main",
 )

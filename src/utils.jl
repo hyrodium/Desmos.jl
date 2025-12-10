@@ -1,4 +1,3 @@
-
 eval_dollar!(::Module, ex) = ex
 function eval_dollar!(target_module::Module, ex::Expr)
     if ex.head === :($)
@@ -26,7 +25,7 @@ function generate_expression(e::Expr, id)
         return DesmosExpression(latex = removedollar(_latexify(e)), id = string(id))
     elseif e.head === :macrocall
         # @expression sin(x) color=RGB(1,0,0)
-        push!(e.args, :(id=$id))
+        push!(e.args, :(id = $id))
         return eval(e)
     end
     dump(e)

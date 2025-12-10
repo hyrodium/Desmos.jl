@@ -113,8 +113,8 @@ The state object can be serialized to JSON format compatible with the Desmos API
 
 # Fields
 
-- `version::Int`: Desmos API version (default: 11)
-- `random_seed::String`: Random seed for reproducibility (default: "00000000000000000000000000000000")
+- `version::Int`: Desmos API version (default: `11`)
+- `random_seed::String`: Random seed for reproducibility (default: `"00000000000000000000000000000000"`)
 - `graph::DesmosGraph`: Graph configuration including viewport settings
 - `expressions::DesmosExpressions`: Collection of all expressions, text, images, etc.
 

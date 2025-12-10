@@ -8,7 +8,7 @@ Generate Desmos script (JSON) with Julia language.
 [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
 ## First example
-```julia
+```@example
 using Desmos
 
 state = @desmos begin
@@ -17,6 +17,8 @@ state = @desmos begin
     @expression (cosh(t), sinh(t)) parametric_domain=-2..3
 end
 ```
+
+On vscode, the output plot will be shown in the plot pane.
 
 ![](vscode.png)
 

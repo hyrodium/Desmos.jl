@@ -12,6 +12,7 @@ makedocs(;
         canonical = "https://hyrodium.github.io/Desmos.jl/stable/",
         assets = ["assets/favicon.ico", "assets/custom.css"],
         edit_link = "main",
+        repolink = "https://github.com/hyrodium/Desmos.jl",
     ),
     pages = [
         "Home" => "index.md",

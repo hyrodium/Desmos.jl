@@ -1,3 +1,11 @@
+function desmos_latexify(ex)
+    return LaTeXString(removedollar(_latexify(ex)))
+end
+
+function desmos_latexify(s::LaTeXString)
+    return removedollar(s)
+end
+
 function _latexify(ex::Number)
     return latexify(ex)
 end
@@ -16,7 +24,7 @@ function _latexify(ex)
 end
 
 function removedollar(s::LaTeXString)
-    return chopsuffix(chopprefix(s, "\$"), "\$")
+    return LaTeXString(chopsuffix(chopprefix(s, "\$"), "\$"))
 end
 
 function remove_mathrm(s::Union{LaTeXString, SubString{LaTeXStrings.LaTeXString}})

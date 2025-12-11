@@ -78,12 +78,12 @@ macro expression(ex, kwargs...)
     end
     if ex.head === :macrocall
         if ex.args[1] === Symbol("@L_str")
-            latex = removedollar(eval(ex))
+            latex = desmos_latexify(eval(ex))
         else
             error("Unsupported expression $(ex)")
         end
     else
-        latex = removedollar(_latexify(ex))
+        latex = desmos_latexify(ex)
     end
     return DesmosExpression(; latex, id, color, slider, lines, hidden, domain, parametric_domain)
 end

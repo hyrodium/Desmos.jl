@@ -3,6 +3,7 @@ using Test
 using JSON
 using Aqua
 using Colors
+using LaTeXStrings
 
 Aqua.test_all(Desmos; ambiguities = false)
 

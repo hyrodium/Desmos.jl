@@ -94,15 +94,15 @@ end
 end
 
 @testset "latexify" begin
-    @test Desmos.desmos_latexify(:(1+1)) == "1 + 1"
+    @test Desmos.desmos_latexify(:(1 + 1)) == "1 + 1"
     @test Desmos.desmos_latexify(:(sin(x))) == "\\sin\\left( x \\right)"
     @test Desmos.desmos_latexify(L"\sin(x)") == "\\sin(x)"
-    @test Desmos.desmos_latexify(:(tan(xy))) == "\\tan\\left( x_{y} \\right)" broken=true
-    @test Desmos.desmos_latexify(:((a,b))) == "(a, b)"
+    @test Desmos.desmos_latexify(:(tan(xy))) == "\\tan\\left( x_{y} \\right)" broken = true
+    @test Desmos.desmos_latexify(:((a, b))) == "(a, b)"
     @test Desmos.desmos_latexify(:(α_5 - Β⁵)) == "\\alpha_{5} - \\Beta^5"
     @test Desmos.desmos_latexify(:(Inf)) == "\\infty"
     @test Desmos.desmos_latexify(:(sum(n^2 for n in 1:5))) == "\\sum_{n = 1}^{5} n^{2}"
-    @test Desmos.desmos_latexify(:(int(x^2 for x in 1..5))) == "\\int_{1}^{5} x^{2} dx" broken=true
-    @test Desmos.desmos_latexify(:(gradient(f,x))) == "\\frac{d}{dx} f" broken = true
-    @test Desmos.desmos_latexify(:([1,2,3])) == "[1, 2, 3]" broken = true
+    @test Desmos.desmos_latexify(:(int(x^2 for x in 1 .. 5))) == "\\int_{1}^{5} x^{2} dx" broken = true
+    @test Desmos.desmos_latexify(:(gradient(f, x))) == "\\frac{d}{dx} f" broken = true
+    @test Desmos.desmos_latexify(:([1, 2, 3])) == "[1, 2, 3]" broken = true
 end

@@ -15,7 +15,8 @@ using InteractiveUtils
 
 export @desmos
 export DesmosState
-export desmos_display_config
+export set_desmos_display_config
+export get_desmos_display_config
 export clipboard_desmos_state
 
 include("json_types.jl")

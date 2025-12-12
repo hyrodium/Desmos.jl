@@ -1,5 +1,5 @@
 function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
-    config = desmos_display_config()
+    config = get_desmos_display_config()
     obj_id = objectid(state)
 
     html = """

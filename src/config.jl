@@ -20,7 +20,7 @@ Global display configuration for Desmos graphs.
 const DESMOS_DISPLAY_CONFIG = DesmosDisplayConfig()
 
 """
-    desmos_display_config(; width=nothing, height=nothing, clipboard=nothing)
+    set_desmos_display_config(; width=nothing, height=nothing, clipboard=nothing)
 
 Set display options for Desmos graphs.
 
@@ -32,13 +32,13 @@ Set display options for Desmos graphs.
 # Examples
 ```julia
 # Set clipboard mode with custom size
-Desmos.desmos_display_config(width=800, height=600, clipboard=true)
+Desmos.set_desmos_display_config(width=800, height=600, clipboard=true)
 
 # Enable only clipboard mode
-Desmos.desmos_display_config(clipboard=true)
+Desmos.set_desmos_display_config(clipboard=true)
 ```
 """
-function desmos_display_config(; kwargs...)
+function set_desmos_display_config(; kwargs...)
     for (key, value) in kwargs
         if hasproperty(DESMOS_DISPLAY_CONFIG, key)
             setproperty!(DESMOS_DISPLAY_CONFIG, key, value)
@@ -50,15 +50,15 @@ function desmos_display_config(; kwargs...)
 end
 
 """
-    desmos_display_config()
+    get_desmos_display_config()
 
 Get current display options for Desmos graphs.
 
 # Examples
 ```julia
-Desmos.desmos_display_config()
+Desmos.get_desmos_display_config()
 ```
 """
-function desmos_display_config()
+function get_desmos_display_config()
     return DESMOS_DISPLAY_CONFIG
 end

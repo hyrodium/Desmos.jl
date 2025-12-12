@@ -9,8 +9,8 @@ function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
     if config.clipboard
         html *= """
         <div style="margin-top:10px;">
-            <button id="export-btn-$(obj_id)" style="padding:8px 16px;cursor:pointer;">Export State to Clipboard</button>
-            <span id="export-status-$(obj_id)" style="margin-left:10px;font-weight:bold;"></span>
+            <button id="export-btn-$(obj_id)" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
+            <span id="export-status-$(obj_id)" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
         </div>
         """
     end

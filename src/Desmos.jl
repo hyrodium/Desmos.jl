@@ -11,14 +11,20 @@ using ImageIO
 using FileIO
 using Base64
 using FixedPointNumbers
+using InteractiveUtils
 
 export @desmos
 export DesmosState
+export set_desmos_display_config
+export get_desmos_display_config
+export clipboard_desmos_state
 
 include("json_types.jl")
+include("config.jl")
 include("show.jl")
 include("utils.jl")
 include("latexify.jl")
 include("macro.jl")
+include("clipboard.jl")
 
 end # module

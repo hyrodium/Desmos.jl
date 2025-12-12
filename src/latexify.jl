@@ -20,7 +20,7 @@ function _latexify(ex)
         lstr = removedollar(lstr)
         lstr = LaTeXString("\$(" * lstr * ")\$")
     end
-    return lstr = remove_mathrm(lstr)
+    return remove_mathrm(lstr)
 end
 
 function removedollar(s::LaTeXString)

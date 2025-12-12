@@ -1,5 +1,5 @@
 function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
-    config = get_display_options()
+    config = desmos_display_config()
     obj_id = objectid(state)
 
     html = """
@@ -8,7 +8,10 @@ function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
 
     if config.clipboard
         html *= """
-        <button id="export-btn-$(obj_id)" style="margin-top:10px;padding:8px 16px;cursor:pointer;">Export State to Clipboard</button>
+        <div style="margin-top:10px;">
+            <button id="export-btn-$(obj_id)" style="padding:8px 16px;cursor:pointer;">Export State to Clipboard</button>
+            <span id="export-status-$(obj_id)" style="margin-left:10px;font-weight:bold;"></span>
+        </div>
         """
     end
 
@@ -25,27 +28,22 @@ function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
         html *= """
 
                 var exportBtn = document.getElementById("export-btn-$(obj_id)");
+                var exportStatus = document.getElementById("export-status-$(obj_id)");
                 exportBtn.addEventListener('click', function() {
                     var currentState = calculator.getState();
                     var stateJson = JSON.stringify(currentState, null, 2);
                     navigator.clipboard.writeText(stateJson).then(function() {
-                        exportBtn.textContent = 'Exported!';
-                        exportBtn.style.backgroundColor = '#4CAF50';
-                        exportBtn.style.color = 'white';
+                        exportStatus.textContent = 'Exported!';
+                        exportStatus.style.color = '#4CAF50';
                         setTimeout(function() {
-                            exportBtn.textContent = 'Export State to Clipboard';
-                            exportBtn.style.backgroundColor = '';
-                            exportBtn.style.color = '';
+                            exportStatus.textContent = '';
                         }, 2000);
                     }).catch(function(err) {
                         console.error('Failed to copy:', err);
-                        exportBtn.textContent = 'Export failed!';
-                        exportBtn.style.backgroundColor = '#f44336';
-                        exportBtn.style.color = 'white';
+                        exportStatus.textContent = 'Export failed!';
+                        exportStatus.style.color = '#f44336';
                         setTimeout(function() {
-                            exportBtn.textContent = 'Export State to Clipboard';
-                            exportBtn.style.backgroundColor = '';
-                            exportBtn.style.color = '';
+                            exportStatus.textContent = '';
                         }, 2000);
                     });
                 });

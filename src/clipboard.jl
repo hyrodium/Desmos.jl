@@ -33,5 +33,5 @@ function clipboard_desmos_state()
 end
 
 function clipboard_desmos_state(state::DesmosState)
-    return clipboard(JSON.json(state, 4))
+    return clipboard(JSON.json(state, 2))
 end

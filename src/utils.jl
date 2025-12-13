@@ -13,16 +13,16 @@ end
 function generate_expression(e::Expr, id)
     if e.head === :call
         # sin(x)
-        return DesmosExpression(latex = removedollar(_latexify(e)), id = string(id))
+        return DesmosExpression(latex = desmos_latexify(e), id = string(id))
     elseif e.head === :(=)
-        # sin(x)
-        return DesmosExpression(latex = removedollar(_latexify(e)), id = string(id))
+        # a = 5
+        return DesmosExpression(latex = desmos_latexify(e), id = string(id))
     elseif e.head === :(tuple)
         # (a, b)
-        return DesmosExpression(latex = removedollar(_latexify(e)), id = string(id))
+        return DesmosExpression(latex = desmos_latexify(e), id = string(id))
     elseif e.head === :(vect)
         # [1,2,3]
-        return DesmosExpression(latex = removedollar(_latexify(e)), id = string(id))
+        return DesmosExpression(latex = desmos_latexify(e), id = string(id))
     elseif e.head === :macrocall
         # @expression sin(x) color=RGB(1,0,0)
         push!(e.args, :(id = $id))

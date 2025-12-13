@@ -16,7 +16,7 @@ LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 Latexify = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
 
 [compat]
-Aqua = "0.6, 0.8"
+Aqua = "0.8"
 Colors = "0.12, 0.13"
 FileIO = "1"
 FixedPointNumbers = "0.8"

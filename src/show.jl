@@ -16,7 +16,7 @@ function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
     end
 
     html *= """
-        <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+        <script src="https://www.desmos.com/api/v1.$(config.api_version)/calculator.js?apiKey=$(config.api_key)"></script>
         <script>
             (function() {
                 var elt = document.getElementById("desmos-$(obj_id)");

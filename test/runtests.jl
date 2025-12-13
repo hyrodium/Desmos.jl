@@ -120,7 +120,7 @@ end
             width=600,
             height=400,
             clipboard=false,
-            api_version="1.10",
+            api_version=10,
             api_key="dcb31709b452b1cf9dc26972add0fda6"
         )
 
@@ -143,7 +143,7 @@ end
     @testset "Custom API configuration" begin
         # Set custom API version and key
         Desmos.set_desmos_display_config(
-            api_version="1.11",
+            api_version=11,
             api_key="custom-test-api-key"
         )
 
@@ -181,7 +181,7 @@ end
         width=600,
         height=400,
         clipboard=false,
-        api_version="1.10",
+        api_version=10,
         api_key="dcb31709b452b1cf9dc26972add0fda6"
     )
 end

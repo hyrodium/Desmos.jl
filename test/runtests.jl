@@ -117,11 +117,11 @@ end
     @testset "Default configuration" begin
         # Reset to defaults
         Desmos.set_desmos_display_config(
-            width=600,
-            height=400,
-            clipboard=false,
-            api_version=10,
-            api_key="dcb31709b452b1cf9dc26972add0fda6"
+            width = 600,
+            height = 400,
+            clipboard = false,
+            api_version = 10,
+            api_key = "dcb31709b452b1cf9dc26972add0fda6"
         )
 
         io = IOBuffer()
@@ -143,8 +143,8 @@ end
     @testset "Custom API configuration" begin
         # Set custom API version and key
         Desmos.set_desmos_display_config(
-            api_version=11,
-            api_key="custom-test-api-key"
+            api_version = 11,
+            api_key = "custom-test-api-key"
         )
 
         io = IOBuffer()
@@ -159,9 +159,9 @@ end
     @testset "Custom dimensions and clipboard" begin
         # Set custom dimensions and enable clipboard
         Desmos.set_desmos_display_config(
-            width=800,
-            height=600,
-            clipboard=true
+            width = 800,
+            height = 600,
+            clipboard = true
         )
 
         io = IOBuffer()
@@ -178,10 +178,10 @@ end
 
     # Reset to defaults after tests
     Desmos.set_desmos_display_config(
-        width=600,
-        height=400,
-        clipboard=false,
-        api_version=10,
-        api_key="dcb31709b452b1cf9dc26972add0fda6"
+        width = 600,
+        height = 400,
+        clipboard = false,
+        api_version = 10,
+        api_key = "dcb31709b452b1cf9dc26972add0fda6"
     )
 end

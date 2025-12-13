@@ -20,28 +20,28 @@ options such as color, sliders, domains, and visibility settings.
 
 ```jldoctest
 julia> Desmos.@expression sin(x) color=RGB(1, 0, 0)
-Desmos.DesmosExpression("expression", "0", "#FF0000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"\sin\left( x \right)", nothing, nothing, nothing, nothing)
+Desmos.DesmosExpression("expression", "0", "#FF0000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"\sin\left( x \right)", nothing, nothing, nothing, nothing)
 
 julia> Desmos.@expression cos(x) color="#0000ff"
-Desmos.DesmosExpression("expression", "0", "#0000ff", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"\cos\left( x \right)", nothing, nothing, nothing, nothing)
+Desmos.DesmosExpression("expression", "0", "#0000ff", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"\cos\left( x \right)", nothing, nothing, nothing, nothing)
 
 julia> Desmos.@expression a = 3 slider=1..10
-Desmos.DesmosExpression("expression", "0", "#000000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"a = 3", Desmos.DesmosSlider(true, true, nothing, nothing, "1", "10", nothing), nothing, nothing, nothing)
+Desmos.DesmosExpression("expression", "0", "#000000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"a = 3", Desmos.DesmosSlider(true, true, nothing, nothing, nothing, "1", "10", nothing), nothing, nothing, nothing)
 
 julia> Desmos.@expression b = 5 slider=1:0.5:10
-Desmos.DesmosExpression("expression", "0", "#000000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"b = 5", Desmos.DesmosSlider(true, true, nothing, nothing, "1.0", "10.0", "0.5"), nothing, nothing, nothing)
+Desmos.DesmosExpression("expression", "0", "#000000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"b = 5", Desmos.DesmosSlider(true, true, nothing, nothing, nothing, "1.0", "10.0", "0.5"), nothing, nothing, nothing)
 
 julia> Desmos.@expression (cos(t), sin(t)) parametric_domain=0..2π
-Desmos.DesmosExpression("expression", "0", "#000000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"(\cos\left( t \right), \sin\left( t \right))", nothing, nothing, Desmos.DesmosParametricDomain("0.0", "6.283185307179586"), nothing)
+Desmos.DesmosExpression("expression", "0", "#000000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"(\cos\left( t \right), \sin\left( t \right))", nothing, nothing, Desmos.DesmosParametricDomain("0.0", "6.283185307179586"), nothing)
 
 julia> Desmos.@expression x^2 domain=-5..5
-Desmos.DesmosExpression("expression", "0", "#000000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"x^{2}", nothing, Desmos.DesmosDomain(L"-5", L"5"), nothing, nothing)
+Desmos.DesmosExpression("expression", "0", "#000000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"x^{2}", nothing, Desmos.DesmosDomain(L"-5", L"5"), nothing, nothing)
 
 julia> Desmos.@expression f(x) = x^3 hidden=true
-Desmos.DesmosExpression("expression", "0", "#000000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, true, L"f\left( x \right) = x^{3}", nothing, nothing, nothing, nothing)
+Desmos.DesmosExpression("expression", "0", "#000000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, true, L"f\left( x \right) = x^{3}", nothing, nothing, nothing, nothing)
 
 julia> Desmos.@expression L"\\frac{x^2}{4} + \\frac{y^2}{9} = 1" color=RGB(0, 0.5, 1)
-Desmos.DesmosExpression("expression", "0", "#0080FF", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"\\frac{x^2}{4} + \\frac{y^2}{9} = 1", nothing, nothing, nothing, nothing)
+Desmos.DesmosExpression("expression", "0", "#0080FF", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, L"\\frac{x^2}{4} + \\frac{y^2}{9} = 1", nothing, nothing, nothing, nothing)
 ```
 
 # See also

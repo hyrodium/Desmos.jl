@@ -9,10 +9,11 @@ abstract type AbstractDesmosExpression end
 end
 
 @omit_null @kwarg struct DesmosSlider
-    hard_min::Bool & (json = (name = "hardMin",),)
-    hard_max::Bool & (json = (name = "hardMax",),)
+    hard_min::Union{Bool, Nothing} = nothing & (json = (name = "hardMin",),)
+    hard_max::Union{Bool, Nothing} = nothing & (json = (name = "hardMax",),)
     animation_period::Union{Float64, Nothing} = nothing & (json = (name = "animationPeriod",),)
     loop_mode::Union{String, Nothing} = nothing & (json = (name = "loopMode",),)
+    play_direction::Union{Int, Nothing} = nothing & (json = (name = "playDirection",),)
     min::String
     max::String
     step::Union{String, Nothing} = nothing
@@ -30,6 +31,7 @@ end
 
 @omit_null @kwarg struct DesmosClickableInfo
     enabled::Bool
+    latex::Union{LaTeXString, Nothing} = nothing
 end
 
 @omit_null @kwarg struct DesmosExpression <: AbstractDesmosExpression
@@ -43,6 +45,7 @@ end
     point_outline::Union{Bool, Nothing} = nothing & (json = (name = "pointOutline",),)
     line_opacity::Union{LaTeXString, Nothing} = nothing & (json = (name = "lineOpacity",),)
     line_width::Union{LaTeXString, Nothing} = nothing & (json = (name = "lineWidth",),)
+    fill_opacity::Union{LaTeXString, Nothing} = nothing & (json = (name = "fillOpacity",),)
     clickable_info::Union{DesmosClickableInfo, Nothing} = nothing & (json = (name = "clickableInfo",),)
     hidden::Union{Bool, Nothing} = nothing
     latex::Union{LaTeXString, Nothing} = nothing
@@ -86,8 +89,15 @@ end
     title::Union{String, Nothing} = nothing
 end
 
+@omit_null @kwarg struct DesmosTicker
+    handler_latex::Union{String, Nothing} = nothing & (json = (name = "handlerLatex",),)
+    min_step_latex::Union{String, Nothing} = nothing & (json = (name = "minStepLatex",),)
+    open::Union{Bool, Nothing} = nothing
+end
+
 @omit_null @kwarg struct DesmosExpressions
     list::Vector{AbstractDesmosExpression}
+    ticker::Union{DesmosTicker, Nothing} = nothing
 end
 
 @omit_null @kwarg struct DesmosViewport

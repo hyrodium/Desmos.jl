@@ -5,7 +5,6 @@ using JSON
 using JSON.StructUtils: @kwarg
 using Colors
 using LaTeXStrings
-using Latexify
 using IntervalSets
 using ImageIO
 using FileIO
@@ -23,6 +22,7 @@ include("json_types.jl")
 include("config.jl")
 include("show.jl")
 include("utils.jl")
+include("latexify_symbols.jl")
 include("latexify.jl")
 include("macro.jl")
 include("clipboard.jl")

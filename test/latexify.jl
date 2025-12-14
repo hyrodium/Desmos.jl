@@ -100,7 +100,7 @@
         @test Desmos.desmos_latexify(:(prod(n^2 for n in 1:5))) == "\\prod_{n=1}^{5}n^{2}"
         @test Desmos.desmos_latexify(:(prod(i for i in 0:10))) == "\\prod_{i=0}^{10}i"
         @test Desmos.desmos_latexify(:(prod(x_i for i in 1:n))) == "\\prod_{i=1}^{n}x_{i}"
-        @test Desmos.desmos_latexify(:(int(x^2 for x in 1..5))) == "\\int_{1}^{5}x^{2}dx"
+        @test Desmos.desmos_latexify(:(int(x^2 for x in 1 .. 5))) == "\\int_{1}^{5}x^{2}dx"
         @test Desmos.desmos_latexify(:(int(y for y in -5 .. -2))) == "\\int_{-5}^{-2}ydy"
     end
 

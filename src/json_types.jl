@@ -53,6 +53,8 @@ end
     domain::Union{DesmosDomain, Nothing} = nothing
     parametric_domain::Union{DesmosParametricDomain, Nothing} = nothing & (json = (name = "parametricDomain",),)
     folder_id::Union{String, Nothing} = nothing & (json = (name = "folderId",),)
+    color_latex::Union{LaTeXString, Nothing} = nothing & (json = (name = "colorLatex",),)
+    display_evaluation_as_fraction::Union{Bool, Nothing} = nothing & (json = (name = "displayEvaluationAsFraction",),)
 end
 
 @omit_null @kwarg struct DesmosTable <: AbstractDesmosExpression
@@ -111,6 +113,7 @@ end
     viewport::Union{DesmosViewport, Nothing} = nothing
     user_locked_viewport::Union{Bool, Nothing} = nothing & (json = (name = "userLockedViewport",),)
     complex::Union{Bool, Nothing} = nothing
+    # Note: __v12ViewportLatexStash is an internal field used by Desmos v12+ and is intentionally ignored
 end
 
 """

@@ -111,7 +111,7 @@
 
     @testset "LaTeXString input" begin
         @test Desmos.desmos_latexify(L"\sin(x)") == "\\sin(x)"
-        @test Desmos.desmos_latexify(L"$\alpha + \beta$") == "\\alpha+\\beta"
+        @test Desmos.desmos_latexify(L"$\alpha + \beta$") == "\\alpha + \\beta"
         @test Desmos.desmos_latexify(L"\frac{1}{2}") == "\\frac{1}{2}"
     end
 

@@ -9,12 +9,7 @@ function desmos_latexify(ex)
 end
 
 function desmos_latexify(s::LaTeXString)
-    # LaTeXString is already in LaTeX format, just remove $ delimiters and spaces if present
-    str = String(s)
-    str = chopsuffix(chopprefix(str, "\$"), "\$")
-    # Remove spaces around operators for consistency
-    str = replace(str, r"\s+" => "")
-    return LaTeXString(str)
+    return LaTeXString(chopsuffix(chopprefix(s, "\$"), "\$"))
 end
 
 """
@@ -42,15 +37,22 @@ function _latexify(ex::Expr)
 end
 
 function _latexify(n::Number)
-    isinf(n) && return sign(n) == -1 ? "-\\infty" : "\\infty"
-    return string(n)
+    if n == Inf
+        return "\\infty"
+    elseif n == -Inf
+        return "-\\infty"
+    else
+        return string(n)
+    end
 end
 
 function _latexify(s::Symbol)
     str = string(s)
 
     # Special case: Inf
-    str == "Inf" && return "\\infty"
+    if str == "Inf"
+        return "\\infty"
+    end
 
     result = ""
     i = 1
@@ -76,7 +78,7 @@ function _latexify(s::Symbol)
                 subscript *= SUBSCRIPT_MAP[str[i]]
                 i = nextind(str, i)
             end
-            result *= "_{" * subscript * "}"
+            result *= "_{$subscript}"
 
         # Superscripts (Unicode superscript characters)
         elseif haskey(SUPERSCRIPT_MAP, c)
@@ -86,7 +88,7 @@ function _latexify(s::Symbol)
                 superscript *= SUPERSCRIPT_MAP[str[i]]
                 i = nextind(str, i)
             end
-            result *= "^{" * superscript * "}"
+            result *= "^{$superscript}"
 
         # Underscore for subscript (ASCII underscore)
         elseif c == '_'
@@ -112,7 +114,7 @@ function _latexify(s::Symbol)
                 if !isempty(subscript)
                     # Handle nested subscripts: convert "a_b" within subscript to "a_{b}"
                     subscript = replace(subscript, r"_(.+)" => s"_{\1}")
-                    result *= "_{" * subscript * "}"
+                    result *= "_{$subscript}"
                     i = j
                 else
                     result *= "_"
@@ -133,18 +135,18 @@ end
 
 function _latexify_tuple(ex::Expr)
     elements = [_latexify(arg) for arg in ex.args]
-    return "\\left(" * join(elements, ",") * "\\right)"
+    return "\\left($(join(elements, ","))\\right)"
 end
 
 function _latexify_vect(ex::Expr)
     elements = [_latexify(arg) for arg in ex.args]
-    return "\\left[" * join(elements, ",") * "\\right]"
+    return "\\left[$(join(elements, ","))\\right]"
 end
 
 function _latexify_assignment(ex::Expr)
     lhs = _latexify(ex.args[1])
     rhs = _latexify(ex.args[2])
-    return lhs * "=" * rhs
+    return "$lhs=$rhs"
 end
 
 function _latexify_block(ex::Expr)
@@ -205,7 +207,7 @@ function _latexify_call(ex::Expr)
             return func_str
         else
             args_str = join([_latexify(arg) for arg in ex.args[2:end]], ",")
-            return "\\left(" * func_str * "\\right)\\left(" * args_str * "\\right)"
+            return "\\left($func_str\\right)\\left($args_str\\right)"
         end
     end
 
@@ -224,12 +226,12 @@ function _latexify_minus(ex::Expr)
     if length(ex.args) == 2
         # Unary minus
         arg = _latexify(ex.args[2])
-        return "-" * arg
+        return "-$arg"
     else
         # Binary minus
         lhs = _latexify(ex.args[2])
         rhs = _latexify(ex.args[3])
-        return lhs * "-" * rhs
+        return "$lhs-$rhs"
     end
 end
 
@@ -240,7 +242,7 @@ function _latexify_multiply(ex::Expr)
         latex_arg = _latexify(arg)
         # Add parentheses if the argument is an addition or subtraction expression
         if arg isa Expr && arg.head == :call && (arg.args[1] == :+ || arg.args[1] == :-)
-            latex_arg = "\\left(" * latex_arg * "\\right)"
+            latex_arg = "\\left($latex_arg\\right)"
         end
         push!(factors, latex_arg)
     end
@@ -250,7 +252,7 @@ end
 function _latexify_divide(ex::Expr)
     numerator = _latexify(ex.args[2])
     denominator = _latexify(ex.args[3])
-    return "\\frac{" * numerator * "}{" * denominator * "}"
+    return "\\frac{$numerator}{$denominator}"
 end
 
 function _latexify_power(ex::Expr)
@@ -267,24 +269,24 @@ function _latexify_power(ex::Expr)
                 # Don't add parentheses for LaTeX functions like \sin, \cos
             else
                 # Add parentheses for general functions
-                base = "\\left(" * base * "\\right)"
+                base = "\\left($base\\right)"
             end
         else
             # Add parentheses for all other expressions (operators, etc.)
-            base = "\\left(" * base * "\\right)"
+            base = "\\left($base\\right)"
         end
     end
 
-    return base * "^{" * exponent * "}"
+    return "$base^{$exponent}"
 end
 
 function _latexify_latex_function(func::Symbol, args)
     if length(args) == 1
         arg_str = _latexify(args[1])
-        return "\\" * string(func) * "\\left(" * arg_str * "\\right)"
+        return "\\$func\\left($arg_str\\right)"
     else
         args_str = join([_latexify(arg) for arg in args], ",")
-        return "\\" * string(func) * "\\left(" * args_str * "\\right)"
+        return "\\$func\\left($args_str\\right)"
     end
 end
 
@@ -294,7 +296,7 @@ function _latexify_general_function(func::Symbol, args)
         return func_str
     else
         args_str = join([_latexify(arg) for arg in args], ",")
-        return func_str * "\\left(" * args_str * "\\right)"
+        return "$func_str\\left($args_str\\right)"
     end
 end
 
@@ -310,7 +312,7 @@ function _latexify_sum(ex::Expr)
             var = _latexify(iter.args[1])
             start = _latexify(iter.args[2].args[2])
             stop = _latexify(iter.args[2].args[3])
-            return "\\sum_{" * var * "=" * start * "}^{" * stop * "}" * term
+            return "\\sum_{$var=$start}^{$stop}$term"
         end
     end
 
@@ -332,7 +334,7 @@ function _latexify_int(ex::Expr)
             if range_ex isa Expr && range_ex.head == :call && range_ex.args[1] == :(..)
                 start = _latexify(range_ex.args[2])
                 stop = _latexify(range_ex.args[3])
-                return "\\int_{" * start * "}^{" * stop * "}" * term * "d" * var
+                return "\\int_{$start}^{$stop}$(term)d$var"
             end
         end
     end
@@ -345,7 +347,7 @@ function _latexify_gradient(ex::Expr)
     if length(ex.args) == 3
         f = _latexify(ex.args[2])
         x = _latexify(ex.args[3])
-        return "\\frac{d}{d" * x * "}" * f
+        return "\\frac{d}{d$x}$f"
     end
 
     error("gradient requires exactly 2 arguments")

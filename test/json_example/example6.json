@@ -1,0 +1,189 @@
+{
+  "version": 11,
+  "randomSeed": "581316788b66a5a7092507150fac26ee",
+  "graph": {
+    "viewport": {
+      "xmin": -24.587479479877118,
+      "ymin": -3.323248950607196,
+      "xmax": 95.55066429823842,
+      "ymax": 3.3510923703992397
+    },
+    "squareAxes": false,
+    "__v12ViewportLatexStash": {
+      "xmin": "-24.587479479877118",
+      "xmax": "95.55066429823842",
+      "ymin": "-3.323248950607196",
+      "ymax": "3.3510923703992397"
+    }
+  },
+  "expressions": {
+    "list": [
+      {
+        "type": "expression",
+        "id": "1",
+        "color": "#c74440",
+        "latex": "\\sin\\left(\\sin\\left(\\sin\\left(\\sin\\left(x\\right)\\right)\\right)\\right)"
+      },
+      {
+        "type": "expression",
+        "id": "2",
+        "color": "#2d70b3",
+        "latex": "\\cos\\left(\\cos\\left(\\cos\\left(\\cos\\left(x\\right)\\right)\\right)\\right)"
+      },
+      {
+        "id": "6",
+        "type": "table",
+        "columns": [
+          {
+            "values": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8"
+            ],
+            "hidden": true,
+            "id": "4",
+            "color": "#6042a6",
+            "latex": "x_{1}"
+          },
+          {
+            "values": [
+              "2",
+              "1",
+              "4",
+              "3",
+              "1",
+              "1",
+              "1",
+              "1"
+            ],
+            "id": "5",
+            "color": "#000000",
+            "lines": true,
+            "latex": "y_{1}",
+            "pointOutline": true,
+            "__stashed_V12PointStyle": "STAR"
+          },
+          {
+            "id": "7",
+            "color": "#c74440",
+            "latex": "\\sin\\left(x_{1}\\right)",
+            "__stashed_V12PointStyle": "DIAMOND"
+          },
+          {
+            "id": "10",
+            "color": "#6042a6",
+            "latex": "e_{1}"
+          }
+        ],
+        "regression": {
+          "type": "exponential",
+          "columnIds": {
+            "y": "7",
+            "x": "4"
+          },
+          "id": "9",
+          "color": "#388c46",
+          "lineStyle": "SOLID",
+          "hidden": false,
+          "isLogMode": false,
+          "residualVariable": "e_{1}"
+        }
+      },
+      {
+        "type": "expression",
+        "id": "11",
+        "color": "#000000",
+        "latex": "\\operatorname{uniformdist}\\left(2,5\\right)"
+      },
+      {
+        "type": "expression",
+        "id": "12",
+        "color": "#c74440",
+        "latex": "y_{1}\\sim ax_{1}^{2}+bx_{1}+c",
+        "residualVariable": "e_{2}",
+        "regressionParameters": {
+          "a": -0.07142857142857142,
+          "b": 0.42857142857142855,
+          "c": 1.6428571428571428
+        }
+      },
+      {
+        "type": "expression",
+        "id": "13",
+        "color": "#2d70b3",
+        "latex": "s=k\\to k+1"
+      },
+      {
+        "type": "expression",
+        "id": "15",
+        "color": "#6042a6",
+        "latex": "k=1",
+        "hidden": true
+      },
+      {
+        "type": "expression",
+        "id": "14",
+        "color": "#388c46",
+        "latex": "a",
+        "displayEvaluationAsFraction": true
+      },
+      {
+        "type": "expression",
+        "id": "16",
+        "color": "#000000",
+        "latex": "\\operatorname{zproptest}\\left(3,4\\right)",
+        "inference": {
+          "significance": {
+            "tails": "outer",
+            "hypothesis": "",
+            "show": true
+          },
+          "confidence": {
+            "confidenceLevel": "",
+            "show": true
+          }
+        }
+      },
+      {
+        "type": "expression",
+        "id": "17",
+        "color": "#c74440",
+        "latex": "T_{1}=\\operatorname{ztest}\\left(\\left[1,2,3\\right],4\\right)",
+        "inference": {
+          "significance": {
+            "tails": "right",
+            "hypothesis": "3",
+            "show": true
+          },
+          "confidence": {
+            "confidenceLevel": "",
+            "show": true
+          }
+        }
+      },
+      {
+        "type": "expression",
+        "id": "19",
+        "color": "#388c46",
+        "latex": "T_{1}.\\operatorname{null}\\left(3\\right).\\operatorname{pright}"
+      },
+      {
+        "type": "expression",
+        "id": "18",
+        "color": "#2d70b3",
+        "latex": "T_{1}.\\operatorname{conf}\\left(0.95\\right).\\operatorname{lower}"
+      }
+    ],
+    "ticker": {
+      "handlerLatex": "s",
+      "open": true
+    }
+  },
+  "includeFunctionParametersInRandomSeed": true,
+  "doNotMigrateMovablePointStyle": true
+}

@@ -113,6 +113,7 @@ end
     viewport::Union{DesmosViewport, Nothing} = nothing
     user_locked_viewport::Union{Bool, Nothing} = nothing & (json = (name = "userLockedViewport",),)
     complex::Union{Bool, Nothing} = nothing
+    # Note: __v12ViewportLatexStash is an internal field used by Desmos v12+ and is intentionally ignored
 end
 
 """

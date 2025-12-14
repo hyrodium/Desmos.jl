@@ -23,7 +23,7 @@ const SUBSCRIPT_MAP = Dict(
     '₅' => "5", '₆' => "6", '₇' => "7", '₈' => "8", '₉' => "9"
 )
 
-const LATEX_FUNCTIONS = [
+const STANDARD_FUNCTIONS = [
     :sin, :cos, :tan, :cot, :sec, :csc,
     :sinh, :cosh, :tanh, :coth,
     :arcsin, :arccos, :arctan,

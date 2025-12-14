@@ -187,7 +187,7 @@ function _latexify_call(ex::Expr)
         end
 
         # Standard LaTeX functions
-        if func in LATEX_FUNCTIONS
+        if func in STANDARD_FUNCTIONS
             return _latexify_latex_function(func, ex.args[2:end])
         end
 
@@ -259,7 +259,7 @@ function _latexify_power(ex::Expr)
         if ex.args[2].head == :call
             # Check if it's a LaTeX function or general function
             func = ex.args[2].args[1]
-            if func isa Symbol && func in LATEX_FUNCTIONS
+            if func isa Symbol && func in STANDARD_FUNCTIONS
                 # Don't add parentheses for LaTeX functions like \sin, \cos
             else
                 # Add parentheses for general functions

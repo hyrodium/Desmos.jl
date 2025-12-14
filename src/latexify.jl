@@ -57,22 +57,15 @@ function _latexify(s::Symbol)
     result = ""
     i = 1
     while i ≤ ncodeunits(str)
-        # Safety check
-        if !isvalid(str, i)
-            i += 1
-            continue
-        end
-
         c = str[i]
 
-        # Greek letters
         if haskey(GREEK_LETTERS, c)
+            # γ → \gamma
             result *= GREEK_LETTERS[c]
             i = nextind(str, i)
 
-        # Subscripts (Unicode subscript characters)
         elseif haskey(SUBSCRIPT_MAP, c)
-            # Collect all consecutive subscripts
+            # a₄ → a_4
             subscript = ""
             while i ≤ ncodeunits(str) && isvalid(str, i) && haskey(SUBSCRIPT_MAP, str[i])
                 subscript *= SUBSCRIPT_MAP[str[i]]
@@ -80,9 +73,8 @@ function _latexify(s::Symbol)
             end
             result *= "_{$subscript}"
 
-        # Superscripts (Unicode superscript characters)
         elseif haskey(SUPERSCRIPT_MAP, c)
-            # Collect all consecutive superscripts
+            # a⁵ → a^5
             superscript = ""
             while i ≤ ncodeunits(str) && isvalid(str, i) && haskey(SUPERSCRIPT_MAP, str[i])
                 superscript *= SUPERSCRIPT_MAP[str[i]]
@@ -90,8 +82,8 @@ function _latexify(s::Symbol)
             end
             result *= "^{$superscript}"
 
-        # Underscore for subscript (ASCII underscore)
         elseif c == '_'
+            # a_b_c → a_{b_{c}}
             next_i = nextind(str, i)
             if next_i ≤ ncodeunits(str) && isvalid(str, next_i)
                 # Collect all consecutive alphanumeric characters (including underscores for nested subscripts)
@@ -186,6 +178,8 @@ function _latexify_call(ex::Expr)
         # Special functions
         if func == :sum
             return _latexify_sum(ex)
+        elseif func == :prod
+            return _latexify_prod(ex)
         elseif func == :int
             return _latexify_int(ex)
         elseif func == :gradient
@@ -259,7 +253,7 @@ function _latexify_power(ex::Expr)
     base = _latexify(ex.args[2])
     exponent = _latexify(ex.args[3])
 
-    # Add parentheses if base is complex
+    # Add parentheses to base
     if ex.args[2] isa Expr
         # Don't add parentheses for function calls (like sin(x), cos(x), etc.)
         if ex.args[2].head == :call
@@ -281,13 +275,8 @@ function _latexify_power(ex::Expr)
 end
 
 function _latexify_latex_function(func::Symbol, args)
-    if length(args) == 1
-        arg_str = _latexify(args[1])
-        return "\\$func\\left($arg_str\\right)"
-    else
-        args_str = join([_latexify(arg) for arg in args], ",")
-        return "\\$func\\left($args_str\\right)"
-    end
+    args_str = join([_latexify(arg) for arg in args], ",")
+    return "\\$func\\left($args_str\\right)"
 end
 
 function _latexify_general_function(func::Symbol, args)
@@ -317,6 +306,25 @@ function _latexify_sum(ex::Expr)
     end
 
     error("Unsupported sum syntax")
+end
+
+function _latexify_prod(ex::Expr)
+    # prod(n^2 for n in 1:5) -> \prod_{n=1}^{5}n^{2}
+    if length(ex.args) ≥ 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
+        gen = ex.args[2]
+        term = _latexify(gen.args[1])
+
+        # Parse the iterator
+        iter = gen.args[2]
+        if iter.head == :(=) && iter.args[2] isa Expr && iter.args[2].head == :call && iter.args[2].args[1] == :(:)
+            var = _latexify(iter.args[1])
+            start = _latexify(iter.args[2].args[2])
+            stop = _latexify(iter.args[2].args[3])
+            return "\\prod_{$var=$start}^{$stop}$term"
+        end
+    end
+
+    error("Unsupported prod syntax")
 end
 
 function _latexify_int(ex::Expr)

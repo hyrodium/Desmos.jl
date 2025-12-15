@@ -6,6 +6,41 @@ abstract type AbstractDesmosExpression end
     values::Union{Vector{String}, Nothing} = nothing
     latex::Union{LaTeXString, Nothing} = nothing
     hidden::Union{Bool, Nothing} = nothing
+    lines::Union{Bool, Nothing} = nothing
+    point_outline::Union{Bool, Nothing} = nothing & (json = (name = "pointOutline",),)
+    # Note: __stashed_V12PointStyle is an internal field used by Desmos v12+ and is intentionally ignored
+end
+
+@omit_null @kwarg struct DesmosRegressionColumnIds
+    x::String
+    y::String
+end
+
+@omit_null @kwarg struct DesmosRegression
+    type::String
+    column_ids::DesmosRegressionColumnIds & (json = (name = "columnIds",),)
+    id::String
+    color::String = "#000000"
+    line_style::Union{String, Nothing} = nothing & (json = (name = "lineStyle",),)
+    hidden::Union{Bool, Nothing} = nothing
+    is_log_mode::Union{Bool, Nothing} = nothing & (json = (name = "isLogMode",),)
+    residual_variable::Union{String, Nothing} = nothing & (json = (name = "residualVariable",),)
+end
+
+@omit_null @kwarg struct DesmosInferenceSignificance
+    tails::Union{String, Nothing} = nothing
+    hypothesis::Union{String, Nothing} = nothing
+    show::Union{Bool, Nothing} = nothing
+end
+
+@omit_null @kwarg struct DesmosInferenceConfidence
+    confidence_level::Union{String, Nothing} = nothing & (json = (name = "confidenceLevel",),)
+    show::Union{Bool, Nothing} = nothing
+end
+
+@omit_null @kwarg struct DesmosInference
+    significance::Union{DesmosInferenceSignificance, Nothing} = nothing
+    confidence::Union{DesmosInferenceConfidence, Nothing} = nothing
 end
 
 @omit_null @kwarg struct DesmosSlider
@@ -55,12 +90,16 @@ end
     folder_id::Union{String, Nothing} = nothing & (json = (name = "folderId",),)
     color_latex::Union{LaTeXString, Nothing} = nothing & (json = (name = "colorLatex",),)
     display_evaluation_as_fraction::Union{Bool, Nothing} = nothing & (json = (name = "displayEvaluationAsFraction",),)
+    residual_variable::Union{String, Nothing} = nothing & (json = (name = "residualVariable",),)
+    regression_parameters::Union{Dict{String, Float64}, Nothing} = nothing & (json = (name = "regressionParameters",),)
+    inference::Union{DesmosInference, Nothing} = nothing
 end
 
 @omit_null @kwarg struct DesmosTable <: AbstractDesmosExpression
     type::String = "table"
     id::String
     columns::Vector{DesmosColumn}
+    regression::Union{DesmosRegression, Nothing} = nothing
 end
 
 @omit_null @kwarg struct DesmosImage <: AbstractDesmosExpression
@@ -113,6 +152,7 @@ end
     viewport::Union{DesmosViewport, Nothing} = nothing
     user_locked_viewport::Union{Bool, Nothing} = nothing & (json = (name = "userLockedViewport",),)
     complex::Union{Bool, Nothing} = nothing
+    square_axes::Union{Bool, Nothing} = nothing & (json = (name = "squareAxes",),)
     # Note: __v12ViewportLatexStash is an internal field used by Desmos v12+ and is intentionally ignored
 end
 

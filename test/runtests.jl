@@ -34,7 +34,7 @@ end
 @testset "Export HTML" begin
 
     @testset "basic" begin
-        path = joinpath(@__DIR__, "result_basic.html")
+        path = joinpath(@__DIR__, "out", "basic.html")
 
         # Remove existing file
         rm(path, force = true)
@@ -55,7 +55,7 @@ end
     end
 
     @testset "variables" begin
-        path = joinpath(@__DIR__, "result_variables.html")
+        path = joinpath(@__DIR__, "out", "variables.html")
 
         # Remove existing file
         rm(path, force = true)
@@ -76,7 +76,7 @@ end
     end
 
     @testset "Newton's method" begin
-        path = joinpath(@__DIR__, "result_newton.html")
+        path = joinpath(@__DIR__, "out", "newton.html")
 
         # Remove existing file
         rm(path, force = true)

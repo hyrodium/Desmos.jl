@@ -83,7 +83,7 @@ end
 end
 
 @testset "JSON I/O" begin
-    @testset "example$i.json" for i in 1:6
+    @testset "example$i.json" for i in 1:7
         path_json = joinpath(@__DIR__, "json_example", "example$i.json")
         state = JSON.parse(read(path_json, String), DesmosState)
         jo1 = JSON.parse(read(path_json, String))

@@ -49,8 +49,8 @@ end
     animation_period::Union{Float64, Nothing} = nothing & (json = (name = "animationPeriod",),)
     loop_mode::Union{String, Nothing} = nothing & (json = (name = "loopMode",),)
     play_direction::Union{Int, Nothing} = nothing & (json = (name = "playDirection",),)
-    min::String
-    max::String
+    min::Union{String, Nothing} = nothing
+    max::Union{String, Nothing} = nothing
     step::Union{String, Nothing} = nothing
 end
 
@@ -100,6 +100,7 @@ end
     id::String
     columns::Vector{DesmosColumn}
     regression::Union{DesmosRegression, Nothing} = nothing
+    folder_id::Union{String, Nothing} = nothing & (json = (name = "folderId",),)
 end
 
 @omit_null @kwarg struct DesmosImage <: AbstractDesmosExpression
@@ -111,6 +112,8 @@ end
     width::Union{String, Nothing} = nothing
     height::Union{String, Nothing} = nothing
     center::Union{LaTeXString, Nothing} = nothing
+    angle::Union{String, Nothing} = nothing
+    opacity::Union{String, Nothing} = nothing
     forground::Union{Bool, Nothing} = nothing
     draggable::Union{Bool, Nothing} = nothing
     description::Union{String, Nothing} = nothing

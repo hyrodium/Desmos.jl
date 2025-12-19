@@ -32,6 +32,7 @@ function write_html(path, title, state)
 end
 
 @testset "Export HTML" begin
+    mkpath(joinpath(@__DIR__, "out"))
 
     @testset "basic" begin
         path = joinpath(@__DIR__, "out", "basic.html")

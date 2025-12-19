@@ -114,5 +114,6 @@ end
 end
 
 include("json_types.jl")
-include("latexify.jl")
 include("show.jl")
+include("latexify.jl")
+include("clipboard.jl")

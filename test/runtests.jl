@@ -10,22 +10,41 @@ Aqua.test_all(Desmos; ambiguities = false)
 b = 3
 image_url = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/b3fcb1f935439d671e3ddb3eb3b19fd261f6b067/example1a.png"
 
-path_base = joinpath(@__DIR__, "base.html")
-path_result = joinpath(@__DIR__, "result.html")
-cp(path_base, path_result, force = true)
-
-function update_result(title, json)
-    lines = readlines(path_result)
-    i_begin = findfirst(line -> occursin("<!-- begin", line), lines)
-    i_end = findfirst(line -> occursin("end -->", line), lines)
-    block = replace(join(lines[(i_begin + 1):(i_end - 1)], "\n"), "state =" => "state = $(json)", "TITLE" => title)
-    return write(joinpath(@__DIR__, "result.html"), join(vcat(lines[begin:(i_begin - 1)], split(block, "\n"), lines[i_begin:end]), "\n"))
+function write_html(path, title, state)
+    return open(path, "w") do io
+        write(
+            io, """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>$(title)</title>
+            </head>
+            <body>
+            <h1>$(title)</h1>
+            """
+        )
+        show(io, MIME("text/html"), state)
+        write(
+            io, """
+            </body>
+            </html>
+            """
+        )
+    end
 end
 
 @testset "Export HTML" begin
+    mkpath(joinpath(@__DIR__, "out"))
 
     @testset "basic" begin
-        title = "BasicFunctions"
+        path = joinpath(@__DIR__, "out", "basic.html")
+
+        # Remove existing file
+        rm(path, force = true)
+        @test !isfile(path)
+
         state = @desmos begin
             @text "Trigonometric functions"
             @expression cos(x) color = $(RGB(1, 0, 0))
@@ -34,12 +53,19 @@ end
             @expression cot(x) hidden = true
             @expression (cosh(t), sinh(t)) parametric_domain = -2 .. 3
         end
-        json = JSON.json(state)
-        update_result(title, json)
+
+        write_html(path, "BasicFunctions", state)
+
+        @test isfile(path)
     end
 
     @testset "variables" begin
-        title = "VariableDefinitions"
+        path = joinpath(@__DIR__, "out", "variables.html")
+
+        # Remove existing file
+        rm(path, force = true)
+        @test !isfile(path)
+
         state = @desmos begin
             a = 4
             @expression b = 5 slider = 2 .. 6
@@ -48,12 +74,19 @@ end
             $(2 + 2)
             sin($(2b) * a - cx)
         end
-        json = JSON.json(state)
-        update_result(title, json)
+
+        write_html(path, "VariableDefinitions", state)
+
+        @test isfile(path)
     end
 
     @testset "Newton's method" begin
-        title = "NewtonMethod"
+        path = joinpath(@__DIR__, "out", "newton.html")
+
+        # Remove existing file
+        rm(path, force = true)
+        @test !isfile(path)
+
         state = @desmos begin
             f(x, y) = x^2 + y^2 - 3.9 - x / 2
             g(x, y) = x^2 - y^2 - 2
@@ -77,28 +110,14 @@ end
             @expression (a(I), b(I)) lines = true
             @image image_url = $image_url width = 20 height = 20 name = "regions"
         end
-        json = JSON.json(state)
-        update_result(title, json)
+
+        write_html(path, "NewtonMethod", state)
+
+        @test isfile(path)
     end
 end
 
-@testset "JSON I/O" begin
-    @testset "example$i.json" for i in 1:7
-        path_json = joinpath(@__DIR__, "json_example", "example$i.json")
-        state = JSON.parse(read(path_json, String), DesmosState)
-        jo1 = JSON.parse(read(path_json, String))
-        jo2 = JSON.parse(JSON.json(state, 4))
-        delete!(jo1.graph, "__v12ViewportLatexStash")
-        for expression in jo1.expressions.list
-            if "columns" in keys(expression)
-                for column in expression.columns
-                    delete!(column, "__stashed_V12PointStyle")
-                end
-            end
-        end
-        @test jo2 == jo1
-    end
-end
-
-include("latexify.jl")
+include("json_types.jl")
 include("show.jl")
+include("latexify.jl")
+include("clipboard.jl")

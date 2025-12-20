@@ -50,7 +50,7 @@ Desmos.DesmosExpression("expression", "0", "#0080FF", nothing, nothing, nothing,
 - [`@image`](@ref): Add images to the graph
 """
 macro expression(ex, kwargs...)
-    id = "0"
+    id = 0
     color = desmos_color(RGB(0, 0, 0))
     slider = nothing
     lines = nothing
@@ -59,20 +59,22 @@ macro expression(ex, kwargs...)
     parametric_domain = nothing
     for kwarg in kwargs
         if kwarg.head == :(=)
-            if kwarg.args[1] == :id
-                id = string(eval(kwarg.args[2]))
-            elseif kwarg.args[1] == :color
-                color = desmos_color(eval(kwarg.args[2]))
-            elseif kwarg.args[1] == :slider
-                slider = desmos_slider(eval(kwarg.args[2]))
-            elseif kwarg.args[1] == :lines
-                lines = eval(kwarg.args[2])
-            elseif kwarg.args[1] == :hidden
-                hidden = eval(kwarg.args[2])
-            elseif kwarg.args[1] == :domain
-                domain = desmos_domain(eval(kwarg.args[2]))
-            elseif kwarg.args[1] == :parametric_domain
-                parametric_domain = desmos_parametric_domain(eval(kwarg.args[2]))
+            key = kwarg.args[1]
+            value = kwarg.args[2]
+            if key == :id
+                id = eval(value)
+            elseif key == :color
+                color = desmos_color(eval(value))
+            elseif key == :slider
+                slider = desmos_slider(eval(value))
+            elseif key == :lines
+                lines = eval(value)
+            elseif key == :hidden
+                hidden = eval(value)
+            elseif key == :domain
+                domain = desmos_domain(eval(value))
+            elseif key == :parametric_domain
+                parametric_domain = desmos_parametric_domain(eval(value))
             end
         end
     end
@@ -85,7 +87,7 @@ macro expression(ex, kwargs...)
     else
         latex = desmos_latexify(ex)
     end
-    return DesmosExpression(; latex, id, color, slider, lines, hidden, domain, parametric_domain)
+    return generate_expression(; latex, id, color, slider, lines, hidden, domain, parametric_domain)
 end
 
 @doc raw"""
@@ -118,7 +120,7 @@ Desmos.DesmosImage("image", "0", "https://example.com/plot.png", nothing, "Backg
 - [`@text`](@ref): Add text annotations
 """
 macro image(kwargs...)
-    id = "0"
+    id = 0
     image_url = ""
     hidden = nothing
     name = nothing
@@ -126,22 +128,24 @@ macro image(kwargs...)
     height = nothing
     for kwarg in kwargs
         if kwarg.head == :(=)
-            if kwarg.args[1] == :id
-                id = string(eval(kwarg.args[2]))
-            elseif kwarg.args[1] == :image_url
-                image_url = eval(kwarg.args[2])
-            elseif kwarg.args[1] == :hidden
-                hidden = eval(kwarg.args[2])
-            elseif kwarg.args[1] == :name
-                name = eval(kwarg.args[2])
-            elseif kwarg.args[1] == :width
-                width = LaTeXString(string(eval(kwarg.args[2])))
-            elseif kwarg.args[1] == :height
-                height = LaTeXString(string(eval(kwarg.args[2])))
+            key = kwarg.args[1]
+            value = kwarg.args[2]
+            if key == :id
+                id = eval(value)
+            elseif key == :image_url
+                image_url = eval(value)
+            elseif key == :hidden
+                hidden = eval(value)
+            elseif key == :name
+                name = eval(value)
+            elseif key == :width
+                width = LaTeXString(string(eval(value)))
+            elseif key == :height
+                height = LaTeXString(string(eval(value)))
             end
         end
     end
-    return DesmosImage(; id, image_url, hidden, name, width, height)
+    return generate_image(; id, image_url, hidden, name, width, height)
 end
 
 """
@@ -168,16 +172,121 @@ Desmos.DesmosText("text", "0", "Sample text", nothing)
 - [`@expression`](@ref): Add mathematical expressions
 - [`@image`](@ref): Add images to the graph
 """
-macro text(ex, kwargs...)
-    id = "0"
+macro text(text, kwargs...)
+    id = 0
     for kwarg in kwargs
         if kwarg.head == :(=)
-            if kwarg.args[1] == :id
-                id = string(eval(kwarg.args[2]))
+            key = kwarg.args[1]
+            value = kwarg.args[2]
+            if key == :id
+                id = eval(value)
             end
         end
     end
-    return DesmosText(text = ex; id)
+    return generate_text(; text, id)
+end
+
+@doc raw"""
+    @table data [kwargs...]
+
+Add a table to the Desmos graph.
+
+This macro creates a `DesmosTable` object for displaying tabular data.
+The first argument specifies the data (DataFrame or column tuple), and remaining
+arguments are keyword arguments for table attributes.
+
+# Arguments
+
+- `data`: Table data - either a DataFrame/table object or a tuple of column specifications
+  - DataFrame: `$df`
+  - Column tuple: `(x_1=[1,2,3], y_1=[4,5,6])` or `(x_1=[1,2,3], y_2)` for symbol-only columns
+
+# Keyword Arguments (must come after data)
+
+- `id`: Custom ID string for the table element
+- `color`: Set the color using `RGB(r,g,b)` or hex string like `"#ff0000"`
+
+# Examples
+
+```julia
+# Using a DataFrame
+using DataFrames
+df = DataFrame(x_1=[1,2,3], y_1=[3,4,4])
+@desmos begin
+    @table $df
+    @table $df color=RGB(1,0,0)
+end
+
+# Using column tuple
+@desmos begin
+    @table (x_1=[1,2,5], y_1=[4,7,4])
+    @table (x_1=[1,2,5], y_1=[4,7,4]) color="#FF0000"
+end
+
+# Using symbols in tuple (for columns without values)
+@desmos begin
+    y_2 = [5,4,8]
+    @table (x_1=[1,2,5], y_1=[4,7,4], y_2)
+end
+```
+
+# See also
+- [`@desmos`](@ref): Main macro for creating Desmos graphs
+- [`@expression`](@ref): Add mathematical expressions
+- [`@text`](@ref): Add text annotations
+"""
+macro table(data, kwargs...)
+    # Parse keyword arguments
+    id = 0
+    color = desmos_color(RGB(0, 0, 0))
+
+    for kwarg in kwargs
+        if kwarg isa Expr && kwarg.head == :(=)
+            key = kwarg.args[1]
+            value = kwarg.args[2]
+            if key == :id
+                id = eval(value)
+            elseif key == :color
+                color = desmos_color(eval(value))
+            else
+                error("Unknown keyword argument: $key")
+            end
+        else
+            error("Expected keyword argument, got: $kwarg")
+        end
+    end
+
+    # Parse data argument
+    if data isa Expr && data.head == :tuple
+        # Tuple of column specifications: (x_1=[1,2,3], y_1=[4,5,6]) or (x_2=[1,2,3], y_2)
+        column_names = Symbol[]
+        column_values = []
+
+        for arg in data.args
+            if arg isa Expr && arg.head == :(=)
+                # Column with values: x_1=[1,2,3]
+                key = arg.args[1]
+                value = arg.args[2]
+                push!(column_names, key)
+                push!(column_values, esc(value))
+            elseif arg isa Symbol
+                # Symbol-only column (no values): y_2
+                push!(column_names, arg)
+                push!(column_values, nothing)
+            else
+                error("Invalid column specification in tuple: $arg")
+            end
+        end
+
+        # Build vectors for names and values
+        names_vec = [QuoteNode(name) for name in column_names]
+        values_vec = column_values
+
+        return :(generate_table([$(names_vec...)], [$(values_vec...)]; id = $id, color = $color))
+    else
+        # Single argument: DataFrame or other table-like object
+        return :(generate_table($(esc(data)); id = $id, color = $color))
+    end
 end
 
 """
@@ -251,9 +360,8 @@ macro desmos(ex)
         if e isa LineNumberNode
             continue
         end
-        expression = generate_abstractexpression(e, id)
+        expression, id = generate_abstractexpression(e, id)
         push!(expressions.list, expression)
-        id = id + 1
     end
     state = DesmosState(expressions = expressions)
     return state

@@ -5,7 +5,7 @@ using Aqua
 using Colors
 using LaTeXStrings
 
-Aqua.test_all(Desmos; ambiguities = false)
+Aqua.test_all(Desmos)
 
 b = 3
 image_url = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/b3fcb1f935439d671e3ddb3eb3b19fd261f6b067/example1a.png"

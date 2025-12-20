@@ -11,6 +11,7 @@ using FileIO
 using Base64
 using FixedPointNumbers
 using InteractiveUtils
+using DataFrames
 
 export @desmos
 export DesmosState

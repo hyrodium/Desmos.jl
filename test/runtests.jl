@@ -11,23 +11,27 @@ b = 3
 image_url = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/b3fcb1f935439d671e3ddb3eb3b19fd261f6b067/example1a.png"
 
 function write_html(path, title, state)
-    open(path, "w") do io
-        write(io, """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>$(title)</title>
-        </head>
-        <body>
-        <h1>$(title)</h1>
-        """)
+    return open(path, "w") do io
+        write(
+            io, """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>$(title)</title>
+            </head>
+            <body>
+            <h1>$(title)</h1>
+            """
+        )
         show(io, MIME("text/html"), state)
-        write(io, """
-        </body>
-        </html>
-        """)
+        write(
+            io, """
+            </body>
+            </html>
+            """
+        )
     end
 end
 

@@ -251,7 +251,7 @@ macro desmos(ex)
         if e isa LineNumberNode
             continue
         end
-        expression = generate_expression(e, id)
+        expression = generate_abstractexpression(e, id)
         push!(expressions.list, expression)
         id = id + 1
     end

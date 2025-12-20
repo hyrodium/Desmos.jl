@@ -10,7 +10,7 @@ function eval_dollar!(target_module::Module, ex::Expr)
     return ex
 end
 
-function generate_expression(e::Expr, id)
+function generate_abstractexpression(e::Expr, id)
     if e.head === :call
         # sin(x)
         return DesmosExpression(latex = desmos_latexify(e), id = string(id))
@@ -32,12 +32,12 @@ function generate_expression(e::Expr, id)
     error("unsupported expression: $e")
 end
 
-function generate_expression(e::String, id)
+function generate_abstractexpression(e::String, id)
     # comment
     return DesmosText(text = e, id = string(id))
 end
 
-function generate_expression(a::Union{Integer, AbstractFloat}, id)
+function generate_abstractexpression(a::Union{Integer, AbstractFloat}, id)
     # 42
     return DesmosExpression(latex = LaTeXString(string(a)), id = string(id))
 end

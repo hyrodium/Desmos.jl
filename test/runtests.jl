@@ -4,11 +4,14 @@ using JSON
 using Aqua
 using Colors
 using LaTeXStrings
+using DataFrames
 
-Aqua.test_all(Desmos; ambiguities = false)
+Aqua.test_all(Desmos)
 
 b = 3
 image_url = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/b3fcb1f935439d671e3ddb3eb3b19fd261f6b067/example1a.png"
+df = DataFrame(x_1 = [1, 2, 3], y_1 = [2, 4, 9])
+nt = (x_2 = [1, 2, 3, 4], y_2 = [1, 4, 9, 16])
 
 function write_html(path, title, state)
     return open(path, "w") do io
@@ -38,13 +41,11 @@ end
 @testset "Export HTML" begin
     mkpath(joinpath(@__DIR__, "out"))
 
-    @testset "basic" begin
-        path = joinpath(@__DIR__, "out", "basic.html")
-
-        # Remove existing file
+    @testset "BasicFunctions" begin
+        name = "BasicFunctions"
+        path = joinpath(@__DIR__, "out", "$name.html")
         rm(path, force = true)
         @test !isfile(path)
-
         state = @desmos begin
             @text "Trigonometric functions"
             @expression cos(x) color = $(RGB(1, 0, 0))
@@ -53,16 +54,13 @@ end
             @expression cot(x) hidden = true
             @expression (cosh(t), sinh(t)) parametric_domain = -2 .. 3
         end
-
-        write_html(path, "BasicFunctions", state)
-
+        write_html(path, name, state)
         @test isfile(path)
     end
 
-    @testset "variables" begin
+    @testset "VariableDefinitions" begin
+        name = "VariableDefinitions"
         path = joinpath(@__DIR__, "out", "variables.html")
-
-        # Remove existing file
         rm(path, force = true)
         @test !isfile(path)
 
@@ -74,19 +72,15 @@ end
             $(2 + 2)
             sin($(2b) * a - cx)
         end
-
-        write_html(path, "VariableDefinitions", state)
-
+        write_html(path, name, state)
         @test isfile(path)
     end
 
-    @testset "Newton's method" begin
-        path = joinpath(@__DIR__, "out", "newton.html")
-
-        # Remove existing file
+    @testset "NewtonMethod" begin
+        name = "NewtonMethod"
+        path = joinpath(@__DIR__, "out", "$name.html")
         rm(path, force = true)
         @test !isfile(path)
-
         state = @desmos begin
             f(x, y) = x^2 + y^2 - 3.9 - x / 2
             g(x, y) = x^2 - y^2 - 2
@@ -110,9 +104,30 @@ end
             @expression (a(I), b(I)) lines = true
             @image image_url = $image_url width = 20 height = 20 name = "regions"
         end
+        write_html(path, name, state)
+        @test isfile(path)
+    end
 
-        write_html(path, "NewtonMethod", state)
-
+    @testset "Tables" begin
+        name = "Tables"
+        path = joinpath(@__DIR__, "out", "$name.html")
+        rm(path, force = true)
+        @test !isfile(path)
+        state = @desmos begin
+            @text "Table from column tuple"
+            @table (x_3 = [1, 2, 3], y_3 = [3, 6, 9])
+            @table (x_4 = [1, 2, 3, 4], y_4 = [2, 4, 6, 8]) color = RGB(1, 0, 0)
+            @text "Table from NamedTuple"
+            @table $nt
+            @table $nt color = RGB(0, 1, 0)
+            @text "Table from DataFrame"
+            @table $df
+            @table $df color = RGB(0, 0, 1)
+            @text "Table with symbol reference"
+            z_5 = [1, 8, 27]
+            @table (x_5 = [1, 2, 3], z_5)
+        end
+        write_html(path, name, state)
         @test isfile(path)
     end
 end

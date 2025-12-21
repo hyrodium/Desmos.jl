@@ -33,7 +33,26 @@
         @test Desmos.desmos_latexify(:(log10(x))) == "\\log\\left(x\\right)"
         @test Desmos.desmos_latexify(:(log10(100))) == "\\log\\left(100\\right)"
         @test Desmos.desmos_latexify(:(log1p(x))) == "\\ln\\left(1+x\\right)"
-        @test Desmos.desmos_latexify(:(log1p(a+b))) == "\\ln\\left(1+x\\right)"
+        @test Desmos.desmos_latexify(:(log1p(a+b))) == "\\ln\\left(1+a+b\\right)"
+    end
+
+    @testset "Comparison operators" begin
+        @test Desmos.desmos_latexify(:(x > 0)) == "x>0"
+        @test Desmos.desmos_latexify(:(x < 0)) == "x<0"
+        @test Desmos.desmos_latexify(:(a == b)) == "a=b"
+        @test Desmos.desmos_latexify(:(x >= 1)) == "x\\ge 1"
+        @test Desmos.desmos_latexify(:(x <= 1)) == "x\\le 1"
+        @test Desmos.desmos_latexify(:(a != b)) == "a\\ne b"
+        # Unicode operators
+        @test Desmos.desmos_latexify(:(x ≥ 1)) == "x\\ge 1"
+        @test Desmos.desmos_latexify(:(x ≤ 1)) == "x\\le 1"
+        @test Desmos.desmos_latexify(:(a ≠ b)) == "a\\ne b"
+    end
+
+    @testset "Piecewise functions (ifelse)" begin
+        @test Desmos.desmos_latexify(:(ifelse(x > 0, x, 0))) == "\\left\\{x>0:x,0\\right\\}"
+        @test Desmos.desmos_latexify(:(ifelse(x < 0, -x, x))) == "\\left\\{x<0:-x,x\\right\\}"
+        @test Desmos.desmos_latexify(:(ifelse(a == b, 1, 0))) == "\\left\\{a=b:1,0\\right\\}"
     end
 
     @testset "Multi-argument functions" begin

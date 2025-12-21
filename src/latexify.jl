@@ -151,6 +151,29 @@ function _latexify_tilde(ex::Expr)
     return "$lhs\\sim $rhs"
 end
 
+function _latexify_comparison(ex::Expr)
+    # Comparison operators: >, <, ==, >=, <=, !=, ≥, ≤, ≠
+    op = ex.args[1]
+    lhs = _latexify(ex.args[2])
+    rhs = _latexify(ex.args[3])
+
+    # Map Julia operators to LaTeX
+    op_map = Dict(
+        :> => ">",
+        :< => "<",
+        :(==) => "=",
+        :(>=) => "\\ge ",
+        :(<=) => "\\le ",
+        :(!=) => "\\ne ",
+        :≥ => "\\ge ",
+        :≤ => "\\le ",
+        :≠ => "\\ne "
+    )
+
+    op_str = get(op_map, op, string(op))
+    return "$lhs$op_str$rhs"
+end
+
 function _latexify_block(ex::Expr)
     # Block expressions often contain LineNumberNode entries
     # Filter them out and process only the actual expressions
@@ -187,6 +210,11 @@ function _latexify_call(ex::Expr)
             return _latexify_tilde(ex)
         end
 
+        # Comparison operators
+        if func in (:>, :<, :(==), :(>=), :(<=), :(!=), :≥, :≤, :≠)
+            return _latexify_comparison(ex)
+        end
+
         # Special functions
         if func == :sum
             return _latexify_sum(ex)
@@ -202,6 +230,8 @@ function _latexify_call(ex::Expr)
             return _latexify_log10(ex)
         elseif func == :log1p
             return _latexify_log1p(ex)
+        elseif func == :ifelse
+            return _latexify_ifelse(ex)
         end
 
         # Standard LaTeX functions
@@ -414,4 +444,16 @@ function _latexify_log1p(ex::Expr)
     end
 
     error("log1p requires exactly 1 argument")
+end
+
+function _latexify_ifelse(ex::Expr)
+    # ifelse(condition, true_value, false_value) -> \left\{condition:true_value,false_value\right\}
+    if length(ex.args) == 4
+        condition = _latexify(ex.args[2])
+        true_value = _latexify(ex.args[3])
+        false_value = _latexify(ex.args[4])
+        return "\\left\\{$condition:$true_value,$false_value\\right\\}"
+    end
+
+    error("ifelse requires exactly 3 arguments")
 end

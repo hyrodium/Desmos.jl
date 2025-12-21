@@ -27,7 +27,7 @@ const SUBSCRIPT_MAP = Dict(
 # Map Julia function names to LaTeX string generators
 # Each function takes a LaTeX string (single argument) and returns a LaTeX string
 const DESMOS_FUNCTIONS = Dict{Symbol, Function}(
-    # Standard trigonometric functions
+    # TRIG FUNCTIONS
     :sin => arg -> "\\sin\\left($arg\\right)",
     :cos => arg -> "\\cos\\left($arg\\right)",
     :tan => arg -> "\\tan\\left($arg\\right)",
@@ -35,30 +35,44 @@ const DESMOS_FUNCTIONS = Dict{Symbol, Function}(
     :sec => arg -> "\\sec\\left($arg\\right)",
     :csc => arg -> "\\csc\\left($arg\\right)",
 
+    # INVERSE TRIG FUNCTIONS
+    :asin => arg -> "\\arcsin\\left($arg\\right)",
+    :acos => arg -> "\\arccos\\left($arg\\right)",
+    :atan => arg -> "\\arctan\\left($arg\\right)",
+    :acot => arg -> "\\arccot\\left($arg\\right)",
+    :asec => arg -> "\\arcsec\\left($arg\\right)",
+    :acsc => arg -> "\\arccsc\\left($arg\\right)",
+
+    # STATISTICS
+    :min => arg -> "\\min\\left($arg\\right)",
+    :max => arg -> "\\max\\left($arg\\right)",
+
+    # LIST OPERATIONS
+
+    # VISUALIZATIONS
+
+    # PROBABILITY DISTRIBUTIONS
+
+    # INFERENCE
     # Hyperbolic functions
     :sinh => arg -> "\\sinh\\left($arg\\right)",
     :cosh => arg -> "\\cosh\\left($arg\\right)",
     :tanh => arg -> "\\tanh\\left($arg\\right)",
     :coth => arg -> "\\coth\\left($arg\\right)",
-
-    # Inverse trigonometric functions (Julia asin -> Desmos arcsin)
-    :asin => arg -> "\\arcsin\\left($arg\\right)",
-    :acos => arg -> "\\arccos\\left($arg\\right)",
-    :atan => arg -> "\\arctan\\left($arg\\right)",
-
-    # Inverse hyperbolic functions
-    :asinh => arg -> "\\operatorname{arcsinh}\\left($arg\\right)",
-    :acosh => arg -> "\\operatorname{arccosh}\\left($arg\\right)",
-    :atanh => arg -> "\\operatorname{arctanh}\\left($arg\\right)",
+    :sech => arg -> "\\sech\\left($arg\\right)",
+    :csch => arg -> "\\csch\\left($arg\\right)",
+    :asinh => arg -> "\\operatoorname{arcsinh}\\left($arg\\right)",
+    :acosh => arg -> "\\operatoorname{arccosh}\\left($arg\\right)",
+    :atanh => arg -> "\\operatoorname{arctanh}\\left($arg\\right)",
+    :acoth => arg -> "\\operatoorname{arccoth}\\left($arg\\right)",
+    :asech => arg -> "\\operatoorname{arcsech}\\left($arg\\right)",
+    :acsch => arg -> "\\operatoorname{arccsch}\\left($arg\\right)",
 
     # Other standard functions
     :exp => arg -> "\\exp\\left($arg\\right)",
     :sqrt => arg -> "\\sqrt\\left($arg\\right)",
     :cbrt => arg -> "\\sqrt[3]\\left($arg\\right)",
-    :max => arg -> "\\max\\left($arg\\right)",
-    :min => arg -> "\\min\\left($arg\\right)",
-
-    # Non-standard functions using operatorname
+    :factorial => arg -> "\\left($arg\\right)!",
     :abs => arg -> "\\operatorname{abs}\\left($arg\\right)",
     :sort => arg -> "\\operatorname{sort}\\left($arg\\right)",
     :floor => arg -> "\\operatorname{floor}\\left($arg\\right)",

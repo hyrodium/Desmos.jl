@@ -196,6 +196,12 @@ function _latexify_call(ex::Expr)
             return _latexify_int(ex)
         elseif func == :gradient
             return _latexify_gradient(ex)
+        elseif func == :log
+            return _latexify_log(ex)
+        elseif func == :log10
+            return _latexify_log10(ex)
+        elseif func == :log1p
+            return _latexify_log1p(ex)
         end
 
         # Standard LaTeX functions
@@ -371,4 +377,41 @@ function _latexify_gradient(ex::Expr)
     end
 
     error("gradient requires exactly 2 arguments")
+end
+
+function _latexify_log(ex::Expr)
+    # log(x) -> \ln\left(x\right) (natural logarithm)
+    # log(a, b) -> \log_{a}\left(b\right) (logarithm base a)
+    if length(ex.args) == 2
+        # log(x) -> \ln(x)
+        arg = _latexify(ex.args[2])
+        return "\\ln\\left($arg\\right)"
+    elseif length(ex.args) == 3
+        # log(a, b) -> \log_{a}(b)
+        base = _latexify(ex.args[2])
+        arg = _latexify(ex.args[3])
+        return "\\log_{$base}\\left($arg\\right)"
+    end
+
+    error("log requires 1 or 2 arguments")
+end
+
+function _latexify_log10(ex::Expr)
+    # log10(x) -> \log\left(x\right) (base-10 logarithm)
+    if length(ex.args) == 2
+        arg = _latexify(ex.args[2])
+        return "\\log\\left($arg\\right)"
+    end
+
+    error("log10 requires exactly 1 argument")
+end
+
+function _latexify_log1p(ex::Expr)
+    # log1p(p) -> \ln\left(1+p\right) (log(1+p))
+    if length(ex.args) == 2
+        arg = _latexify(ex.args[2])
+        return "\\ln\\left(1+$arg\\right)"
+    end
+
+    error("log1p requires exactly 1 argument")
 end

@@ -16,12 +16,24 @@
         @test Desmos.desmos_latexify(:(cos(θ))) == "\\cos\\left(\\theta\\right)"
         @test Desmos.desmos_latexify(:(tan(x))) == "\\tan\\left(x\\right)"
         @test Desmos.desmos_latexify(:(exp(x))) == "\\exp\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(log(x))) == "\\log\\left(x\\right)"
         @test Desmos.desmos_latexify(:(sqrt(x))) == "\\sqrt\\left(x\\right)"
         @test Desmos.desmos_latexify(:(abs(x))) == "\\abs\\left(x\\right)"
         @test Desmos.desmos_latexify(:(sinh(x))) == "\\sinh\\left(x\\right)"
         @test Desmos.desmos_latexify(:(cosh(x))) == "\\cosh\\left(x\\right)"
         @test Desmos.desmos_latexify(:(tanh(x))) == "\\tanh\\left(x\\right)"
+    end
+
+    @testset "Logarithms" begin
+        # ln is not supported, and is parsed as standard function
+        @test Desmos.desmos_latexify(:(ln(x))) == "ln\\left(x\\right)"
+        # log functions
+        @test Desmos.desmos_latexify(:(log(x))) == "\\ln\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(log(2, x))) == "\\log_{2}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(log(a, b))) == "\\log_{a}\\left(b\\right)"
+        @test Desmos.desmos_latexify(:(log10(x))) == "\\log\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(log10(100))) == "\\log\\left(100\\right)"
+        @test Desmos.desmos_latexify(:(log1p(x))) == "\\ln\\left(1+x\\right)"
+        @test Desmos.desmos_latexify(:(log1p(a+b))) == "\\ln\\left(1+x\\right)"
     end
 
     @testset "Multi-argument functions" begin

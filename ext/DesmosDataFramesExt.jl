@@ -4,7 +4,7 @@ using Desmos
 using DataFrames
 
 """
-    generate_table(df::DataFrame, id, color)
+    generate_table(df::DataFrame; id, color)
 
 Convert a DataFrame to a DesmosTable.
 

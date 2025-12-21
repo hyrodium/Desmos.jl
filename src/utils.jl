@@ -97,7 +97,7 @@ function generate_text(; text, id)
 end
 
 """
-    generate_table(data, id, color)
+    generate_table(data; id, color)
 
 Convert table data to a DesmosTable using multiple dispatch.
 
@@ -115,7 +115,7 @@ This is the main entry point for table generation. Different methods handle:
 function generate_table end
 
 """
-    generate_table(column_names::Vector{Symbol}, column_values::Vector, id, color)
+    generate_table(column_names::Vector{Symbol}, column_values::Vector; id, color)
 
 Convert column names and values to a DesmosTable.
 
@@ -166,7 +166,7 @@ function generate_table(
 end
 
 """
-    generate_table(nt::NamedTuple, id, color)
+    generate_table(nt::NamedTuple; id, color)
 
 Convert a NamedTuple to a DesmosTable.
 

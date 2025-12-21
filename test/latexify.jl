@@ -85,6 +85,12 @@
         @test Desmos.desmos_latexify(:(g(x, y) = x + y)) == "g\\left(x,y\\right)=x+y"
     end
 
+    @testset "Tilde operator" begin
+        @test Desmos.desmos_latexify(:(y_1 ~ a * x_1 + b)) == "y_{1}\\sim a\\cdot x_{1}+b"
+        @test Desmos.desmos_latexify(:(y ~ x)) == "y\\sim x"
+        @test Desmos.desmos_latexify(:(f(x) ~ g(x))) == "f\\left(x\\right)\\sim g\\left(x\\right)"
+    end
+
     @testset "Complex expressions" begin
         @test Desmos.desmos_latexify(:(x^2 + y^2)) == "x^{2}+y^{2}"
         @test Desmos.desmos_latexify(:(sin(x) + cos(x))) == "\\sin\\left(x\\right)+\\cos\\left(x\\right)"

@@ -144,6 +144,13 @@ function _latexify_assignment(ex::Expr)
     return "$lhs=$rhs"
 end
 
+function _latexify_tilde(ex::Expr)
+    # ex.args[1] is :~, ex.args[2] is lhs, ex.args[3] is rhs
+    lhs = _latexify(ex.args[2])
+    rhs = _latexify(ex.args[3])
+    return "$lhs\\sim $rhs"
+end
+
 function _latexify_block(ex::Expr)
     # Block expressions often contain LineNumberNode entries
     # Filter them out and process only the actual expressions
@@ -176,6 +183,8 @@ function _latexify_call(ex::Expr)
             return _latexify_divide(ex)
         elseif func == :^
             return _latexify_power(ex)
+        elseif func == :~
+            return _latexify_tilde(ex)
         end
 
         # Special functions

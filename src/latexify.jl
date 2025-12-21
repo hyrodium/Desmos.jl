@@ -144,15 +144,8 @@ function _latexify_assignment(ex::Expr)
     return "$lhs=$rhs"
 end
 
-function _latexify_tilde(ex::Expr)
-    # ex.args[1] is :~, ex.args[2] is lhs, ex.args[3] is rhs
-    lhs = _latexify(ex.args[2])
-    rhs = _latexify(ex.args[3])
-    return "$lhs\\sim $rhs"
-end
-
 function _latexify_comparison(ex::Expr)
-    # Comparison operators: >, <, ==, >=, <=, !=, ≥, ≤, ≠
+    # Comparison and relational operators: >, <, ==, >=, <=, !=, ≥, ≤, ≠, ~
     op = ex.args[1]
     lhs = _latexify(ex.args[2])
     rhs = _latexify(ex.args[3])
@@ -167,7 +160,8 @@ function _latexify_comparison(ex::Expr)
         :(!=) => "\\ne ",
         :≥ => "\\ge ",
         :≤ => "\\le ",
-        :≠ => "\\ne "
+        :≠ => "\\ne ",
+        :~ => "\\sim "
     )
 
     op_str = get(op_map, op, string(op))
@@ -206,12 +200,10 @@ function _latexify_call(ex::Expr)
             return _latexify_divide(ex)
         elseif func == :^
             return _latexify_power(ex)
-        elseif func == :~
-            return _latexify_tilde(ex)
         end
 
-        # Comparison operators
-        if func in (:>, :<, :(==), :(>=), :(<=), :(!=), :≥, :≤, :≠)
+        # Comparison and relational operators
+        if func in (:>, :<, :(==), :(>=), :(<=), :(!=), :≥, :≤, :≠, :~)
             return _latexify_comparison(ex)
         end
 

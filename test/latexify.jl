@@ -47,11 +47,12 @@
         @test Desmos.desmos_latexify(:(a == b)) == "a=b"
         @test Desmos.desmos_latexify(:(x >= 1)) == "x\\ge 1"
         @test Desmos.desmos_latexify(:(x <= 1)) == "x\\le 1"
-        @test Desmos.desmos_latexify(:(a != b)) == "a\\ne b"
+        # != and ≠ are not supported by Desmos
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(a != b))
         # Unicode operators
         @test Desmos.desmos_latexify(:(x ≥ 1)) == "x\\ge 1"
         @test Desmos.desmos_latexify(:(x ≤ 1)) == "x\\le 1"
-        @test Desmos.desmos_latexify(:(a ≠ b)) == "a\\ne b"
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(a ≠ b))
     end
 
     @testset "Piecewise functions (ifelse)" begin

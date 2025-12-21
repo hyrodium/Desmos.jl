@@ -150,6 +150,11 @@ function _latexify_comparison(ex::Expr)
     lhs = _latexify(ex.args[2])
     rhs = _latexify(ex.args[3])
 
+    # Check for unsupported operators
+    if op in (:(!=), :≠)
+        throw(UnsupportedDesmosSyntaxError("The inequality operator '$op' (\\ne) is not supported by Desmos. Use other comparison operators instead."))
+    end
+
     # Map Julia operators to LaTeX
     op_map = Dict(
         :> => ">",
@@ -157,10 +162,8 @@ function _latexify_comparison(ex::Expr)
         :(==) => "=",
         :(>=) => "\\ge ",
         :(<=) => "\\le ",
-        :(!=) => "\\ne ",
         :≥ => "\\ge ",
         :≤ => "\\le ",
-        :≠ => "\\ne ",
         :~ => "\\sim "
     )
 

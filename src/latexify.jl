@@ -48,7 +48,10 @@ end
 
 function _latexify(s::Symbol)
     str = string(s)
+    return _latexify(str)
+end
 
+function _latexify(str::AbstractString)
     # Special case: Inf
     if str == "Inf"
         return "\\infty"

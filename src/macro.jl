@@ -139,9 +139,9 @@ macro image(kwargs...)
             elseif key == :name
                 name = eval(value)
             elseif key == :width
-                width = LaTeXString(string(eval(value)))
+                width = desmos_latexify(eval(value))
             elseif key == :height
-                height = LaTeXString(string(eval(value)))
+                height = desmos_latexify(eval(value))
             end
         end
     end
@@ -197,8 +197,9 @@ arguments are keyword arguments for table attributes.
 
 # Arguments
 
-- `data`: Table data - either a DataFrame/table object or a tuple of column specifications
+- `data`: Table data - either a DataFrame/NamedTuple/table object or a tuple of column specifications
   - DataFrame: `$df`
+  - NamedTuple: `$nt`
   - Column tuple: `(x_1=[1,2,3], y_1=[4,5,6])` or `(x_1=[1,2,3], y_2)` for symbol-only columns
 
 # Keyword Arguments (must come after data)
@@ -215,6 +216,13 @@ df = DataFrame(x_1=[1,2,3], y_1=[3,4,4])
 @desmos begin
     @table $df
     @table $df color=RGB(1,0,0)
+end
+
+# Using a NamedTuple
+nt = (x_1=[1,2,3], y_1=[3,4,4])
+@desmos begin
+    @table $nt
+    @table $nt color=RGB(1,0,0)
 end
 
 # Using column tuple

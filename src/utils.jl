@@ -52,15 +52,15 @@ end
 
 function desmos_domain(interval::AbstractInterval)
     return DesmosDomain(
-        min = LaTeXString(string(minimum(interval))),
-        max = LaTeXString(string(maximum(interval))),
+        min = desmos_latexify(minimum(interval)),
+        max = desmos_latexify(maximum(interval)),
     )
 end
 
 function desmos_parametric_domain(interval::AbstractInterval)
     return DesmosParametricDomain(
-        min = LaTeXString(string(minimum(interval))),
-        max = LaTeXString(string(maximum(interval))),
+        min = desmos_latexify(minimum(interval)),
+        max = desmos_latexify(maximum(interval)),
     )
 end
 
@@ -68,8 +68,8 @@ function desmos_slider(interval::AbstractInterval)
     return DesmosSlider(
         hard_min = true,
         hard_max = true,
-        min = LaTeXString(string(minimum(interval))),
-        max = LaTeXString(string(maximum(interval))),
+        min = desmos_latexify(minimum(interval)),
+        max = desmos_latexify(maximum(interval)),
     )
 end
 
@@ -77,9 +77,9 @@ function desmos_slider(range::AbstractRange)
     return DesmosSlider(
         hard_min = true,
         hard_max = true,
-        min = LaTeXString(string(minimum(range))),
-        max = LaTeXString(string(maximum(range))),
-        step = LaTeXString(string(step(range))),
+        min = desmos_latexify(minimum(range)),
+        max = desmos_latexify(maximum(range)),
+        step = desmos_latexify(step(range)),
     )
 end
 
@@ -102,13 +102,14 @@ end
 Convert table data to a DesmosTable using multiple dispatch.
 
 This is the main entry point for table generation. Different methods handle:
-- Dict{Symbol, Any}: Column specifications from `@table x=[1,2,3] y=[4,5,6]`
+- Vector{Symbol} and Vector: Column specifications from `@table (x_1=[1,2,3], y_1=[4,5,6])`
+- NamedTuple: Tables from NamedTuples
 - DataFrame: Tables from DataFrames.jl (via package extension)
 - Other table-like objects can add their own methods
 
 # Arguments
-- `data`: Table data (Dict, DataFrame, or other table-like object)
-- `id`: ID string for the table
+- `data`: Table data (Vector pair, NamedTuple, DataFrame, or other table-like object)
+- `id`: ID for the table
 - `color`: Color string for the table columns (default: "#000000")
 """
 function generate_table end
@@ -161,5 +162,46 @@ function generate_table(
         id_column = id_column + 1
     end
 
-    return DesmosTable(id = id, columns = columns), id_column
+    return DesmosTable(; id = string(id), columns), id_column
+end
+
+"""
+    generate_table(nt::NamedTuple, id, color)
+
+Convert a NamedTuple to a DesmosTable.
+
+Each field in the NamedTuple becomes a DesmosColumn with the field name as the LaTeX label.
+
+# Arguments
+- `nt`: NamedTuple with vectors as values
+- `id`: Table ID
+- `color`: Color for the table columns
+
+# Example
+```julia
+nt = (x_1=[1,2,3], y_1=[4,5,6])
+@desmos begin
+    @table \$nt
+end
+```
+"""
+function generate_table(nt::NamedTuple; id::Int, color = "#000000")
+    columns = DesmosColumn[]
+    id_column = id + 1
+
+    for colname in keys(nt)
+        values = string.(getproperty(nt, colname))
+        latex = desmos_latexify(colname)
+
+        column = DesmosColumn(;
+            id = string(id_column),
+            color,
+            values,
+            latex,
+        )
+        push!(columns, column)
+        id_column += 1
+    end
+
+    return DesmosTable(; id = string(id), columns), id_column
 end

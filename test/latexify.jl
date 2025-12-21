@@ -164,6 +164,11 @@
         @test Desmos.desmos_latexify(:(gradient(g, t))) == "\\frac{d}{dt}g"
     end
 
+    @testset "Sum normal function calls" begin
+        @test Desmos.desmos_latexify(:(sum(v))) == "\\operatorname{total}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(sum([1, 2, 3]))) == "\\operatorname{total}\\left(\\left[1,2,3\\right]\\right)"
+    end
+
     @testset "LaTeXString input" begin
         @test Desmos.desmos_latexify(L"\sin(x)") == "\\sin(x)"
         @test Desmos.desmos_latexify(L"$\alpha + \beta$") == "\\alpha + \\beta"

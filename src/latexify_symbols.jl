@@ -63,4 +63,5 @@ const DESMOS_FUNCTIONS = Dict{Symbol,Function}(
     :floor => arg -> "\\operatorname{floor}\\left($arg\\right)",
     :ceil => arg -> "\\operatorname{ceil}\\left($arg\\right)",
     :round => arg -> "\\operatorname{round}\\left($arg\\right)",
+    :sum => arg -> "\\operatorname{total}\\left($arg\\right)",
 )

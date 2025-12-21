@@ -209,9 +209,17 @@ function _latexify_call(ex::Expr)
 
         # Special functions
         if func == :sum
-            return _latexify_sum(ex)
+            # Check if it's a generator expression (sum(... for ...))
+            if length(ex.args) >= 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
+                return _latexify_sum(ex)
+            end
+            # Otherwise, treat as normal function
         elseif func == :prod
-            return _latexify_prod(ex)
+            # Check if it's a generator expression (prod(... for ...))
+            if length(ex.args) >= 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
+                return _latexify_prod(ex)
+            end
+            # Otherwise, treat as normal function
         elseif func == :int
             return _latexify_int(ex)
         elseif func == :gradient

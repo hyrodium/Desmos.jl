@@ -46,15 +46,21 @@ const DESMOS_FUNCTIONS = Dict{Symbol, Function}(
     # STATISTICS
     :min => arg -> "\\min\\left($arg\\right)",
     :max => arg -> "\\max\\left($arg\\right)",
+    :sum => arg -> "\\operatorname{total}\\left($arg\\right)",
 
     # LIST OPERATIONS
+    :sort => arg -> "\\operatorname{sort}\\left($arg\\right)",
 
     # VISUALIZATIONS
 
     # PROBABILITY DISTRIBUTIONS
 
     # INFERENCE
-    # Hyperbolic functions
+
+    # CALCULUS
+    :exp => arg -> "\\exp\\left($arg\\right)",
+
+    # HYPERBOLIC TRIG FUNCTIONS
     :sinh => arg -> "\\sinh\\left($arg\\right)",
     :cosh => arg -> "\\cosh\\left($arg\\right)",
     :tanh => arg -> "\\tanh\\left($arg\\right)",
@@ -68,15 +74,22 @@ const DESMOS_FUNCTIONS = Dict{Symbol, Function}(
     :asech => arg -> "\\operatoorname{arcsech}\\left($arg\\right)",
     :acsch => arg -> "\\operatoorname{arccsch}\\left($arg\\right)",
 
-    # Other standard functions
-    :exp => arg -> "\\exp\\left($arg\\right)",
+    # GEOMETRY
+
+    # CUSTOM COLORS
+
+    # SOUND
+
+    # NUMBER THEORY
     :sqrt => arg -> "\\sqrt\\left($arg\\right)",
     :cbrt => arg -> "\\sqrt[3]\\left($arg\\right)",
+    :ceil => arg -> "\\operatorname{ceil}\\left($arg\\right)",
+    :floor => arg -> "\\operatorname{floor}\\left($arg\\right)",
+    :round => arg -> "\\operatorname{round}\\left($arg\\right)",
+
+    # ADVANCED
+
+    # OTHERS
     :factorial => arg -> "\\left($arg\\right)!",
     :abs => arg -> "\\operatorname{abs}\\left($arg\\right)",
-    :sort => arg -> "\\operatorname{sort}\\left($arg\\right)",
-    :floor => arg -> "\\operatorname{floor}\\left($arg\\right)",
-    :ceil => arg -> "\\operatorname{ceil}\\left($arg\\right)",
-    :round => arg -> "\\operatorname{round}\\left($arg\\right)",
-    :sum => arg -> "\\operatorname{total}\\left($arg\\right)",
 )

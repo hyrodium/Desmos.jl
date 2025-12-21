@@ -231,6 +231,11 @@ function _latexify_call(ex::Expr)
             return _latexify_latex_function(func, ex.args[2:end])
         end
 
+        # Functions requiring \operatorname
+        if func in NONSTANDARD_FUNCTIONS
+            return _latexify_operatorname_function(func, ex.args[2:end])
+        end
+
         # General function call
         return _latexify_general_function(func, ex.args[2:end])
     elseif func isa Expr
@@ -317,6 +322,11 @@ end
 function _latexify_latex_function(func::Symbol, args)
     args_str = join([_latexify(arg) for arg in args], ",")
     return "\\$func\\left($args_str\\right)"
+end
+
+function _latexify_operatorname_function(func::Symbol, args)
+    args_str = join([_latexify(arg) for arg in args], ",")
+    return "\\operatorname{$func}\\left($args_str\\right)"
 end
 
 function _latexify_general_function(func::Symbol, args)

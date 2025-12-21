@@ -31,3 +31,10 @@ const STANDARD_FUNCTIONS = [
     :sqrt, :abs,
     :max, :min,
 ]
+
+const NONSTANDARD_FUNCTIONS = [
+    :sort,
+    :floor,
+    :ceil,
+    :round,
+]

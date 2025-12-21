@@ -55,6 +55,14 @@
         @test Desmos.desmos_latexify(:(ifelse(a == b, 1, 0))) == "\\left\\{a=b:1,0\\right\\}"
     end
 
+    @testset "Operatorname functions" begin
+        @test Desmos.desmos_latexify(:(sort([5, 4, 88]))) == "\\operatorname{sort}\\left(\\left[5,4,88\\right]\\right)"
+        @test Desmos.desmos_latexify(:(sort(x))) == "\\operatorname{sort}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(floor(x))) == "\\operatorname{floor}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(ceil(x))) == "\\operatorname{ceil}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(round(x))) == "\\operatorname{round}\\left(x\\right)"
+    end
+
     @testset "Multi-argument functions" begin
         @test Desmos.desmos_latexify(:(f(x, y))) == "f\\left(x,y\\right)"
         @test Desmos.desmos_latexify(:(g(a, b, c))) == "g\\left(a,b,c\\right)"

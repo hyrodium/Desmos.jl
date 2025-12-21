@@ -147,15 +147,15 @@ end
         # Create DesmosExpression for each LaTeX string
         expression_list = [
             Desmos.DesmosExpression(
-                latex = latex,
-                color = "#2464b4",
-                id = string(i)
-            )
-            for (i, latex) in enumerate(latex_strings)
+                    latex = latex,
+                    color = "#2464b4",
+                    id = string(i)
+                )
+                for (i, latex) in enumerate(latex_strings)
         ]
 
         # Create DesmosState
-        state = Desmos.DesmosState(expressions = Desmos.DesmosExpressions(list=expression_list))
+        state = Desmos.DesmosState(expressions = Desmos.DesmosExpressions(list = expression_list))
         write_html(path, name, state)
         @test isfile(path)
     end

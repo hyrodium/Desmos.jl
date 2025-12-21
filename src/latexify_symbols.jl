@@ -5,13 +5,14 @@ const GREEK_LETTERS = Dict(
     'ν' => "\\nu", 'ξ' => "\\xi", 'π' => "\\pi", 'ρ' => "\\rho",
     'σ' => "\\sigma", 'τ' => "\\tau", 'υ' => "\\upsilon", 'φ' => "\\phi",
     'χ' => "\\chi", 'ψ' => "\\psi", 'ω' => "\\omega",
-    'Α' => "\\Alpha", 'Β' => "\\Beta", 'Γ' => "\\Gamma", 'Δ' => "\\Delta",
-    'Ε' => "\\Epsilon", 'Ζ' => "\\Zeta", 'Η' => "\\Eta", 'Θ' => "\\Theta",
-    'Ι' => "\\Iota", 'Κ' => "\\Kappa", 'Λ' => "\\Lambda", 'Μ' => "\\Mu",
-    'Ν' => "\\Nu", 'Ξ' => "\\Xi", 'Π' => "\\Pi", 'Ρ' => "\\Rho",
-    'Σ' => "\\Sigma", 'Τ' => "\\Tau", 'Υ' => "\\Upsilon", 'Φ' => "\\Phi",
-    'Χ' => "\\Chi", 'Ψ' => "\\Psi", 'Ω' => "\\Omega"
+    'Γ' => "\\Gamma", 'Δ' => "\\Delta", 'Θ' => "\\Theta",
+    'Λ' => "\\Lambda", 'Ξ' => "\\Xi", 'Π' => "\\Pi",
+    'Σ' => "\\Sigma", 'Υ' => "\\Upsilon", 'Φ' => "\\Phi",
+    'Ψ' => "\\Psi", 'Ω' => "\\Omega"
 )
+
+# Greek letters that are not supported by Desmos (look like Latin letters)
+const UNSUPPORTED_GREEK_LETTERS = Set(['Α', 'Β', 'Ε', 'Ζ', 'Η', 'Ι', 'Κ', 'Μ', 'Ν', 'Ρ', 'Τ', 'Χ'])
 
 const SUPERSCRIPT_MAP = Dict(
     '⁰' => "0", '¹' => "1", '²' => "2", '³' => "3", '⁴' => "4",
@@ -25,7 +26,7 @@ const SUBSCRIPT_MAP = Dict(
 
 # Map Julia function names to LaTeX string generators
 # Each function takes a LaTeX string (single argument) and returns a LaTeX string
-const DESMOS_FUNCTIONS = Dict{Symbol,Function}(
+const DESMOS_FUNCTIONS = Dict{Symbol, Function}(
     # Standard trigonometric functions
     :sin => arg -> "\\sin\\left($arg\\right)",
     :cos => arg -> "\\cos\\left($arg\\right)",
@@ -54,11 +55,11 @@ const DESMOS_FUNCTIONS = Dict{Symbol,Function}(
     :exp => arg -> "\\exp\\left($arg\\right)",
     :sqrt => arg -> "\\sqrt\\left($arg\\right)",
     :cbrt => arg -> "\\sqrt[3]\\left($arg\\right)",
-    :abs => arg -> "\\abs\\left($arg\\right)",
     :max => arg -> "\\max\\left($arg\\right)",
     :min => arg -> "\\min\\left($arg\\right)",
 
     # Non-standard functions using operatorname
+    :abs => arg -> "\\operatorname{abs}\\left($arg\\right)",
     :sort => arg -> "\\operatorname{sort}\\left($arg\\right)",
     :floor => arg -> "\\operatorname{floor}\\left($arg\\right)",
     :ceil => arg -> "\\operatorname{ceil}\\left($arg\\right)",

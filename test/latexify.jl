@@ -18,7 +18,7 @@
         @test Desmos.desmos_latexify(:(exp(x))) == "\\exp\\left(x\\right)"
         @test Desmos.desmos_latexify(:(sqrt(x))) == "\\sqrt\\left(x\\right)"
         @test Desmos.desmos_latexify(:(cbrt(x))) == "\\sqrt[3]\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(abs(x))) == "\\abs\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(abs(x))) == "\\operatorname{abs}\\left(x\\right)"
         @test Desmos.desmos_latexify(:(sinh(x))) == "\\sinh\\left(x\\right)"
         @test Desmos.desmos_latexify(:(cosh(x))) == "\\cosh\\left(x\\right)"
         @test Desmos.desmos_latexify(:(tanh(x))) == "\\tanh\\left(x\\right)"
@@ -104,8 +104,9 @@
         @test Desmos.desmos_latexify(:(x¹)) == "x^{1}"
         @test Desmos.desmos_latexify(:(x²)) == "x^{2}"
         @test Desmos.desmos_latexify(:(x⁵)) == "x^{5}"
-        @test Desmos.desmos_latexify(:(Β⁵)) == "\\Beta^{5}"
-        @test Desmos.desmos_latexify(:(α_5 - Β⁵)) == "\\alpha_{5}-\\Beta^{5}"
+        # Β (Beta) is not supported by Desmos
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Β⁵))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(α_5 - Β⁵))
     end
 
     @testset "Special values" begin
@@ -299,27 +300,28 @@
         @test Desmos.desmos_latexify(:(ψ)) == "\\psi"
         @test Desmos.desmos_latexify(:(ω)) == "\\omega"
         # Uppercase
-        @test Desmos.desmos_latexify(:(Α)) == "\\Alpha"
-        @test Desmos.desmos_latexify(:(Β)) == "\\Beta"
+        # Greek letters that look like Latin letters are not supported by Desmos
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Α))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Β))
         @test Desmos.desmos_latexify(:(Γ)) == "\\Gamma"
         @test Desmos.desmos_latexify(:(Δ)) == "\\Delta"
-        @test Desmos.desmos_latexify(:(Ε)) == "\\Epsilon"
-        @test Desmos.desmos_latexify(:(Ζ)) == "\\Zeta"
-        @test Desmos.desmos_latexify(:(Η)) == "\\Eta"
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Ε))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Ζ))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Η))
         @test Desmos.desmos_latexify(:(Θ)) == "\\Theta"
-        @test Desmos.desmos_latexify(:(Ι)) == "\\Iota"
-        @test Desmos.desmos_latexify(:(Κ)) == "\\Kappa"
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Ι))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Κ))
         @test Desmos.desmos_latexify(:(Λ)) == "\\Lambda"
-        @test Desmos.desmos_latexify(:(Μ)) == "\\Mu"
-        @test Desmos.desmos_latexify(:(Ν)) == "\\Nu"
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Μ))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Ν))
         @test Desmos.desmos_latexify(:(Ξ)) == "\\Xi"
         @test Desmos.desmos_latexify(:(Π)) == "\\Pi"
-        @test Desmos.desmos_latexify(:(Ρ)) == "\\Rho"
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Ρ))
         @test Desmos.desmos_latexify(:(Σ)) == "\\Sigma"
-        @test Desmos.desmos_latexify(:(Τ)) == "\\Tau"
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Τ))
         @test Desmos.desmos_latexify(:(Υ)) == "\\Upsilon"
         @test Desmos.desmos_latexify(:(Φ)) == "\\Phi"
-        @test Desmos.desmos_latexify(:(Χ)) == "\\Chi"
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Χ))
         @test Desmos.desmos_latexify(:(Ψ)) == "\\Psi"
         @test Desmos.desmos_latexify(:(Ω)) == "\\Omega"
     end

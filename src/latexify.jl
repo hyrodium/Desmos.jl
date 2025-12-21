@@ -62,7 +62,10 @@ function _latexify(str::AbstractString)
     while i ≤ ncodeunits(str)
         c = str[i]
 
-        if haskey(GREEK_LETTERS, c)
+        if c in UNSUPPORTED_GREEK_LETTERS
+            # Check for unsupported Greek letters
+            throw(UnsupportedDesmosSyntaxError("The Greek letter '$c' is not supported by Desmos."))
+        elseif haskey(GREEK_LETTERS, c)
             # γ → \gamma
             result *= GREEK_LETTERS[c]
             i = nextind(str, i)
@@ -95,8 +98,11 @@ function _latexify(str::AbstractString)
                 while j ≤ ncodeunits(str) && isvalid(str, j)
                     next_c = str[j]
                     if isdigit(next_c) || isletter(next_c) || next_c == '_'
-                        # Convert Greek letters in subscripts
-                        if haskey(GREEK_LETTERS, next_c)
+                        # Check for unsupported Greek letters in subscripts
+                        if next_c in UNSUPPORTED_GREEK_LETTERS
+                            throw(UnsupportedDesmosSyntaxError("The Greek letter '$next_c' is not supported by Desmos."))
+                            # Convert Greek letters in subscripts
+                        elseif haskey(GREEK_LETTERS, next_c)
                             subscript *= GREEK_LETTERS[next_c]
                         else
                             subscript *= string(next_c)

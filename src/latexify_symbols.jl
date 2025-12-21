@@ -27,7 +27,14 @@ const STANDARD_FUNCTIONS = [
     :sin, :cos, :tan, :cot, :sec, :csc,
     :sinh, :cosh, :tanh, :coth,
     :arcsin, :arccos, :arctan,
-    :log, :ln, :exp,
+    :exp,
     :sqrt, :abs,
     :max, :min,
+]
+
+const NONSTANDARD_FUNCTIONS = [
+    :sort,
+    :floor,
+    :ceil,
+    :round,
 ]

@@ -144,6 +144,30 @@ function _latexify_assignment(ex::Expr)
     return "$lhs=$rhs"
 end
 
+function _latexify_comparison(ex::Expr)
+    # Comparison and relational operators: >, <, ==, >=, <=, !=, ≥, ≤, ≠, ~
+    op = ex.args[1]
+    lhs = _latexify(ex.args[2])
+    rhs = _latexify(ex.args[3])
+
+    # Map Julia operators to LaTeX
+    op_map = Dict(
+        :> => ">",
+        :< => "<",
+        :(==) => "=",
+        :(>=) => "\\ge ",
+        :(<=) => "\\le ",
+        :(!=) => "\\ne ",
+        :≥ => "\\ge ",
+        :≤ => "\\le ",
+        :≠ => "\\ne ",
+        :~ => "\\sim "
+    )
+
+    op_str = get(op_map, op, string(op))
+    return "$lhs$op_str$rhs"
+end
+
 function _latexify_block(ex::Expr)
     # Block expressions often contain LineNumberNode entries
     # Filter them out and process only the actual expressions
@@ -178,6 +202,11 @@ function _latexify_call(ex::Expr)
             return _latexify_power(ex)
         end
 
+        # Comparison and relational operators
+        if func in (:>, :<, :(==), :(>=), :(<=), :(!=), :≥, :≤, :≠, :~)
+            return _latexify_comparison(ex)
+        end
+
         # Special functions
         if func == :sum
             return _latexify_sum(ex)
@@ -187,11 +216,24 @@ function _latexify_call(ex::Expr)
             return _latexify_int(ex)
         elseif func == :gradient
             return _latexify_gradient(ex)
+        elseif func == :log
+            return _latexify_log(ex)
+        elseif func == :log10
+            return _latexify_log10(ex)
+        elseif func == :log1p
+            return _latexify_log1p(ex)
+        elseif func == :ifelse
+            return _latexify_ifelse(ex)
         end
 
         # Standard LaTeX functions
         if func in STANDARD_FUNCTIONS
             return _latexify_latex_function(func, ex.args[2:end])
+        end
+
+        # Functions requiring \operatorname
+        if func in NONSTANDARD_FUNCTIONS
+            return _latexify_operatorname_function(func, ex.args[2:end])
         end
 
         # General function call
@@ -282,6 +324,11 @@ function _latexify_latex_function(func::Symbol, args)
     return "\\$func\\left($args_str\\right)"
 end
 
+function _latexify_operatorname_function(func::Symbol, args)
+    args_str = join([_latexify(arg) for arg in args], ",")
+    return "\\operatorname{$func}\\left($args_str\\right)"
+end
+
 function _latexify_general_function(func::Symbol, args)
     func_str = _latexify(func)
     if isempty(args)
@@ -362,4 +409,53 @@ function _latexify_gradient(ex::Expr)
     end
 
     error("gradient requires exactly 2 arguments")
+end
+
+function _latexify_log(ex::Expr)
+    # log(x) -> \ln\left(x\right) (natural logarithm)
+    # log(a, b) -> \log_{a}\left(b\right) (logarithm base a)
+    if length(ex.args) == 2
+        # log(x) -> \ln(x)
+        arg = _latexify(ex.args[2])
+        return "\\ln\\left($arg\\right)"
+    elseif length(ex.args) == 3
+        # log(a, b) -> \log_{a}(b)
+        base = _latexify(ex.args[2])
+        arg = _latexify(ex.args[3])
+        return "\\log_{$base}\\left($arg\\right)"
+    end
+
+    error("log requires 1 or 2 arguments")
+end
+
+function _latexify_log10(ex::Expr)
+    # log10(x) -> \log\left(x\right) (base-10 logarithm)
+    if length(ex.args) == 2
+        arg = _latexify(ex.args[2])
+        return "\\log\\left($arg\\right)"
+    end
+
+    error("log10 requires exactly 1 argument")
+end
+
+function _latexify_log1p(ex::Expr)
+    # log1p(p) -> \ln\left(1+p\right) (log(1+p))
+    if length(ex.args) == 2
+        arg = _latexify(ex.args[2])
+        return "\\ln\\left(1+$arg\\right)"
+    end
+
+    error("log1p requires exactly 1 argument")
+end
+
+function _latexify_ifelse(ex::Expr)
+    # ifelse(condition, true_value, false_value) -> \left\{condition:true_value,false_value\right\}
+    if length(ex.args) == 4
+        condition = _latexify(ex.args[2])
+        true_value = _latexify(ex.args[3])
+        false_value = _latexify(ex.args[4])
+        return "\\left\\{$condition:$true_value,$false_value\\right\\}"
+    end
+
+    error("ifelse requires exactly 3 arguments")
 end

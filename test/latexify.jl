@@ -16,12 +16,51 @@
         @test Desmos.desmos_latexify(:(cos(θ))) == "\\cos\\left(\\theta\\right)"
         @test Desmos.desmos_latexify(:(tan(x))) == "\\tan\\left(x\\right)"
         @test Desmos.desmos_latexify(:(exp(x))) == "\\exp\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(log(x))) == "\\log\\left(x\\right)"
         @test Desmos.desmos_latexify(:(sqrt(x))) == "\\sqrt\\left(x\\right)"
         @test Desmos.desmos_latexify(:(abs(x))) == "\\abs\\left(x\\right)"
         @test Desmos.desmos_latexify(:(sinh(x))) == "\\sinh\\left(x\\right)"
         @test Desmos.desmos_latexify(:(cosh(x))) == "\\cosh\\left(x\\right)"
         @test Desmos.desmos_latexify(:(tanh(x))) == "\\tanh\\left(x\\right)"
+    end
+
+    @testset "Logarithms" begin
+        # ln is not supported, and is parsed as standard function
+        @test Desmos.desmos_latexify(:(ln(x))) == "ln\\left(x\\right)"
+        # log functions
+        @test Desmos.desmos_latexify(:(log(x))) == "\\ln\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(log(2, x))) == "\\log_{2}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(log(a, b))) == "\\log_{a}\\left(b\\right)"
+        @test Desmos.desmos_latexify(:(log10(x))) == "\\log\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(log10(100))) == "\\log\\left(100\\right)"
+        @test Desmos.desmos_latexify(:(log1p(x))) == "\\ln\\left(1+x\\right)"
+        @test Desmos.desmos_latexify(:(log1p(a + b))) == "\\ln\\left(1+a+b\\right)"
+    end
+
+    @testset "Comparison operators" begin
+        @test Desmos.desmos_latexify(:(x > 0)) == "x>0"
+        @test Desmos.desmos_latexify(:(x < 0)) == "x<0"
+        @test Desmos.desmos_latexify(:(a == b)) == "a=b"
+        @test Desmos.desmos_latexify(:(x >= 1)) == "x\\ge 1"
+        @test Desmos.desmos_latexify(:(x <= 1)) == "x\\le 1"
+        @test Desmos.desmos_latexify(:(a != b)) == "a\\ne b"
+        # Unicode operators
+        @test Desmos.desmos_latexify(:(x ≥ 1)) == "x\\ge 1"
+        @test Desmos.desmos_latexify(:(x ≤ 1)) == "x\\le 1"
+        @test Desmos.desmos_latexify(:(a ≠ b)) == "a\\ne b"
+    end
+
+    @testset "Piecewise functions (ifelse)" begin
+        @test Desmos.desmos_latexify(:(ifelse(x > 0, x, 0))) == "\\left\\{x>0:x,0\\right\\}"
+        @test Desmos.desmos_latexify(:(ifelse(x < 0, -x, x))) == "\\left\\{x<0:-x,x\\right\\}"
+        @test Desmos.desmos_latexify(:(ifelse(a == b, 1, 0))) == "\\left\\{a=b:1,0\\right\\}"
+    end
+
+    @testset "Operatorname functions" begin
+        @test Desmos.desmos_latexify(:(sort([5, 4, 88]))) == "\\operatorname{sort}\\left(\\left[5,4,88\\right]\\right)"
+        @test Desmos.desmos_latexify(:(sort(x))) == "\\operatorname{sort}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(floor(x))) == "\\operatorname{floor}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(ceil(x))) == "\\operatorname{ceil}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(round(x))) == "\\operatorname{round}\\left(x\\right)"
     end
 
     @testset "Multi-argument functions" begin
@@ -83,6 +122,12 @@
         @test Desmos.desmos_latexify(:(y = x + 1)) == "y=x+1"
         @test Desmos.desmos_latexify(:(f(x) = x^2)) == "f\\left(x\\right)=x^{2}"
         @test Desmos.desmos_latexify(:(g(x, y) = x + y)) == "g\\left(x,y\\right)=x+y"
+    end
+
+    @testset "Tilde operator" begin
+        @test Desmos.desmos_latexify(:(y_1 ~ a * x_1 + b)) == "y_{1}\\sim a\\cdot x_{1}+b"
+        @test Desmos.desmos_latexify(:(y ~ x)) == "y\\sim x"
+        @test Desmos.desmos_latexify(:(f(x) ~ g(x))) == "f\\left(x\\right)\\sim g\\left(x\\right)"
     end
 
     @testset "Complex expressions" begin

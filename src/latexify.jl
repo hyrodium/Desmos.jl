@@ -226,14 +226,17 @@ function _latexify_call(ex::Expr)
             return _latexify_ifelse(ex)
         end
 
-        # Standard LaTeX functions
-        if func in STANDARD_FUNCTIONS
-            return _latexify_latex_function(func, ex.args[2:end])
-        end
-
-        # Functions requiring \operatorname
-        if func in NONSTANDARD_FUNCTIONS
-            return _latexify_operatorname_function(func, ex.args[2:end])
+        # Check if function is in DESMOS_FUNCTIONS
+        if haskey(DESMOS_FUNCTIONS, func)
+            # Single-argument function
+            if length(ex.args) == 2
+                arg = _latexify(ex.args[2])
+                return DESMOS_FUNCTIONS[func](arg)
+            else
+                # Multi-argument: join with commas
+                args_str = join([_latexify(arg) for arg in ex.args[2:end]], ",")
+                return DESMOS_FUNCTIONS[func](args_str)
+            end
         end
 
         # General function call
@@ -298,35 +301,12 @@ function _latexify_power(ex::Expr)
     base = _latexify(ex.args[2])
     exponent = _latexify(ex.args[3])
 
-    # Add parentheses to base
+    # Add parentheses to base if it's an expression
     if ex.args[2] isa Expr
-        # Don't add parentheses for function calls (like sin(x), cos(x), etc.)
-        if ex.args[2].head == :call
-            # Check if it's a LaTeX function or general function
-            func = ex.args[2].args[1]
-            if func isa Symbol && func in STANDARD_FUNCTIONS
-                # Don't add parentheses for LaTeX functions like \sin, \cos
-            else
-                # Add parentheses for general functions
-                base = "\\left($base\\right)"
-            end
-        else
-            # Add parentheses for all other expressions (operators, etc.)
-            base = "\\left($base\\right)"
-        end
+        base = "\\left($base\\right)"
     end
 
     return "$base^{$exponent}"
-end
-
-function _latexify_latex_function(func::Symbol, args)
-    args_str = join([_latexify(arg) for arg in args], ",")
-    return "\\$func\\left($args_str\\right)"
-end
-
-function _latexify_operatorname_function(func::Symbol, args)
-    args_str = join([_latexify(arg) for arg in args], ",")
-    return "\\operatorname{$func}\\left($args_str\\right)"
 end
 
 function _latexify_general_function(func::Symbol, args)

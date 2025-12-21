@@ -23,18 +23,43 @@ const SUBSCRIPT_MAP = Dict(
     '₅' => "5", '₆' => "6", '₇' => "7", '₈' => "8", '₉' => "9"
 )
 
-const STANDARD_FUNCTIONS = [
-    :sin, :cos, :tan, :cot, :sec, :csc,
-    :sinh, :cosh, :tanh, :coth,
-    :arcsin, :arccos, :arctan,
-    :exp,
-    :sqrt, :abs,
-    :max, :min,
-]
+# Map Julia function names to LaTeX string generators
+# Each function takes a LaTeX string (single argument) and returns a LaTeX string
+const DESMOS_FUNCTIONS = Dict{Symbol,Function}(
+    # Standard trigonometric functions
+    :sin => arg -> "\\sin\\left($arg\\right)",
+    :cos => arg -> "\\cos\\left($arg\\right)",
+    :tan => arg -> "\\tan\\left($arg\\right)",
+    :cot => arg -> "\\cot\\left($arg\\right)",
+    :sec => arg -> "\\sec\\left($arg\\right)",
+    :csc => arg -> "\\csc\\left($arg\\right)",
 
-const NONSTANDARD_FUNCTIONS = [
-    :sort,
-    :floor,
-    :ceil,
-    :round,
-]
+    # Hyperbolic functions
+    :sinh => arg -> "\\sinh\\left($arg\\right)",
+    :cosh => arg -> "\\cosh\\left($arg\\right)",
+    :tanh => arg -> "\\tanh\\left($arg\\right)",
+    :coth => arg -> "\\coth\\left($arg\\right)",
+
+    # Inverse trigonometric functions (Julia asin -> Desmos arcsin)
+    :asin => arg -> "\\arcsin\\left($arg\\right)",
+    :acos => arg -> "\\arccos\\left($arg\\right)",
+    :atan => arg -> "\\arctan\\left($arg\\right)",
+
+    # Inverse hyperbolic functions
+    :asinh => arg -> "\\arcsinh\\left($arg\\right)",
+    :acosh => arg -> "\\arccosh\\left($arg\\right)",
+    :atanh => arg -> "\\arctanh\\left($arg\\right)",
+
+    # Other standard functions
+    :exp => arg -> "\\exp\\left($arg\\right)",
+    :sqrt => arg -> "\\sqrt\\left($arg\\right)",
+    :abs => arg -> "\\abs\\left($arg\\right)",
+    :max => arg -> "\\max\\left($arg\\right)",
+    :min => arg -> "\\min\\left($arg\\right)",
+
+    # Non-standard functions using operatorname
+    :sort => arg -> "\\operatorname{sort}\\left($arg\\right)",
+    :floor => arg -> "\\operatorname{floor}\\left($arg\\right)",
+    :ceil => arg -> "\\operatorname{ceil}\\left($arg\\right)",
+    :round => arg -> "\\operatorname{round}\\left($arg\\right)",
+)

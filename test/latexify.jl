@@ -21,6 +21,10 @@
         @test Desmos.desmos_latexify(:(sinh(x))) == "\\sinh\\left(x\\right)"
         @test Desmos.desmos_latexify(:(cosh(x))) == "\\cosh\\left(x\\right)"
         @test Desmos.desmos_latexify(:(tanh(x))) == "\\tanh\\left(x\\right)"
+        # Inverse trig functions (Julia asin -> Desmos arcsin)
+        @test Desmos.desmos_latexify(:(asin(x))) == "\\arcsin\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(acos(x))) == "\\arccos\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(atan(x))) == "\\arctan\\left(x\\right)"
     end
 
     @testset "Logarithms" begin
@@ -259,7 +263,7 @@
 
     @testset "Edge cases: Function assignments" begin
         @test Desmos.desmos_latexify(:(f(x, y, z) = x + y + z)) == "f\\left(x,y,z\\right)=x+y+z"
-        @test Desmos.desmos_latexify(:(h(t) = sin(t)^2 + cos(t)^2)) == "h\\left(t\\right)=\\sin\\left(t\\right)^{2}+\\cos\\left(t\\right)^{2}"
+        @test Desmos.desmos_latexify(:(h(t) = sin(t)^2 + cos(t)^2)) == "h\\left(t\\right)=\\left(\\sin\\left(t\\right)\\right)^{2}+\\left(\\cos\\left(t\\right)\\right)^{2}"
     end
 
     @testset "Edge cases: All Greek letters" begin

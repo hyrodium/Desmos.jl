@@ -46,13 +46,14 @@ const DESMOS_FUNCTIONS = Dict{Symbol,Function}(
     :atan => arg -> "\\arctan\\left($arg\\right)",
 
     # Inverse hyperbolic functions
-    :asinh => arg -> "\\arcsinh\\left($arg\\right)",
-    :acosh => arg -> "\\arccosh\\left($arg\\right)",
-    :atanh => arg -> "\\arctanh\\left($arg\\right)",
+    :asinh => arg -> "\\operatorname{arcsinh}\\left($arg\\right)",
+    :acosh => arg -> "\\operatorname{arccosh}\\left($arg\\right)",
+    :atanh => arg -> "\\operatorname{arctanh}\\left($arg\\right)",
 
     # Other standard functions
     :exp => arg -> "\\exp\\left($arg\\right)",
     :sqrt => arg -> "\\sqrt\\left($arg\\right)",
+    :cbrt => arg -> "\\sqrt[3]\\left($arg\\right)",
     :abs => arg -> "\\abs\\left($arg\\right)",
     :max => arg -> "\\max\\left($arg\\right)",
     :min => arg -> "\\min\\left($arg\\right)",

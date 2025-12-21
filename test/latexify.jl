@@ -17,6 +17,7 @@
         @test Desmos.desmos_latexify(:(tan(x))) == "\\tan\\left(x\\right)"
         @test Desmos.desmos_latexify(:(exp(x))) == "\\exp\\left(x\\right)"
         @test Desmos.desmos_latexify(:(sqrt(x))) == "\\sqrt\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(cbrt(x))) == "\\sqrt[3]\\left(x\\right)"
         @test Desmos.desmos_latexify(:(abs(x))) == "\\abs\\left(x\\right)"
         @test Desmos.desmos_latexify(:(sinh(x))) == "\\sinh\\left(x\\right)"
         @test Desmos.desmos_latexify(:(cosh(x))) == "\\cosh\\left(x\\right)"

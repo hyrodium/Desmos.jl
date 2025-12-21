@@ -33,7 +33,7 @@
         @test Desmos.desmos_latexify(:(log10(x))) == "\\log\\left(x\\right)"
         @test Desmos.desmos_latexify(:(log10(100))) == "\\log\\left(100\\right)"
         @test Desmos.desmos_latexify(:(log1p(x))) == "\\ln\\left(1+x\\right)"
-        @test Desmos.desmos_latexify(:(log1p(a+b))) == "\\ln\\left(1+a+b\\right)"
+        @test Desmos.desmos_latexify(:(log1p(a + b))) == "\\ln\\left(1+a+b\\right)"
     end
 
     @testset "Comparison operators" begin

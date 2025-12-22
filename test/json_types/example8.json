@@ -1,0 +1,200 @@
+{
+  "version": 11,
+  "randomSeed": "fd01b5b78d6365d67a5d71ea6bb73d06",
+  "graph": {
+    "viewport": {
+      "xmin": -10,
+      "ymin": -13.725352112676056,
+      "xmax": 10,
+      "ymax": 13.725352112676056
+    },
+    "__v12ViewportLatexStash": {
+      "xmin": "-10",
+      "xmax": "10",
+      "ymin": "-13.725352112676056",
+      "ymax": "13.725352112676056"
+    }
+  },
+  "expressions": {
+    "list": [
+      {
+        "type": "expression",
+        "id": "4",
+        "color": "#6042a6",
+        "latex": "k=2",
+        "hidden": true,
+        "labelSize": "1",
+        "slider": {
+          "hardMin": true,
+          "hardMax": true,
+          "animationPeriod": 8000
+        },
+        "parametricDomain": {
+          "min": "0",
+          "max": "1"
+        },
+        "fillOpacity": "0.4",
+        "domain": {
+          "min": "0",
+          "max": "1"
+        }
+      },
+      {
+        "type": "expression",
+        "id": "2",
+        "color": "#000000",
+        "latex": "x^2+y^2=1",
+        "labelSize": "1",
+        "parametricDomain": {
+          "min": "0",
+          "max": "1"
+        },
+        "fillOpacity": "0.4",
+        "domain": {
+          "min": "0",
+          "max": "1"
+        }
+      },
+      {
+        "type": "expression",
+        "id": "14",
+        "color": "#000000",
+        "latex": "\\left(\\frac{1}{k},0\\right)",
+        "labelSize": "1",
+        "parametricDomain": {
+          "min": "0",
+          "max": "1"
+        },
+        "fillOpacity": "0.4",
+        "domain": {
+          "min": "0",
+          "max": "1"
+        }
+      },
+      {
+        "type": "expression",
+        "id": "9",
+        "color": "#c74440",
+        "latex": "\\left(k,0\\right)",
+        "labelSize": "1",
+        "parametricDomain": {
+          "min": "0",
+          "max": "1"
+        },
+        "fillOpacity": "0.4",
+        "domain": {
+          "min": "0",
+          "max": "1"
+        }
+      },
+      {
+        "type": "expression",
+        "id": "10",
+        "color": "#fa7e19",
+        "latex": "\\left(kt,1-t\\right)",
+        "labelSize": "1",
+        "parametricDomain": {
+          "min": "0",
+          "max": "1"
+        },
+        "fillOpacity": "0.4",
+        "domain": {
+          "min": "0",
+          "max": "1"
+        }
+      },
+      {
+        "type": "expression",
+        "id": "13",
+        "color": "#fa7e19",
+        "latex": "\\left(\\frac{2k}{1+k^2},\\frac{-1+k^2}{1+k^2}\\right)",
+        "labelSize": "1",
+        "parametricDomain": {
+          "min": "0",
+          "max": "1"
+        },
+        "fillOpacity": "0.4",
+        "domain": {
+          "min": "0",
+          "max": "1"
+        }
+      },
+      {
+        "type": "expression",
+        "id": "16",
+        "color": "#fa7e19",
+        "latex": "\\left(\\frac{t}{k},-1+t\\right)",
+        "labelSize": "1",
+        "parametricDomain": {
+          "min": "0",
+          "max": "1"
+        },
+        "fillOpacity": "0.4",
+        "domain": {
+          "min": "0",
+          "max": "1"
+        }
+      },
+      {
+        "type": "expression",
+        "id": "17",
+        "color": "#fa7e19",
+        "latex": "\\left(\\frac{2kt}{1+k^2},-1+\\frac{2k^2t}{1+k^2}\\right)",
+        "labelSize": "1",
+        "parametricDomain": {
+          "min": "0",
+          "max": "1"
+        },
+        "fillOpacity": "0.4",
+        "domain": {
+          "min": "0",
+          "max": "1"
+        }
+      },
+      {
+        "type": "expression",
+        "id": "18",
+        "color": "#fa7e19",
+        "latex": "\\left(\\frac{2kt}{1+k^2},1-\\frac{2t}{1+k^2}\\right)",
+        "labelSize": "1",
+        "parametricDomain": {
+          "min": "0",
+          "max": "1"
+        },
+        "fillOpacity": "0.4",
+        "domain": {
+          "min": "0",
+          "max": "1"
+        }
+      },
+      {
+        "type": "folder",
+        "id": "39",
+        "hidden": true,
+        "collapsed": true
+      },
+      {
+        "type": "image",
+        "id": "19",
+        "folderId": "39",
+        "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAAmCAYAAACyAQkgAAADKUlEQVRYR7WZgXEUMQxFSQdACaQDoANIB0AHQAdkqIAhHRAqANIBlAB0AHQAdAB6O/43Oo1l+3a9mtHksmdLX9K3vPad3TpdbtuUZ6YXpvdM+f+v6VfTz6Y3gyaZ98LZYdpP0+/Fzhdv52zQKMMA9db0SWcOoJ93AL8qtlqmAP3SdAE8CpTI3xWrALk2/VCi5/F909chCMbgKApZf2yKnTclIEAhJIPvmIdNhM/XI0DJIhlArkwvK871iGAIShLBCiTlfVTARnPMxwegJec9oAJJ9BjGQU/+2AD4J4HLlE9BkL3zxMgne16j1mULqC83hlWeHtDojODIENlEMlveX/SRlp60/yijlZEeQH1fWyhUhCy3qIM/X27v7yrL6DcbBZl7nKyBb2Xmjk0AdE3+NTJxUQMqRxjE8KmStZ6sC8h+llH4XQWqxbC0hVNR2vi48mWiRyHaknisOYB8ShViRllxLIa12cSBaBNj7HUYxmvX4zMgDws4TlafW8NNAatxbSnfiuocpkSgcnJKO/L+fbfwz2lPBL9aIlDK/tu0tvWNOBF14tgH9mBks0h9jPBmBKDGZAtps5/NBkIUtRazmZ/4mAmUFUtri7KZn7OB7sbP2UB34+dsoLvxcybQXfk5E+iu/JwJdFd+zgRa4yc7ETvSFJnRRzN+bnmxoUJ3TXnFW2QG0IyfvffPLNP+xeaAbwbQ7OS41rZOCEdbbzSmCwCi/WianW98NuLxmO+28FN8PzpheKC1zPTKxwGQN/oovfNRVvb0hCGgWflalwU487co3vnaF5FqNrWYsqyMLLha2Zm35mCo0281OWQ0ywoOWxkV6XW5sCWjfqVXTwMAzXYVHGclpHf+MuUvvY6bPN2+MY870kMPzAhZnmMDngM2pQxAswuD1srVaVWA4pl89LjtQTaDA2g8Oer+M7teFMhIi1iZ3s7ECn9fqtKtgFa9zyqNFt4eXU3b/xjmOYEBEi7FPhu7B22KgP047Hiq9AJaGOL7KKsOIP5uUw78s1702W0e/rydo6vvDo+re71+AGBx6BoQo7qMHTmf+x8SHjqAskPmY8WaWP8DQFfGJehVwbEAAAAASUVORK5CYII=",
+        "name": "x",
+        "center": "\\left(k,-0.5\\right)",
+        "width": "\\frac{21}{40}",
+        "height": "\\frac{19}{40}"
+      },
+      {
+        "type": "image",
+        "id": "37",
+        "folderId": "39",
+        "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAACqCAYAAADr/8yiAAAFfUlEQVR4Xu2di7UMQRCG3QwQAhkgA2SADJABRwQOGSACjwwIARkgAo8M6O/acur2dk3X9GOsVX3OnL27t7u6/r/+rpntne45OTe/3EhdvE3H53RcHt3dyWiDmT1xXj4GAECGlZkAHiQvn2Se/hMAriSnX6SD17wcNIBbydv76UA2VjkIAOeTdxfTcWnH8s2K0xrMXwXwaed0bQC+SRWIRqkcLIB3ydvX6XiVjh/p+HmIAMgoyAcHv6aDdPhx95r7e5AAatLR/w8AXrZmncgiAhEBLwNGvZCQl8AYxCEhr1aMeiGhkFBIqJOBkFAngZGFQkIhoU4GQkKdBEYWCgmFhDoZCAl1EhhZKCQUEupkICTUSWBkoZBQSKiTgZBQJ4GRhY5RQvldWhojt+M871TNmeajJYTz3PTBPRWlwn0Wd9PBHS1DyhoA3IEFg7pw35DcP1S6Q2vJSW4U+ZYOQPGqCyRwB0y1rAHAPUAY3qI8TZ089HT0XwHwELJ5nTUR2Nw5T4cBwMPSzDoRgZnsemxHBDwszawTEZjJrsd2RMDD0sw6EYGZ7HpsRwQ8LM2sExGYya7HdkTAw9LMOhGBmex6bEcEPCzNrBMRmMmux3ZEwMPSzDoRgZnsemxHBDwszaxzFBGwlg3OJG6YbSIQAIbR2WDoKCLQgPtwmhxFFjocOhs8iQg0kDa0SURgKJ0NxiICDaQNbRIRGEpng7GIQANpQ5tEBIbS2WAsItBA2tAmEYGhdDYYiwg0kDa0SURgKJ0NxiICDaQNbRIRGEpng7GIQANpQ5tEBIbS2WAsItBA2tAmEYGhdDYYiwg0kDa0SURgKJ0NxnoiwDLcO+lg+3628pd92d+nv3nmhnfNMO3uKTvAkH3dsbO4LLcFAM6ykby1Rb/w6Fn8XHrMRR4HwLCOuQhkLQCYerbrAQdZXv4yHSxuprAo+lEGjjr5Qmrqwi4rwLHzeBcxecAIJPE/2slC6+Jy9jUAYB3GKLUFy4AErJQchDgP8Os7EKr66Z+0Z1E0YKTsPYDBC0Cchy06FMbzTvX77+mNXlvPWEEGAm7puTSsHC9JFECQ96d4AGjZrHkERe4EoHEA9imWLd1fTtCeHGsACB/P3qAIg0us6/+VBigRJCpLElx61sdeuxqAD6kzBlFN8yVQS0xeSA0AUypLN2DtkbgEQBygIzpcW6wUaWUlsW9FgPEDgDNlCYAMwtbdOPJMJB3XpFjaGQTnb5eiZgGQPSRa2cdZkd8a0qSunOV5j/PmA6gsAJKnW7QvTpS0XJTBWm3q+hYA6XxN2tR2dfbSn+/l8R7naWsBIIez30npEsDTp7WNydXU2HMS9PRxWqeWRt2GsorWAB7e33CDOyClVDhc/7MiQAYhBedluP5nAdhM/7MAbKb/WQA20/8MAJvqfwaATfU/A8Cm+p8BoKR/zrycgaeUkScyS/89F4RElK3guJQulpEALP3Xrv8t3/QFoennSADWTEJrH/KNbvESxDIuE0uwI8+arGk4n0ahfo/+ZTwtfiMsASgxWZMBX/z5BpaX2vdfixT3N8IcgCWD2sOR9ayddqr1As7Ffp5GLRbFIc8EQM5oy4SAzIbUSDvtSztlsUi9JWMy2GTSqicCOvO4vr1pANZZFIcsKZD7v6SDV3I1M9N6205+IzBzeBYubDCOAOGWngZgTUQtZRKZvRBH8zkd77SMdn4N6DMSymcSZP7f2vdTnM/llUeydiYm4/BIbECscj4fA7zXUeAEwrjIfxmhQz4HMM6j1XyeM89mpFOI0PWwoyVXA5op7vfbUmYhC8iziKWRdKzn+2tsWbPT2NR2Fn9CKnqtPqxN7nICY1DKryR0Jj9SeOZ39A9415TjYse9t64F5Bd0REy27KIecwAAAABJRU5ErkJggg==",
+        "name": "\\frac{1}{x}",
+        "center": "\\left(\\frac{1}{k},1.2\\right)",
+        "width": "\\frac{24}{40}",
+        "height": "\\frac{85}{40}"
+      }
+    ]
+  },
+  "includeFunctionParametersInRandomSeed": true,
+  "doNotMigrateMovablePointStyle": true
+}

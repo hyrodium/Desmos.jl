@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Working with Desmos Text I/O · Desmos.jl</title><meta name="title" content="Working with Desmos Text I/O · Desmos.jl"/><meta property="og:title" content="Working with Desmos Text I/O · Desmos.jl"/><meta property="twitter:title" content="Working with Desmos Text I/O · Desmos.jl"/><meta name="description" content="Documentation for Desmos.jl."/><meta property="og:description" content="Documentation for Desmos.jl."/><meta property="twitter:description" content="Documentation for Desmos.jl."/><meta property="og:url" content="https://hyrodium.github.io/Desmos.jl/stable/desmos-text-io/"/><meta property="twitter:url" content="https://hyrodium.github.io/Desmos.jl/stable/desmos-text-io/"/><link rel="canonical" href="https://hyrodium.github.io/Desmos.jl/stable/desmos-text-io/"/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><link href="../assets/favicon.ico" rel="icon" type="image/x-icon"/><link href="../assets/custom.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.svg" alt="Desmos.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">Desmos.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><a class="tocitem" href="../examples/">Examples</a></li><li><a class="tocitem" href="../config/">Display Configuration</a></li><li class="is-active"><a class="tocitem" href>Working with Desmos Text I/O</a><ul class="internal"><li><a class="tocitem" href="#Installation"><span>Installation</span></a></li><li><a class="tocitem" href="#How-It-Works"><span>How It Works</span></a></li><li><a class="tocitem" href="#Exporting-from-Julia-to-Desmos"><span>Exporting from Julia to Desmos</span></a></li><li><a class="tocitem" href="#Importing-from-Desmos-to-Julia"><span>Importing from Desmos to Julia</span></a></li><li><a class="tocitem" href="#Working-with-the-Clipboard"><span>Working with the Clipboard</span></a></li><li><a class="tocitem" href="#Saving-and-Loading-Graphs"><span>Saving and Loading Graphs</span></a></li><li><a class="tocitem" href="#Related-Configuration"><span>Related Configuration</span></a></li></ul></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Working with Desmos Text I/O</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Working with Desmos Text I/O</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/hyrodium/Desmos.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/hyrodium/Desmos.jl/blob/main/docs/src/desmos-text-io.md#L" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Working-with-Desmos-Text-I/O"><a class="docs-heading-anchor" href="#Working-with-Desmos-Text-I/O">Working with Desmos Text I/O</a><a id="Working-with-Desmos-Text-I/O-1"></a><a class="docs-heading-anchor-permalink" href="#Working-with-Desmos-Text-I/O" title="Permalink"></a></h1><p><a href="https://github.com/hyrodium/DesmosTextIO">Desmos Text I/O</a> is a browser extension that enables importing and exporting Desmos graphs as text/JSON. This extension works seamlessly with Desmos.jl, allowing you to transfer graphs between Julia and the Desmos web interface.</p><p><a href="https://github.com/hyrodium/DesmosTextIO"><img src="https://raw.githubusercontent.com/hyrodium/desmos-text-io/main/logo.svg" alt/></a></p><h2 id="Installation"><a class="docs-heading-anchor" href="#Installation">Installation</a><a id="Installation-1"></a><a class="docs-heading-anchor-permalink" href="#Installation" title="Permalink"></a></h2><p>The extension is available for multiple browsers:</p><ul><li><a href="https://chrome.google.com/webstore/detail/desmos-text-io/ndjdcebpigpfidnilppdpcdkibidfmaa">Chrome Web Store</a></li><li><a href="https://addons.mozilla.org/en-US/firefox/addon/desmos-text-i-o/">Firefox ADD-ONS</a></li></ul><h2 id="How-It-Works"><a class="docs-heading-anchor" href="#How-It-Works">How It Works</a><a id="How-It-Works-1"></a><a class="docs-heading-anchor-permalink" href="#How-It-Works" title="Permalink"></a></h2><p>Desmos Text I/O allows you to:</p><ol><li><strong>Export from Desmos</strong>: Copy the JSON state of any Desmos graph to your clipboard</li><li><strong>Import to Desmos</strong>: Paste JSON state to recreate a graph in Desmos</li><li><strong>Share graphs as text</strong>: Store and share complete graph configurations as JSON</li></ol><p>This makes it easy to:</p><ul><li>Transfer graphs created in Julia to the Desmos web interface</li><li>Import existing Desmos graphs into your Julia workflow</li><li>Share reproducible graph configurations with collaborators</li></ul><h2 id="Exporting-from-Julia-to-Desmos"><a class="docs-heading-anchor" href="#Exporting-from-Julia-to-Desmos">Exporting from Julia to Desmos</a><a id="Exporting-from-Julia-to-Desmos-1"></a><a class="docs-heading-anchor-permalink" href="#Exporting-from-Julia-to-Desmos" title="Permalink"></a></h2><ol><li>Create a graph in Julia using Desmos.jl</li><li>Enable clipboard mode in the <a href="../config/">display configuration</a>:</li></ol><pre><code class="language-julia hljs">using Desmos
+
+# Enable clipboard export button
+Desmos.set_desmos_display_config(clipboard=true)
+
+# Create your graph
+state = @desmos begin
+    @text &quot;My graph&quot;
+    @expression sin(x) + cos(2x)
+    @expression y = x^2 domain = -2..2
+end</code></pre>    <div class="desmos-container" id="desmos-3469621374930058163" style="width:600px;height:400px;"></div>
+<div style="margin-top:10px;">
+    <button id="export-btn-3469621374930058163" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
+    <span id="export-status-3469621374930058163" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
+</div>
+    <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+    <script>
+        (function() {
+            var elt = document.getElementById("desmos-3469621374930058163");
+            var calculator = Desmos.GraphingCalculator(elt);
+            calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"text","id":"1","text":"My graph"},{"type":"expression","id":"2","color":"#000000","latex":"\\sin\\left(x\\right)+\\cos\\left(2x\\right)"},{"type":"expression","id":"3","color":"#000000","latex":"y=x^{2}","domain":{"min":"-2","max":"2"}}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
+
+        var exportBtn = document.getElementById("export-btn-3469621374930058163");
+        var exportStatus = document.getElementById("export-status-3469621374930058163");
+        exportBtn.addEventListener('click', function() {
+            var currentState = calculator.getState();
+            var stateJson = JSON.stringify(currentState, null, 2);
+            navigator.clipboard.writeText(stateJson).then(function() {
+                exportStatus.textContent = 'Exported!';
+                exportStatus.style.color = '#4CAF50';
+                setTimeout(function() {
+                    exportStatus.textContent = '';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy:', err);
+                exportStatus.textContent = 'Export failed!';
+                exportStatus.style.color = '#f44336';
+                setTimeout(function() {
+                    exportStatus.textContent = '';
+                }, 2000);
+            });
+        });
+        })();
+    </script>
+<ol><li>Click the clipboard export button in the rendered plot pane</li><li>Open <a href="https://www.desmos.com/calculator">Desmos Graphing Calculator</a></li><li>Use the Desmos Text I/O extension to import the copied JSON</li></ol><h2 id="Importing-from-Desmos-to-Julia"><a class="docs-heading-anchor" href="#Importing-from-Desmos-to-Julia">Importing from Desmos to Julia</a><a id="Importing-from-Desmos-to-Julia-1"></a><a class="docs-heading-anchor-permalink" href="#Importing-from-Desmos-to-Julia" title="Permalink"></a></h2><p>The easiest way to import a graph from Desmos is using the <a href="../api/#Desmos.clipboard_desmos_state-Tuple{}"><code>clipboard_desmos_state</code></a> function:</p><ol><li>Open a graph in <a href="https://www.desmos.com/calculator">Desmos Graphing Calculator</a></li><li>Use the Desmos Text I/O extension to export the graph as JSON to your clipboard</li><li>In Julia, import the graph directly:</li></ol><pre><code class="language-julia hljs">using Desmos
+
+# Import the graph state from clipboard
+state = Desmos.clipboard_desmos_state()</code></pre><p>The function reads JSON data from the system clipboard and parses it into a <a href="../api/#Desmos.DesmosState"><code>DesmosState</code></a> object.</p><h2 id="Working-with-the-Clipboard"><a class="docs-heading-anchor" href="#Working-with-the-Clipboard">Working with the Clipboard</a><a id="Working-with-the-Clipboard-1"></a><a class="docs-heading-anchor-permalink" href="#Working-with-the-Clipboard" title="Permalink"></a></h2><p>The <a href="../api/#Desmos.clipboard_desmos_state-Tuple{}"><code>clipboard_desmos_state</code></a> function works both ways:</p><h3 id="Exporting-to-Clipboard"><a class="docs-heading-anchor" href="#Exporting-to-Clipboard">Exporting to Clipboard</a><a id="Exporting-to-Clipboard-1"></a><a class="docs-heading-anchor-permalink" href="#Exporting-to-Clipboard" title="Permalink"></a></h3><pre><code class="language-julia hljs">using Desmos
+
+state = @desmos begin
+    @expression y = sin(x) * cos(2x)
+    @expression y = x^2 - 3 domain = -2..2
+end</code></pre>    <div class="desmos-container" id="desmos-15423027874311826855" style="width:600px;height:400px;"></div>
+<div style="margin-top:10px;">
+    <button id="export-btn-15423027874311826855" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
+    <span id="export-status-15423027874311826855" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
+</div>
+    <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+    <script>
+        (function() {
+            var elt = document.getElementById("desmos-15423027874311826855");
+            var calculator = Desmos.GraphingCalculator(elt);
+            calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"expression","id":"1","color":"#000000","latex":"y=\\sin\\left(x\\right)\\cos\\left(2x\\right)"},{"type":"expression","id":"2","color":"#000000","latex":"y=x^{2}-3","domain":{"min":"-2","max":"2"}}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
+
+        var exportBtn = document.getElementById("export-btn-15423027874311826855");
+        var exportStatus = document.getElementById("export-status-15423027874311826855");
+        exportBtn.addEventListener('click', function() {
+            var currentState = calculator.getState();
+            var stateJson = JSON.stringify(currentState, null, 2);
+            navigator.clipboard.writeText(stateJson).then(function() {
+                exportStatus.textContent = 'Exported!';
+                exportStatus.style.color = '#4CAF50';
+                setTimeout(function() {
+                    exportStatus.textContent = '';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy:', err);
+                exportStatus.textContent = 'Export failed!';
+                exportStatus.style.color = '#f44336';
+                setTimeout(function() {
+                    exportStatus.textContent = '';
+                }, 2000);
+            });
+        });
+        })();
+    </script>
+<pre><code class="language-julia hljs"># Copy the state to clipboard as JSON
+Desmos.clipboard_desmos_state(state)
+# Now you can paste it into Desmos using the Text I/O extension</code></pre><h3 id="Round-trip-Example"><a class="docs-heading-anchor" href="#Round-trip-Example">Round-trip Example</a><a id="Round-trip-Example-1"></a><a class="docs-heading-anchor-permalink" href="#Round-trip-Example" title="Permalink"></a></h3><pre><code class="language-julia hljs"># 1. Create and export a graph
+state = @desmos begin
+    @expression f(x) = x^2
+end
+Desmos.clipboard_desmos_state(state)
+
+# 2. Edit in Desmos web interface, then export using Text I/O extension
+
+# 3. Import the modified graph back to Julia
+modified_state = Desmos.clipboard_desmos_state()</code></pre><h2 id="Saving-and-Loading-Graphs"><a class="docs-heading-anchor" href="#Saving-and-Loading-Graphs">Saving and Loading Graphs</a><a id="Saving-and-Loading-Graphs-1"></a><a class="docs-heading-anchor-permalink" href="#Saving-and-Loading-Graphs" title="Permalink"></a></h2><p>You can save graph configurations as JSON files for reproducibility:</p><pre><code class="language-julia hljs">using Desmos, JSON
+
+state = @desmos begin
+    @expression f(x) = sin(x) * exp(-x/10)
+end
+
+# Save to file
+open(&quot;my_graph.json&quot;, &quot;w&quot;) do io
+    JSON.print(io, state, 2)
+end
+
+# Load later
+loaded_state = JSON.parsefile(&quot;my_graph.json&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">JSON.Object{String, Any} with 6 entries:
+  &quot;version&quot;                 =&gt; 11
+  &quot;randomSeed&quot;              =&gt; &quot;00000000000000000000000000000000&quot;
+  &quot;graph&quot;                   =&gt; Object{String, Any}()
+  &quot;expressions&quot;             =&gt; Object{String, Any}(&quot;list&quot;=&gt;Any[Object{String, A…
+  &quot;includeFunctionParamete… =&gt; true
+  &quot;doNotMigrateMovablePoin… =&gt; true</code></pre><h2 id="Related-Configuration"><a class="docs-heading-anchor" href="#Related-Configuration">Related Configuration</a><a id="Related-Configuration-1"></a><a class="docs-heading-anchor-permalink" href="#Related-Configuration" title="Permalink"></a></h2><p>See the <a href="../config/">Display Configuration</a> page for details on enabling clipboard mode and other display options that enhance the Desmos Text I/O workflow.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../config/">« Display Configuration</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Monday 22 December 2025 12:04">Monday 22 December 2025</span>. Using Julia version 1.12.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

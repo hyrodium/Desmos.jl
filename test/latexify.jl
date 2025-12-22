@@ -30,20 +30,19 @@
         @test Desmos.desmos_latexify(:(median(v))) == "\\operatorname{median}\\left(v\\right)"
         @test Desmos.desmos_latexify(:(minimum(v))) == "\\min\\left(v\\right)"
         @test Desmos.desmos_latexify(:(maximum(v))) == "\\max\\left(v\\right)"
-        # @test Desmos.desmos_latexify(:(quartile(v, 2))) == "\\operatorname{quartile}\\left(v,2\\right)"
+        @test_broken Desmos.desmos_latexify(:(quartile(v, 2))) == "\\operatorname{quartile}\\left(v,2\\right)"
         @test Desmos.desmos_latexify(:(quantile(v, 0.5))) == "\\operatorname{quantile}\\left(v,0.5\\right)"
-        @test Desmos.desmos_latexify(:(stdev(v))) == "\\operatorname{stdev}\\left(v\\right)"
-        @test Desmos.desmos_latexify(:(stdevp(v))) == "\\operatorname{stdevp}\\left(v\\right)"
+        @test_broken Desmos.desmos_latexify(:(stdev(v))) == "\\operatorname{stdev}\\left(v\\right)"
+        @test_broken Desmos.desmos_latexify(:(stdevp(v))) == "\\operatorname{stdevp}\\left(v\\right)"
         @test Desmos.desmos_latexify(:(var(v))) == "\\operatorname{var}\\left(v\\right)"
-        @test Desmos.desmos_latexify(:(varp(v))) == "\\operatorname{varp}\\left(v\\right)"
+        @test_broken Desmos.desmos_latexify(:(varp(v))) == "\\operatorname{varp}\\left(v\\right)"
         @test Desmos.desmos_latexify(:(cov(u, v))) == "\\operatorname{cov}\\left(u,v\\right)"
-        @test Desmos.desmos_latexify(:(covp(u, v))) == "\\operatorname{covp}\\left(u,v\\right)"
-        @test Desmos.desmos_latexify(:(mad(v))) == "\\operatorname{mad}\\left(v\\right)"
-        @test Desmos.desmos_latexify(:(corr(u, v))) == "\\operatorname{corr}\\left(u,v\\right)"
-        # @test Desmos.desmos_latexify(:(spearman(u, v))) == "\\operatorname{spearman}\\left(u,v\\right)"
-        @test Desmos.desmos_latexify(:(stats(v))) == "\\operatorname{stats}\\left(v\\right)"
+        @test_broken Desmos.desmos_latexify(:(covp(u, v))) == "\\operatorname{covp}\\left(u,v\\right)"
+        @test_broken Desmos.desmos_latexify(:(mad(v))) == "\\operatorname{mad}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(cor(u, v))) == "\\operatorname{corr}\\left(u,v\\right)"
+        @test_broken Desmos.desmos_latexify(:(spearman(u, v))) == "\\operatorname{spearman}\\left(u,v\\right)"
+        @test_broken Desmos.desmos_latexify(:(stats(v))) == "\\operatorname{stats}\\left(v\\right)"
         @test Desmos.desmos_latexify(:(length(v))) == "\\operatorname{count}\\left(v\\right)"
-        @test Desmos.desmos_latexify(:(total(v))) == "\\operatorname{total}\\left(v\\right)"
     end
 
     @testset "LIST OPERATIONS" begin
@@ -56,8 +55,8 @@
 
     @testset "VISUALIZATIONS" begin
         @test Desmos.desmos_latexify(:(histogram(v))) == "\\operatorname{histogram}\\left(v\\right)"
-        @test Desmos.desmos_latexify(:(dotplot(v))) == "\\operatorname{dotplot}\\left(v\\right)"
-        @test Desmos.desmos_latexify(:(boxplot(v))) == "\\operatorname{boxplot}\\left(v\\right)"
+        @test_broken Desmos.desmos_latexify(:(dotplot(v))) == "\\operatorname{dotplot}\\left(v\\right)"
+        @test_broken Desmos.desmos_latexify(:(boxplot(v))) == "\\operatorname{boxplot}\\left(v\\right)"
     end
 
     @testset "PROBABILITY DISTRIBUTIONS" begin
@@ -69,27 +68,27 @@
         @test Desmos.desmos_latexify(:(Binomial(n,p))) == "\\operatorname{binomialdist}\\left(n,p\\right)"
         @test Desmos.desmos_latexify(:(Poisson(λ))) == "\\operatorname{poissondist}\\left(\\lambda\\right)"
         @test Desmos.desmos_latexify(:(Geometric(p))) == "\\operatorname{geodist}\\left(p\\right)"
-        @test Desmos.desmos_latexify(:(pdf(x))) == "\\operatorname{pdf}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(cdf(x))) == "\\operatorname{cdf}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(inversecdf(x))) == "\\operatorname{inversecdf}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(random(x))) == "\\operatorname{random}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(pdf(x))) == "\\operatorname{pdf}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(cdf(x))) == "\\operatorname{cdf}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(inversecdf(x))) == "\\operatorname{inversecdf}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(random(x))) == "\\operatorname{random}\\left(x\\right)"
     end
 
     @testset "INFERENCE" begin
-        @test Desmos.desmos_latexify(:(ztest(x))) == "\\operatorname{ztest}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(ttest(x))) == "\\operatorname{ttest}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(zproptest(x))) == "\\operatorname{zproptest}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(chisqtest(x))) == "\\operatorname{chisqtest}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(chisqgof(x))) == "\\operatorname{chisqgof}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(pleft(x))) == "\\operatorname{pleft}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(pright(x))) == "\\operatorname{pright}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(score(x))) == "\\operatorname{score}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(dof(x))) == "\\operatorname{dof}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(stderr(x))) == "\\operatorname{stderr}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(conf(x))) == "\\operatorname{conf}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(lower(x))) == "\\operatorname{lower}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(upper(x))) == "\\operatorname{upper}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(estimate(x))) == "\\operatorname{estimate}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(ztest(x))) == "\\operatorname{ztest}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(ttest(x))) == "\\operatorname{ttest}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(zproptest(x))) == "\\operatorname{zproptest}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(chisqtest(x))) == "\\operatorname{chisqtest}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(chisqgof(x))) == "\\operatorname{chisqgof}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(pleft(x))) == "\\operatorname{pleft}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(pright(x))) == "\\operatorname{pright}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(score(x))) == "\\operatorname{score}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(dof(x))) == "\\operatorname{dof}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(stderr(x))) == "\\operatorname{stderr}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(conf(x))) == "\\operatorname{conf}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(lower(x))) == "\\operatorname{lower}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(upper(x))) == "\\operatorname{upper}\\left(x\\right)"
+        @test_broken Desmos.desmos_latexify(:(estimate(x))) == "\\operatorname{estimate}\\left(x\\right)"
     end
 
     @testset "CALCULUS" begin

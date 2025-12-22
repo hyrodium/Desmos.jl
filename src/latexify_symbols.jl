@@ -30,6 +30,9 @@ const UNSUPPORTED_OPERATORS = [:(!=), :≠]
 # Map Julia function names to LaTeX string templates
 # Each template uses ARG1 as a placeholder for the argument
 const DESMOS_FUNCTIONS_1ARG = Dict{Symbol, String}(
+    # ARITHMETIC OPERATORS
+    :- => "-ARG1",  # Unary minus
+
     # TRIG FUNCTIONS
     :sin => "\\sin\\left(ARG1\\right)",
     :cos => "\\cos\\left(ARG1\\right)",
@@ -150,6 +153,10 @@ const DESMOS_FUNCTIONS_1ARG = Dict{Symbol, String}(
 # Map Julia function names to LaTeX string templates (2 arguments)
 # Each template uses ARG1 and ARG2 as placeholders
 const DESMOS_FUNCTIONS_2ARG = Dict{Symbol, String}(
+    # ARITHMETIC OPERATORS
+    :- => "ARG1-ARG2",  # Binary minus
+    :/ => "\\frac{ARG1}{ARG2}",  # Division
+
     # STATISTICS
     :cov => "\\operatorname{cov}\\left(ARG1,ARG2\\right)",
     :covp => "\\operatorname{covp}\\left(ARG1,ARG2\\right)",
@@ -178,13 +185,16 @@ const DESMOS_FUNCTIONS_2ARG = Dict{Symbol, String}(
 # Map Julia function names to LaTeX string templates (3 arguments)
 # Each template uses ARG1, ARG2, and ARG3 as placeholders
 const DESMOS_FUNCTIONS_3ARG = Dict{Symbol, String}(
-    # CONTROL FLOW
+    # OTHERS
     :ifelse => "\\left\\{ARG1:ARG2,ARG3\\right\\}",
 )
 
 # Map Julia function names to LaTeX string templates (n arguments)
 # Each template uses ARGS as a placeholder for comma-separated arguments
 const DESMOS_FUNCTIONS_nARG = Dict{Symbol, String}(
+    # ARITHMETIC OPERATORS
+    :+ => "ARGS",  # Addition (note: args are joined with + in latexify.jl)
+
     # STATISTICS
     :min => "\\min\\left(ARGS\\right)",
     :max => "\\max\\left(ARGS\\right)",

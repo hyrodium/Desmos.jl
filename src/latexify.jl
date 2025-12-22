@@ -57,81 +57,49 @@ function _latexify(str::AbstractString)
         return "\\infty"
     end
 
-    result = ""
-    i = 1
-    while i ≤ ncodeunits(str)
-        c = str[i]
+    chars = collect(str)
 
-        if c in UNSUPPORTED_GREEK_LETTERS
-            # Check for unsupported Greek letters
+    # Handle first character
+    first_char = chars[1]
+    if first_char in UNSUPPORTED_GREEK_LETTERS
+        throw(UnsupportedDesmosSyntaxError("The Greek letter '$first_char' is not supported by Desmos."))
+    elseif haskey(GREEK_LETTERS, first_char)
+        result = GREEK_LETTERS[first_char]
+    elseif isletter(first_char) || isdigit(first_char)
+        result = string(first_char)
+    else
+        throw(UnsupportedDesmosSyntaxError("Invalid identifier character: '$first_char'"))
+    end
+
+    # If there's only one character, return it
+    if length(chars) == 1
+        return result
+    end
+
+    # Process remaining characters as subscript
+    subscript = ""
+    for c in chars[2:end]
+        if c == '_'
+            # Underscore is ignored (skip it)
+            continue
+        elseif c in UNSUPPORTED_GREEK_LETTERS
             throw(UnsupportedDesmosSyntaxError("The Greek letter '$c' is not supported by Desmos."))
-        elseif haskey(GREEK_LETTERS, c)
-            # γ → \gamma
-            result *= GREEK_LETTERS[c]
-            i = nextind(str, i)
-
         elseif haskey(SUBSCRIPT_MAP, c)
-            # a₄ → a_4
-            subscript = ""
-            while i ≤ ncodeunits(str) && isvalid(str, i) && haskey(SUBSCRIPT_MAP, str[i])
-                subscript *= SUBSCRIPT_MAP[str[i]]
-                i = nextind(str, i)
-            end
-            result *= "_{$subscript}"
-
-        elseif haskey(SUPERSCRIPT_MAP, c)
-            # a⁵ → a^5
-            superscript = ""
-            while i ≤ ncodeunits(str) && isvalid(str, i) && haskey(SUPERSCRIPT_MAP, str[i])
-                superscript *= SUPERSCRIPT_MAP[str[i]]
-                i = nextind(str, i)
-            end
-            result *= "^{$superscript}"
-
-        elseif c == '_'
-            # a_b_c → a_{b_{c}}
-            next_i = nextind(str, i)
-            if next_i ≤ ncodeunits(str) && isvalid(str, next_i)
-                # Collect all consecutive alphanumeric characters (including underscores for nested subscripts)
-                subscript = ""
-                j = next_i
-                while j ≤ ncodeunits(str) && isvalid(str, j)
-                    next_c = str[j]
-                    if isdigit(next_c) || isletter(next_c) || next_c == '_'
-                        # Check for unsupported Greek letters in subscripts
-                        if next_c in UNSUPPORTED_GREEK_LETTERS
-                            throw(UnsupportedDesmosSyntaxError("The Greek letter '$next_c' is not supported by Desmos."))
-                            # Convert Greek letters in subscripts
-                        elseif haskey(GREEK_LETTERS, next_c)
-                            subscript *= GREEK_LETTERS[next_c]
-                        else
-                            subscript *= string(next_c)
-                        end
-                        j = nextind(str, j)
-                    else
-                        break
-                    end
-                end
-                if !isempty(subscript)
-                    # Handle nested subscripts: convert "a_b" within subscript to "a_{b}"
-                    subscript = replace(subscript, r"_(.+)" => s"_{\1}")
-                    result *= "_{$subscript}"
-                    i = j
-                else
-                    result *= "_"
-                    i = next_i
-                end
-            else
-                result *= "_"
-                i = nextind(str, i)
-            end
+            # Unicode subscript: ₄ → 4
+            subscript *= SUBSCRIPT_MAP[c]
+        elseif haskey(GREEK_LETTERS, c)
+            # Greek letters not allowed in subscripts
+            throw(UnsupportedDesmosSyntaxError("Greek letters are not allowed in subscripts. Use Latin letters or digits only."))
+        elseif isletter(c) || isdigit(c)
+            # Only Latin letters (a-z, A-Z) and digits (0-9) are allowed
+            subscript *= string(c)
         else
-            result *= string(c)
-            i = nextind(str, i)
+            # Any other character is not allowed
+            throw(UnsupportedDesmosSyntaxError("Invalid subscript character: '$c'. Only Latin letters, digits, and underscore are allowed."))
         end
     end
 
-    return result
+    return result * "_{$subscript}"
 end
 
 function _latexify_tuple(ex::Expr)
@@ -177,14 +145,8 @@ function _latexify_call(ex::Expr)
         end
 
         # Binary operators
-        if func == :+
-            return _latexify_plus(ex)
-        elseif func == :-
-            return _latexify_minus(ex)
-        elseif func == :*
+        if func == :*
             return _latexify_multiply(ex)
-        elseif func == :/
-            return _latexify_divide(ex)
         elseif func == :^
             return _latexify_power(ex)
         end
@@ -231,7 +193,9 @@ function _latexify_call(ex::Expr)
             return replace(template, "ARG1" => arg1, "ARG2" => arg2, "ARG3" => arg3)
         elseif haskey(DESMOS_FUNCTIONS_nARG, func)
             # Variable-argument function
-            args_str = join([_latexify(arg) for arg in ex.args[2:end]], ",")
+            # Special case for addition: join with "+" instead of ","
+            separator = (func == :+) ? "+" : ","
+            args_str = join([_latexify(arg) for arg in ex.args[2:end]], separator)
             template = DESMOS_FUNCTIONS_nARG[func]
             return replace(template, "ARGS" => args_str)
         end
@@ -253,27 +217,6 @@ function _latexify_call(ex::Expr)
     error("Unsupported function type in call expression: $(typeof(func))")
 end
 
-function _latexify_plus(ex::Expr)
-    terms = [_latexify(arg) for arg in ex.args[2:end]]
-    result = join(terms, "+")
-    # Handle negative signs: "+-x" -> "-x"
-    result = replace(result, r"\+-" => "-")
-    return result
-end
-
-function _latexify_minus(ex::Expr)
-    if length(ex.args) == 2
-        # Unary minus
-        arg = _latexify(ex.args[2])
-        return "-$arg"
-    else
-        # Binary minus
-        lhs = _latexify(ex.args[2])
-        rhs = _latexify(ex.args[3])
-        return "$lhs-$rhs"
-    end
-end
-
 function _latexify_multiply(ex::Expr)
     # Add parentheses around addition/subtraction expressions to preserve precedence
     factors = []
@@ -285,13 +228,7 @@ function _latexify_multiply(ex::Expr)
         end
         push!(factors, latex_arg)
     end
-    return join(factors, "\\cdot ")
-end
-
-function _latexify_divide(ex::Expr)
-    numerator = _latexify(ex.args[2])
-    denominator = _latexify(ex.args[3])
-    return "\\frac{$numerator}{$denominator}"
+    return join(factors)
 end
 
 function _latexify_power(ex::Expr)

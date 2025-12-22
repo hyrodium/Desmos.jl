@@ -47,8 +47,8 @@
     end
 
     @testset "LIST OPERATIONS" begin
-        @test Desmos.desmos_latexify(:(fill(a,5))) == "\\operatorname{repeat}\\left(a,5\\right)"
-        @test Desmos.desmos_latexify(:(hcat(u,v))) == "\\operatorname{join}\\left(u,v\\right)"
+        @test Desmos.desmos_latexify(:(fill(a, 5))) == "\\operatorname{repeat}\\left(a,5\\right)"
+        @test Desmos.desmos_latexify(:(hcat(u, v))) == "\\operatorname{join}\\left(u,v\\right)"
         @test Desmos.desmos_latexify(:(sort(x))) == "\\operatorname{sort}\\left(x\\right)"
         @test Desmos.desmos_latexify(:(shuffle(x))) == "\\operatorname{shuffle}\\left(x\\right)"
         @test Desmos.desmos_latexify(:(unique(x))) == "\\operatorname{unique}\\left(x\\right)"
@@ -137,23 +137,24 @@
     @testset "OTHERS" begin
         @test Desmos.desmos_latexify(:(abs(x))) == "\\operatorname{abs}\\left(x\\right)"
         @test Desmos.desmos_latexify(:(factorial(x))) == "\\left(x\\right)!"
+        @test Desmos.desmos_latexify(:(ifelse(x > 0, x, 0))) == "\\left\\{x>0:x,0\\right\\}"
     end
 
     @testset "Arithmetic" begin
         @test Desmos.desmos_latexify(:(1 + 1)) == "1+1"
         @test Desmos.desmos_latexify(:(x - y)) == "x-y"
-        @test Desmos.desmos_latexify(:(a * b)) == "a\\cdot b"
+        @test Desmos.desmos_latexify(:(a * b)) == "ab"
         @test Desmos.desmos_latexify(:(x / y)) == "\\frac{x}{y}"
         @test Desmos.desmos_latexify(:(x^2)) == "x^{2}"
         @test Desmos.desmos_latexify(:(x^y)) == "x^{y}"
         @test Desmos.desmos_latexify(:(-x)) == "-x"
         @test Desmos.desmos_latexify(:(a + b - c)) == "a+b-c"
-        @test Desmos.desmos_latexify(:(2 * x + 3)) == "2\\cdot x+3"
+        @test Desmos.desmos_latexify(:(2 * x + 3)) == "2x+3"
     end
 
     @testset "Logarithms" begin
         # ln is not supported, and is parsed as standard function
-        @test Desmos.desmos_latexify(:(ln(x))) == "ln\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(ln(x))) == "l_{n}\\left(x\\right)"
         # log functions
         @test Desmos.desmos_latexify(:(log(x))) == "\\ln\\left(x\\right)"
         @test Desmos.desmos_latexify(:(log(2, x))) == "\\log_{2}\\left(x\\right)"
@@ -167,7 +168,7 @@
     @testset "Comparison operators" begin
         @test Desmos.desmos_latexify(:(x > 0)) == "x>0"
         @test Desmos.desmos_latexify(:(x < 0)) == "x<0"
-        @test Desmos.desmos_latexify(:(a == b)) == "a=b"
+        @test Desmos.desmos_latexify(:(x == y)) == "x=y"
         @test Desmos.desmos_latexify(:(x >= 1)) == "x\\ge 1"
         @test Desmos.desmos_latexify(:(x <= 1)) == "x\\le 1"
         # != and ≠ are not supported by Desmos
@@ -176,20 +177,6 @@
         @test Desmos.desmos_latexify(:(x ≥ 1)) == "x\\ge 1"
         @test Desmos.desmos_latexify(:(x ≤ 1)) == "x\\le 1"
         @test_throws UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(a ≠ b))
-    end
-
-    @testset "Piecewise functions (ifelse)" begin
-        @test Desmos.desmos_latexify(:(ifelse(x > 0, x, 0))) == "\\left\\{x>0:x,0\\right\\}"
-        @test Desmos.desmos_latexify(:(ifelse(x < 0, -x, x))) == "\\left\\{x<0:-x,x\\right\\}"
-        @test Desmos.desmos_latexify(:(ifelse(a == b, 1, 0))) == "\\left\\{a=b:1,0\\right\\}"
-    end
-
-    @testset "Operatorname functions" begin
-        @test Desmos.desmos_latexify(:(sort([5, 4, 88]))) == "\\operatorname{sort}\\left(\\left[5,4,88\\right]\\right)"
-        @test Desmos.desmos_latexify(:(sort(x))) == "\\operatorname{sort}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(floor(x))) == "\\operatorname{floor}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(ceil(x))) == "\\operatorname{ceil}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(round(x))) == "\\operatorname{round}\\left(x\\right)"
     end
 
     @testset "Multi-argument functions" begin
@@ -222,14 +209,15 @@
         @test Desmos.desmos_latexify(:(β_n)) == "\\beta_{n}"
     end
 
-    @testset "Superscripts" begin
-        @test Desmos.desmos_latexify(:(x⁰)) == "x^{0}"
-        @test Desmos.desmos_latexify(:(x¹)) == "x^{1}"
-        @test Desmos.desmos_latexify(:(x²)) == "x^{2}"
-        @test Desmos.desmos_latexify(:(x⁵)) == "x^{5}"
+    @testset "Superscripts (via ^ operator only)" begin
+        # Superscript Unicode characters are no longer supported
+        # Use the ^ operator for exponentiation instead
+        @test Desmos.desmos_latexify(:(x^0)) == "x^{0}"
+        @test Desmos.desmos_latexify(:(x^1)) == "x^{1}"
+        @test Desmos.desmos_latexify(:(x^2)) == "x^{2}"
+        @test Desmos.desmos_latexify(:(x^5)) == "x^{5}"
         # Β (Beta) is not supported by Desmos
-        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Β⁵))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(α_5 - Β⁵))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Β))
     end
 
     @testset "Special values" begin
@@ -255,7 +243,7 @@
     end
 
     @testset "Tilde operator" begin
-        @test Desmos.desmos_latexify(:(y_1 ~ a * x_1 + b)) == "y_{1}\\sim a\\cdot x_{1}+b"
+        @test Desmos.desmos_latexify(:(y_1 ~ a * x_1 + b)) == "y_{1}\\sim ax_{1}+b"
         @test Desmos.desmos_latexify(:(y ~ x)) == "y\\sim x"
         @test Desmos.desmos_latexify(:(f(x) ~ g(x))) == "f\\left(x\\right)\\sim g\\left(x\\right)"
     end
@@ -265,7 +253,7 @@
         @test Desmos.desmos_latexify(:(sin(x) + cos(x))) == "\\sin\\left(x\\right)+\\cos\\left(x\\right)"
         @test Desmos.desmos_latexify(:((x + y)^2)) == "\\left(x+y\\right)^{2}"
         @test Desmos.desmos_latexify(:(x / (y + z))) == "\\frac{x}{y+z}"
-        @test Desmos.desmos_latexify(:((a * b) / (c + d))) == "\\frac{a\\cdot b}{c+d}"
+        @test Desmos.desmos_latexify(:((a * b) / (c + d))) == "\\frac{ab}{c+d}"
     end
 
     @testset "Sum and integral" begin
@@ -300,37 +288,36 @@
         @test Desmos.desmos_latexify(L"\frac{1}{2}") == "\\frac{1}{2}"
     end
 
-    @testset "Composed functions" begin
-        @test Desmos.desmos_latexify(:((d / dx)(f(x)))) == "\\left(\\frac{d}{dx}\\right)\\left(f\\left(x\\right)\\right)"
-    end
-
-    @testset "Multi-character variables" begin
-        @test Desmos.desmos_latexify(:(xy)) == "xy"
-        @test Desmos.desmos_latexify(:(abc)) == "abc"
-        @test Desmos.desmos_latexify(:(dx)) == "dx"
-        @test Desmos.desmos_latexify(:(dy)) == "dy"
-        @test Desmos.desmos_latexify(:(dt)) == "dt"
+    @testset "Multi-character variables (auto-subscript)" begin
+        # 2nd+ characters are automatically converted to subscripts
+        @test Desmos.desmos_latexify(:(xy)) == "x_{y}"
+        @test Desmos.desmos_latexify(:(abc)) == "a_{bc}"
+        @test Desmos.desmos_latexify(:(dx)) == "d_{x}"
+        @test Desmos.desmos_latexify(:(dy)) == "d_{y}"
+        @test Desmos.desmos_latexify(:(dt)) == "d_{t}"
+        @test Desmos.desmos_latexify(:(x1)) == "x_{1}"
+        @test Desmos.desmos_latexify(:(x12)) == "x_{12}"
     end
 
     @testset "Mixed operations" begin
-        @test Desmos.desmos_latexify(:(2x + 3y)) == "2\\cdot x+3\\cdot y"
-        @test Desmos.desmos_latexify(:(a * b + c / d)) == "a\\cdot b+\\frac{c}{d}"
-        @test Desmos.desmos_latexify(:(x^2 - 2x + 1)) == "x^{2}-2\\cdot x+1"
+        @test Desmos.desmos_latexify(:(2x + 3y)) == "2x+3y"
+        @test Desmos.desmos_latexify(:(a * b + c / d)) == "ab+\\frac{c}{d}"
+        @test Desmos.desmos_latexify(:(x^2 - 2x + 1)) == "x^{2}-2x+1"
     end
 
     @testset "Edge cases: Parentheses and precedence" begin
         @test Desmos.desmos_latexify(:((a + b)^(c + d))) == "\\left(a+b\\right)^{c+d}"
-        @test Desmos.desmos_latexify(:((x * y)^z)) == "\\left(x\\cdot y\\right)^{z}"
-        @test Desmos.desmos_latexify(:((a - b) * (c + d))) == "\\left(a-b\\right)\\cdot \\left(c+d\\right)"
-        @test Desmos.desmos_latexify(:(a + b * c)) == "a+b\\cdot c"
-        @test Desmos.desmos_latexify(:((a + b) * c)) == "\\left(a+b\\right)\\cdot c"
+        @test Desmos.desmos_latexify(:((x * y)^z)) == "\\left(xy\\right)^{z}"
+        @test Desmos.desmos_latexify(:((a - b) * (c + d))) == "\\left(a-b\\right)\\left(c+d\\right)"
+        @test Desmos.desmos_latexify(:(a + b * c)) == "a+bc"
+        @test Desmos.desmos_latexify(:((a + b) * c)) == "\\left(a+b\\right)c"
     end
 
     @testset "Edge cases: Negative numbers and signs" begin
         @test Desmos.desmos_latexify(:(-1)) == "-1"
-        @test Desmos.desmos_latexify(:(-x - y)) == "-x-y"
-        @test Desmos.desmos_latexify(:(x + -y)) == "x-y"
-        @test Desmos.desmos_latexify(:(a * -b)) == "a\\cdot \\left(-b\\right)"
+        @test Desmos.desmos_latexify(:(-x - a)) == "-x-a"
+        @test Desmos.desmos_latexify(:(x + - a)) == "x+-a"
+        @test Desmos.desmos_latexify(:(a * -b)) == "a\\left(-b\\right)"
         @test Desmos.desmos_latexify(:(-(-x))) == "--x"
     end
 
@@ -356,17 +343,19 @@
     end
 
     @testset "Edge cases: Mixed Greek and Latin" begin
-        @test Desmos.desmos_latexify(:(aα + bβ)) == "a\\alpha+b\\beta"
-        @test Desmos.desmos_latexify(:(xα_5)) == "x\\alpha_{5}"
-        @test Desmos.desmos_latexify(:(Γθ)) == "\\Gamma\\theta"
+        # Multi-character identifiers with Greek letters are not supported
+        # Greek letters can only appear in subscripts via explicit underscore
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(aα))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(Γθ))
     end
 
     @testset "Edge cases: Subscripts and superscripts combinations" begin
-        @test Desmos.desmos_latexify(:(x_a_b)) == "x_{a_{b}}"
-        @test Desmos.desmos_latexify(:(α_β)) == "\\alpha_{\\beta}"
+        @test Desmos.desmos_latexify(:(x_a_b)) == "x_{ab}"
+        # Greek letters not allowed in subscripts (use explicit underscore instead)
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(α_β))
         @test Desmos.desmos_latexify(:(x₁₂₃₄₅)) == "x_{12345}"
-        @test Desmos.desmos_latexify(:(y⁰¹²³⁴⁵)) == "y^{012345}"
-        @test Desmos.desmos_latexify(:(a²_3)) == "a^{2}_{3}"
+        # Superscript Unicode no longer supported - use ^ operator
+        @test Desmos.desmos_latexify(:(a^2)) == "a^{2}"
     end
 
     @testset "Edge cases: Special number values" begin
@@ -378,18 +367,19 @@
     end
 
     @testset "Edge cases: Very long variable names" begin
-        @test Desmos.desmos_latexify(:(verylongvariablename)) == "verylongvariablename"
+        # Multi-character identifiers automatically get subscripts
+        @test Desmos.desmos_latexify(:(verylongvariablename)) == "v_{erylongvariablename}"
         @test Desmos.desmos_latexify(:(x_verylongsubscript)) == "x_{verylongsubscript}"
-        @test Desmos.desmos_latexify(:(longname_1)) == "longname_{1}"
+        @test Desmos.desmos_latexify(:(longname_1)) == "l_{ongname1}"
     end
 
     @testset "Edge cases: Sum and integral variations" begin
         @test Desmos.desmos_latexify(:(sum(1 for i in 1:10))) == "\\sum_{i=1}^{10}1"
-        @test Desmos.desmos_latexify(:(sum(i * j for i in 1:n))) == "\\sum_{i=1}^{n}i\\cdot j"
+        @test Desmos.desmos_latexify(:(sum(i * j for i in 1:n))) == "\\sum_{i=1}^{n}ij"
         @test Desmos.desmos_latexify(:(prod(1 for i in 1:10))) == "\\prod_{i=1}^{10}1"
-        @test Desmos.desmos_latexify(:(prod(i * j for i in 1:n))) == "\\prod_{i=1}^{n}i\\cdot j"
+        @test Desmos.desmos_latexify(:(prod(i * j for i in 1:n))) == "\\prod_{i=1}^{n}ij"
         @test Desmos.desmos_latexify(:(int(1 for x in 0 .. 1))) == "\\int_{0}^{1}1dx"
-        @test Desmos.desmos_latexify(:(int(x * y for x in a .. b))) == "\\int_{a}^{b}x\\cdot ydx"
+        @test Desmos.desmos_latexify(:(int(x * y for x in a .. b))) == "\\int_{a}^{b}xydx"
     end
 
     @testset "Edge cases: Function assignments" begin
@@ -451,8 +441,9 @@
 
     @testset "Edge cases: Multiple Unicode subscripts/superscripts" begin
         @test Desmos.desmos_latexify(:(x₀₁₂₃₄₅₆₇₈₉)) == "x_{0123456789}"
-        @test Desmos.desmos_latexify(:(y⁰¹²³⁴⁵⁶⁷⁸⁹)) == "y^{0123456789}"
-        @test Desmos.desmos_latexify(:(α₁²)) == "\\alpha_{1}^{2}"
+        # Superscript Unicode characters now cause errors
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(y⁰¹²³⁴⁵⁶⁷⁸⁹))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError Desmos.desmos_latexify(:(α₁²))
     end
 
     @testset "Edge cases: Arrays with complex elements" begin

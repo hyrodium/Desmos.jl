@@ -60,7 +60,7 @@ end
             @expression c = 5 slider = 1:8
             @expression d = 7
             $(2 + 2)
-            sin($(2b) * a - cx)
+            sin($(2b) * a - c * x)
         end
         write_html(path, name, state)
         @test isfile(path)

@@ -17,6 +17,8 @@ makedocs(;
     pages = [
         "Home" => "index.md",
         "Examples" => "examples.md",
+        "Display Configuration" => "config.md",
+        "Working with Desmos Text I/O" => "desmos-text-io.md",
         "API" => "api.md",
     ],
     repo = "https://github.com/hyrodium/Desmos.jl/blob/{commit}{path}#L{line}",

@@ -21,11 +21,3 @@ end
 On vscode, the output plot will be shown in the plot pane.
 
 ![](vscode.png)
-
-## Desmos Text I/O
-You can also use [Desmos Text I/O extension](https://github.com/hyrodium/DesmosTextIO) to import/export the desmos-graph.
-
-[![](https://raw.githubusercontent.com/hyrodium/desmos-text-io/main/logo.svg)](https://github.com/hyrodium/DesmosTextIO)
-
-* [Chrome Web Store](https://chrome.google.com/webstore/detail/desmos-text-io/ndjdcebpigpfidnilppdpcdkibidfmaa)
-* [Firefox ADD-ONS](https://addons.mozilla.org/en-US/firefox/addon/desmos-text-i-o/)

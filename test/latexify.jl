@@ -61,11 +61,11 @@
 
     @testset "PROBABILITY DISTRIBUTIONS" begin
         @test Desmos.desmos_latexify(:(Normal(μ))) == "\\operatorname{normaldist}\\left(\\mu\\right)"
-        @test Desmos.desmos_latexify(:(Normal(μ,σ))) == "\\operatorname{normaldist}\\left(\\mu,\\sigma\\right)"
+        @test Desmos.desmos_latexify(:(Normal(μ, σ))) == "\\operatorname{normaldist}\\left(\\mu,\\sigma\\right)"
         @test Desmos.desmos_latexify(:(TDist(ν))) == "\\operatorname{tdist}\\left(\\nu\\right)"
         @test Desmos.desmos_latexify(:(Chi(ν))) == "\\operatorname{chisqdist}\\left(\\nu\\right)"
-        @test Desmos.desmos_latexify(:(Uniform(a,b))) == "\\operatorname{uniformdist}\\left(a,b\\right)"
-        @test Desmos.desmos_latexify(:(Binomial(n,p))) == "\\operatorname{binomialdist}\\left(n,p\\right)"
+        @test Desmos.desmos_latexify(:(Uniform(a, b))) == "\\operatorname{uniformdist}\\left(a,b\\right)"
+        @test Desmos.desmos_latexify(:(Binomial(n, p))) == "\\operatorname{binomialdist}\\left(n,p\\right)"
         @test Desmos.desmos_latexify(:(Poisson(λ))) == "\\operatorname{poissondist}\\left(\\lambda\\right)"
         @test Desmos.desmos_latexify(:(Geometric(p))) == "\\operatorname{geodist}\\left(p\\right)"
         @test_broken Desmos.desmos_latexify(:(pdf(x))) == "\\operatorname{pdf}\\left(x\\right)"

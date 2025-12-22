@@ -100,8 +100,9 @@ const DESMOS_FUNCTIONS_1ARG = Dict{Symbol, String}(
 
     # CALCULUS
     :exp => "\\exp\\left(ARG1\\right)",
-    :log => "\\ln\\left(ARG1\\right)",
+    :log => "\\ln\\left(ARG1\\right)",  # 1-arg: natural logarithm
     :log10 => "\\log\\left(ARG1\\right)",
+    :log1p => "\\ln\\left(1+ARG1\\right)",  # log(1+p)
 
     # HYPERBOLIC TRIG FUNCTIONS
     :sinh => "\\sinh\\left(ARG1\\right)",
@@ -153,8 +154,19 @@ const DESMOS_FUNCTIONS_2ARG = Dict{Symbol, String}(
     # :quartile => "\\operatorname{quartile}\\left(ARG1,ARG2\\right)",
     :quantile => "\\operatorname{quantile}\\left(ARG1,ARG2\\right)",
 
+    # CALCULUS
+    :log => "\\log_{ARG1}\\left(ARG2\\right)",  # 2-arg: logarithm with custom base
+    :gradient => "\\frac{d}{dARG2}ARG1",  # gradient(f, x) -> d/dx f
+
     # LIST OPERATIONS
     :fill => "\\operatorname{repeat}\\left(ARG1,ARG2\\right)",
+)
+
+# Map Julia function names to LaTeX string templates (3 arguments)
+# Each template uses ARG1, ARG2, and ARG3 as placeholders
+const DESMOS_FUNCTIONS_3ARG = Dict{Symbol, String}(
+    # CONTROL FLOW
+    :ifelse => "\\left\\{ARG1:ARG2,ARG3\\right\\}",
 )
 
 # Map Julia function names to LaTeX string templates (n arguments)

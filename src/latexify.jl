@@ -219,28 +219,20 @@ function _latexify_call(ex::Expr)
         # Special functions
         if func == :sum
             # Check if it's a generator expression (sum(... for ...))
-            if length(ex.args) >= 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
+            if length(ex.args) ≥ 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
                 return _latexify_sum(ex)
             end
             # Otherwise, treat as normal function
         elseif func == :prod
             # Check if it's a generator expression (prod(... for ...))
-            if length(ex.args) >= 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
+            if length(ex.args) ≥ 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
                 return _latexify_prod(ex)
             end
             # Otherwise, treat as normal function
         elseif func == :int
-            return _latexify_int(ex)
-        elseif func == :gradient
-            return _latexify_gradient(ex)
-        elseif func == :log
-            return _latexify_log(ex)
-        elseif func == :log10
-            return _latexify_log10(ex)
-        elseif func == :log1p
-            return _latexify_log1p(ex)
-        elseif func == :ifelse
-            return _latexify_ifelse(ex)
+            if length(ex.args) ≥ 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
+                return _latexify_int(ex)
+            end
         end
 
         # Check if function is in DESMOS_FUNCTIONS dictionaries
@@ -257,6 +249,13 @@ function _latexify_call(ex::Expr)
             arg2 = _latexify(ex.args[3])
             template = DESMOS_FUNCTIONS_2ARG[func]
             return replace(template, "ARG1" => arg1, "ARG2" => arg2)
+        elseif nargs == 3 && haskey(DESMOS_FUNCTIONS_3ARG, func)
+            # Three-argument function
+            arg1 = _latexify(ex.args[2])
+            arg2 = _latexify(ex.args[3])
+            arg3 = _latexify(ex.args[4])
+            template = DESMOS_FUNCTIONS_3ARG[func]
+            return replace(template, "ARG1" => arg1, "ARG2" => arg2, "ARG3" => arg3)
         elseif haskey(DESMOS_FUNCTIONS_nARG, func)
             # Variable-argument function
             args_str = join([_latexify(arg) for arg in ex.args[2:end]], ",")
@@ -346,37 +345,31 @@ end
 
 function _latexify_sum(ex::Expr)
     # sum(n^2 for n in 1:5) -> \sum_{n=1}^{5}n^{2}
-    if length(ex.args) ≥ 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
-        gen = ex.args[2]
-        term = _latexify(gen.args[1])
+    gen = ex.args[2]
+    term = _latexify(gen.args[1])
 
-        # Parse the iterator
-        iter = gen.args[2]
-        if iter.head == :(=) && iter.args[2] isa Expr && iter.args[2].head == :call && iter.args[2].args[1] == :(:)
-            var = _latexify(iter.args[1])
-            start = _latexify(iter.args[2].args[2])
-            stop = _latexify(iter.args[2].args[3])
-            return "\\sum_{$var=$start}^{$stop}$term"
-        end
+    # Parse the iterator
+    iter = gen.args[2]
+    if iter.head == :(=) && iter.args[2] isa Expr && iter.args[2].head == :call && iter.args[2].args[1] == :(:)
+        var = _latexify(iter.args[1])
+        start = _latexify(iter.args[2].args[2])
+        stop = _latexify(iter.args[2].args[3])
+        return "\\sum_{$var=$start}^{$stop}$term"
     end
-
-    error("Unsupported sum syntax")
 end
 
 function _latexify_prod(ex::Expr)
     # prod(n^2 for n in 1:5) -> \prod_{n=1}^{5}n^{2}
-    if length(ex.args) ≥ 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
-        gen = ex.args[2]
-        term = _latexify(gen.args[1])
+    gen = ex.args[2]
+    term = _latexify(gen.args[1])
 
-        # Parse the iterator
-        iter = gen.args[2]
-        if iter.head == :(=) && iter.args[2] isa Expr && iter.args[2].head == :call && iter.args[2].args[1] == :(:)
-            var = _latexify(iter.args[1])
-            start = _latexify(iter.args[2].args[2])
-            stop = _latexify(iter.args[2].args[3])
-            return "\\prod_{$var=$start}^{$stop}$term"
-        end
+    # Parse the iterator
+    iter = gen.args[2]
+    if iter.head == :(=) && iter.args[2] isa Expr && iter.args[2].head == :call && iter.args[2].args[1] == :(:)
+        var = _latexify(iter.args[1])
+        start = _latexify(iter.args[2].args[2])
+        stop = _latexify(iter.args[2].args[3])
+        return "\\prod_{$var=$start}^{$stop}$term"
     end
 
     error("Unsupported prod syntax")
@@ -384,83 +377,21 @@ end
 
 function _latexify_int(ex::Expr)
     # int(x^2 for x in 1 .. 5) -> \int_{1}^{5}x^{2}dx
-    if length(ex.args) ≥ 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
-        gen = ex.args[2]
-        term = _latexify(gen.args[1])
+    gen = ex.args[2]
+    term = _latexify(gen.args[1])
 
-        # Parse the iterator
-        iter = gen.args[2]
-        if iter.head == :(=)
-            var = _latexify(iter.args[1])
-            # Check for interval syntax (1 .. 5)
-            range_ex = iter.args[2]
-            if range_ex isa Expr && range_ex.head == :call && range_ex.args[1] == :(..)
-                start = _latexify(range_ex.args[2])
-                stop = _latexify(range_ex.args[3])
-                return "\\int_{$start}^{$stop}$(term)d$var"
-            end
+    # Parse the iterator
+    iter = gen.args[2]
+    if iter.head == :(=)
+        var = _latexify(iter.args[1])
+        # Check for interval syntax (1 .. 5)
+        range_ex = iter.args[2]
+        if range_ex isa Expr && range_ex.head == :call && range_ex.args[1] == :(..)
+            start = _latexify(range_ex.args[2])
+            stop = _latexify(range_ex.args[3])
+            return "\\int_{$start}^{$stop}$(term)d$var"
         end
     end
 
     error("Unsupported int syntax")
-end
-
-function _latexify_gradient(ex::Expr)
-    # gradient(f, x) -> \frac{d}{dx}f
-    if length(ex.args) == 3
-        f = _latexify(ex.args[2])
-        x = _latexify(ex.args[3])
-        return "\\frac{d}{d$x}$f"
-    end
-
-    error("gradient requires exactly 2 arguments")
-end
-
-function _latexify_log(ex::Expr)
-    # log(x) -> \ln\left(x\right) (natural logarithm)
-    # log(a, b) -> \log_{a}\left(b\right) (logarithm base a)
-    if length(ex.args) == 2
-        # log(x) -> \ln(x)
-        arg = _latexify(ex.args[2])
-        return "\\ln\\left($arg\\right)"
-    elseif length(ex.args) == 3
-        # log(a, b) -> \log_{a}(b)
-        base = _latexify(ex.args[2])
-        arg = _latexify(ex.args[3])
-        return "\\log_{$base}\\left($arg\\right)"
-    end
-
-    error("log requires 1 or 2 arguments")
-end
-
-function _latexify_log10(ex::Expr)
-    # log10(x) -> \log\left(x\right) (base-10 logarithm)
-    if length(ex.args) == 2
-        arg = _latexify(ex.args[2])
-        return "\\log\\left($arg\\right)"
-    end
-
-    error("log10 requires exactly 1 argument")
-end
-
-function _latexify_log1p(ex::Expr)
-    # log1p(p) -> \ln\left(1+p\right) (log(1+p))
-    if length(ex.args) == 2
-        arg = _latexify(ex.args[2])
-        return "\\ln\\left(1+$arg\\right)"
-    end
-
-    error("log1p requires exactly 1 argument")
-end
-
-function _latexify_ifelse(ex::Expr)
-    # ifelse(condition, true_value, false_value) -> \left\{condition:true_value,false_value\right\}
-    if length(ex.args) == 4
-        condition = _latexify(ex.args[2])
-        true_value = _latexify(ex.args[3])
-        false_value = _latexify(ex.args[4])
-        return "\\left\\{$condition:$true_value,$false_value\\right\\}"
-    end
-
-    error("ifelse requires exactly 3 arguments")
 end

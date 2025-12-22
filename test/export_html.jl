@@ -128,31 +128,40 @@ end
         @test !isfile(path)
 
         # Read this file and extract expected LaTeX strings from @test lines
+        # Also extract @testset names to use as section headers
         filepath = joinpath(@__DIR__, "latexify.jl")
-        content = read(filepath, String)
+        lines = readlines(filepath)
 
-        # Match pattern: @test Desmos.desmos_latexify(...) == "..."
-        # Capture the LaTeX string (right-hand side)
-        # Only match lines that start with optional whitespace followed by @test
-        # Use .+? to match everything up to == (non-greedy), then capture the quoted string
-        pattern = r"^\s*@test\s+Desmos\.desmos_latexify\(.+?\)\s*==\s*\"([^\"]+)\""m
+        # Patterns to match @testset and @test lines
+        testset_pattern = r"^\s*@testset\s+\"([^\"]+)\"\s+begin"
+        test_pattern = r"^\s*@test\s+Desmos\.desmos_latexify\(.+?\)\s*==\s*\"([^\"]+)\""
 
-        latex_strings = String[]
-        for m in eachmatch(pattern, content)
-            # Unescape the captured string (convert \\ to \)
-            latex_str = replace(m.captures[1], "\\\\" => "\\")
-            push!(latex_strings, latex_str)
-        end
+        # Extract LaTeX strings and their corresponding testset sections
+        expression_list = Desmos.AbstractDesmosExpression[]
 
-        # Create DesmosExpression for each LaTeX string
-        expression_list = [
-            Desmos.DesmosExpression(
-                    latex = latex,
+        for line in lines
+            # Check if this line starts a new @testset
+            testset_match = match(testset_pattern, line)
+            if testset_match !== nothing
+                # Add a text element for the section header
+                push!(expression_list, Desmos.DesmosText(
+                    text = testset_match.captures[1],
+                    id = string(length(expression_list) + 1)
+                ))
+            end
+
+            # Check if this line has a @test
+            test_match = match(test_pattern, line)
+            if test_match !== nothing
+                # Unescape the captured string (convert \\ to \)
+                latex_str = replace(test_match.captures[1], "\\\\" => "\\")
+                push!(expression_list, Desmos.DesmosExpression(
+                    latex = latex_str,
                     color = "#2464b4",
-                    id = string(i)
-                )
-                for (i, latex) in enumerate(latex_strings)
-        ]
+                    id = string(length(expression_list) + 1)
+                ))
+            end
+        end
 
         # Create DesmosState
         state = Desmos.DesmosState(expressions = Desmos.DesmosExpressions(list = expression_list))

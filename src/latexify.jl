@@ -243,16 +243,16 @@ function _latexify_call(ex::Expr)
             return _latexify_ifelse(ex)
         end
 
-        # Check if function is in DESMOS_FUNCTIONS
-        if haskey(DESMOS_FUNCTIONS, func)
+        # Check if function is in DESMOS_FUNCTIONS_1ARG
+        if haskey(DESMOS_FUNCTIONS_1ARG, func)
             # Single-argument function
             if length(ex.args) == 2
                 arg = _latexify(ex.args[2])
-                return DESMOS_FUNCTIONS[func](arg)
+                return DESMOS_FUNCTIONS_1ARG[func](arg)
             else
                 # Multi-argument: join with commas
                 args_str = join([_latexify(arg) for arg in ex.args[2:end]], ",")
-                return DESMOS_FUNCTIONS[func](args_str)
+                return DESMOS_FUNCTIONS_1ARG[func](args_str)
             end
         end
 

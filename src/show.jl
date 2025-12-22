@@ -22,6 +22,18 @@ function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
                 var elt = document.getElementById("desmos-$(obj_id)");
                 var calculator = Desmos.GraphingCalculator(elt);
                 calculator.setState($(JSON.json(state)));
+
+                // Prevent VSCode Plot Pane from capturing arrow key events
+                // Strategy: Always stop propagation and let Desmos handle it
+                // This prevents VSCode from intercepting before Desmos can process
+                elt.addEventListener('keydown', function(e) {
+                    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                        // Stop event from reaching VSCode Plot Pane
+                        e.stopPropagation();
+                        // Let the event continue to Desmos's internal handlers
+                        // by NOT calling preventDefault()
+                    }
+                }, false); // Use bubble phase, not capture
     """
 
     if config.clipboard

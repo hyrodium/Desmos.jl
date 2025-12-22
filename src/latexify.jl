@@ -34,7 +34,7 @@ function _latexify(ex::Expr)
     elseif ex.head == :(=)
         return _latexify_assignment(ex)
     else
-        error("Unsupported expression head: $(ex.head)")
+        throw(UnsupportedDesmosSyntaxError("Unsupported expression head: $(ex.head)"))
     end
 end
 
@@ -119,7 +119,7 @@ function _latexify_comprehension(ex::Expr)
     # The comprehension has a generator expression as its only argument
     gen = ex.args[1]
     if gen.head != :generator
-        error("Expected generator expression in comprehension")
+        throw(UnsupportedDesmosSyntaxError("Expected generator expression in comprehension"))
     end
 
     # Extract the term and iterator
@@ -131,7 +131,7 @@ function _latexify_comprehension(ex::Expr)
         collection = _latexify(iter.args[2])
         return "\\left[$term\\ \\operatorname{for}\\ $var=$collection\\right]"
     else
-        error("Unsupported iterator syntax in comprehension")
+        throw(UnsupportedDesmosSyntaxError("Unsupported iterator syntax in comprehension"))
     end
 end
 
@@ -237,7 +237,7 @@ function _latexify_call(ex::Expr)
         end
     end
 
-    error("Unsupported function type in call expression: $(typeof(func))")
+    throw(UnsupportedDesmosSyntaxError("Unsupported function type in call expression: $(typeof(func))"))
 end
 
 function _latexify_multiply(ex::Expr)
@@ -305,7 +305,7 @@ function _latexify_prod(ex::Expr)
         return "\\prod_{$var=$start}^{$stop}$term"
     end
 
-    error("Unsupported prod syntax")
+    throw(UnsupportedDesmosSyntaxError("Unsupported prod syntax"))
 end
 
 function _latexify_int(ex::Expr)
@@ -326,5 +326,5 @@ function _latexify_int(ex::Expr)
         end
     end
 
-    error("Unsupported int syntax")
+    throw(UnsupportedDesmosSyntaxError("Unsupported int syntax"))
 end

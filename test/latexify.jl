@@ -49,25 +49,26 @@
     @testset "LIST OPERATIONS" begin
         @test Desmos.desmos_latexify(:(fill(a, 5))) == "\\operatorname{repeat}\\left(a,5\\right)"
         @test Desmos.desmos_latexify(:(hcat(u, v))) == "\\operatorname{join}\\left(u,v\\right)"
-        @test Desmos.desmos_latexify(:(sort(x))) == "\\operatorname{sort}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(shuffle(x))) == "\\operatorname{shuffle}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(unique(x))) == "\\operatorname{unique}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(sort(v))) == "\\operatorname{sort}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(shuffle(v))) == "\\operatorname{shuffle}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(unique(v))) == "\\operatorname{unique}\\left(v\\right)"
     end
 
     @testset "VISUALIZATIONS" begin
-        @test Desmos.desmos_latexify(:(histogram(x))) == "\\operatorname{histogram}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(dotplot(x))) == "\\operatorname{dotplot}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(boxplot(x))) == "\\operatorname{boxplot}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(histogram(v))) == "\\operatorname{histogram}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(dotplot(v))) == "\\operatorname{dotplot}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(boxplot(v))) == "\\operatorname{boxplot}\\left(v\\right)"
     end
 
     @testset "PROBABILITY DISTRIBUTIONS" begin
-        @test Desmos.desmos_latexify(:(normaldist(x))) == "\\operatorname{normaldist}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(tdist(x))) == "\\operatorname{tdist}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(chisqdist(x))) == "\\operatorname{chisqdist}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(uniformdist(x))) == "\\operatorname{uniformdist}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(binomialdist(x))) == "\\operatorname{binomialdist}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(poissondist(x))) == "\\operatorname{poissondist}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(geodist(x))) == "\\operatorname{geodist}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(Normal(μ))) == "\\operatorname{normaldist}\\left(\\mu\\right)"
+        @test Desmos.desmos_latexify(:(Normal(μ,σ))) == "\\operatorname{normaldist}\\left(\\mu,\\sigma\\right)"
+        @test Desmos.desmos_latexify(:(TDist(ν))) == "\\operatorname{tdist}\\left(\\nu\\right)"
+        @test Desmos.desmos_latexify(:(Chi(ν))) == "\\operatorname{chisqdist}\\left(\\nu\\right)"
+        @test Desmos.desmos_latexify(:(Uniform(a,b))) == "\\operatorname{uniformdist}\\left(a,b\\right)"
+        @test Desmos.desmos_latexify(:(Binomial(n,p))) == "\\operatorname{binomialdist}\\left(n,p\\right)"
+        @test Desmos.desmos_latexify(:(Poisson(λ))) == "\\operatorname{poissondist}\\left(\\lambda\\right)"
+        @test Desmos.desmos_latexify(:(Geometric(p))) == "\\operatorname{geodist}\\left(p\\right)"
         @test Desmos.desmos_latexify(:(pdf(x))) == "\\operatorname{pdf}\\left(x\\right)"
         @test Desmos.desmos_latexify(:(cdf(x))) == "\\operatorname{cdf}\\left(x\\right)"
         @test Desmos.desmos_latexify(:(inversecdf(x))) == "\\operatorname{inversecdf}\\left(x\\right)"
@@ -124,10 +125,10 @@
         @test Desmos.desmos_latexify(:(floor(x))) == "\\operatorname{floor}\\left(x\\right)"
         @test Desmos.desmos_latexify(:(round(x))) == "\\operatorname{round}\\left(x\\right)"
         @test Desmos.desmos_latexify(:(sign(x))) == "\\operatorname{sign}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(nPr(x))) == "\\operatorname{nPr}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(nCr(x))) == "\\operatorname{nCr}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(sqrt(x))) == "\\sqrt\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(cbrt(x))) == "\\sqrt[3]\\left(x\\right)"
+        # @test Desmos.desmos_latexify(:(nPr(x))) == "\\operatorname{nPr}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(binomial(x))) == "\\operatorname{nCr}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(sqrt(x))) == "\\sqrt{x}"
+        @test Desmos.desmos_latexify(:(cbrt(x))) == "\\sqrt[3]{x}"
     end
 
     @testset "ADVANCED" begin

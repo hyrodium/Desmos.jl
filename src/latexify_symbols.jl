@@ -76,13 +76,13 @@ const DESMOS_FUNCTIONS_1ARG = Dict{Symbol, String}(
     :boxplot => "\\operatorname{boxplot}\\left(ARG1\\right)",
 
     # PROBABILITY DISTRIBUTIONS
-    :normaldist => "\\operatorname{normaldist}\\left(ARG1\\right)",
-    :tdist => "\\operatorname{tdist}\\left(ARG1\\right)",
-    :chisqdist => "\\operatorname{chisqdist}\\left(ARG1\\right)",
-    :uniformdist => "\\operatorname{uniformdist}\\left(ARG1\\right)",
-    :binomialdist => "\\operatorname{binomialdist}\\left(ARG1\\right)",
-    :poissondist => "\\operatorname{poissondist}\\left(ARG1\\right)",
-    :geodist => "\\operatorname{geodist}\\left(ARG1\\right)",
+    :Normal => "\\operatorname{normaldist}\\left(ARG1\\right)",
+    :TDist => "\\operatorname{tdist}\\left(ARG1\\right)",
+    :Chi => "\\operatorname{chisqdist}\\left(ARG1\\right)",
+    # Desmos allows 1-arg uniformdist, but we don't provide it. (it's not useful)
+    # :Uniform => "\\operatorname{uniformdist}\\left(ARG1\\right)",
+    :Poisson => "\\operatorname{poissondist}\\left(ARG1\\right)",
+    :Geometric => "\\operatorname{geodist}\\left(ARG1\\right)",
     :pdf => "\\operatorname{pdf}\\left(ARG1\\right)",
     :cdf => "\\operatorname{cdf}\\left(ARG1\\right)",
     :inversecdf => "\\operatorname{inversecdf}\\left(ARG1\\right)",
@@ -138,10 +138,10 @@ const DESMOS_FUNCTIONS_1ARG = Dict{Symbol, String}(
     :floor => "\\operatorname{floor}\\left(ARG1\\right)",
     :round => "\\operatorname{round}\\left(ARG1\\right)",
     :sign => "\\operatorname{sign}\\left(ARG1\\right)",
-    :nPr => "\\operatorname{nPr}\\left(ARG1\\right)",
+    # :nPr => "\\operatorname{nPr}\\left(ARG1\\right)",
     :binomial => "\\operatorname{nCr}\\left(ARG1\\right)",
-    :sqrt => "\\sqrt\\left(ARG1\\right)",
-    :cbrt => "\\sqrt[3]\\left(ARG1\\right)",
+    :sqrt => "\\sqrt{ARG1}",
+    :cbrt => "\\sqrt[3]{ARG1}",
 
     # ADVANCED
 
@@ -163,6 +163,11 @@ const DESMOS_FUNCTIONS_2ARG = Dict{Symbol, String}(
     :corr => "\\operatorname{corr}\\left(ARG1,ARG2\\right)",
     # :quartile => "\\operatorname{quartile}\\left(ARG1,ARG2\\right)",
     :quantile => "\\operatorname{quantile}\\left(ARG1,ARG2\\right)",
+
+    # PROBABILITY DISTRIBUTIONS
+    :Normal => "\\operatorname{normaldist}\\left(ARG1,ARG2\\right)",
+    :Uniform => "\\operatorname{uniformdist}\\left(ARG1,ARG2\\right)",
+    :Binomial => "\\operatorname{binomialdist}\\left(ARG1,ARG2\\right)",
 
     # CALCULUS
     :log => "\\log_{ARG1}\\left(ARG2\\right)",  # 2-arg: logarithm with custom base

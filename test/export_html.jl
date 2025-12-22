@@ -160,7 +160,6 @@ end
                 push!(
                     expression_list, Desmos.DesmosExpression(
                         latex = latex_str,
-                        color = "#2464b4",
                         id = string(length(expression_list) + 1)
                     )
                 )

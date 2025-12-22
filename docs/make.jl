@@ -20,6 +20,7 @@ makedocs(;
         "Display Configuration" => "config.md",
         "Working with Desmos Text I/O" => "desmos-text-io.md",
         "API" => "api.md",
+        "License" => "license.md",
     ],
     repo = "https://github.com/hyrodium/Desmos.jl/blob/{commit}{path}#L{line}",
     sitename = "Desmos.jl",

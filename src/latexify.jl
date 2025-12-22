@@ -243,17 +243,25 @@ function _latexify_call(ex::Expr)
             return _latexify_ifelse(ex)
         end
 
-        # Check if function is in DESMOS_FUNCTIONS_1ARG
-        if haskey(DESMOS_FUNCTIONS_1ARG, func)
+        # Check if function is in DESMOS_FUNCTIONS dictionaries
+        nargs = length(ex.args) - 1  # Number of arguments (excluding function name)
+
+        if nargs == 1 && haskey(DESMOS_FUNCTIONS_1ARG, func)
             # Single-argument function
-            if length(ex.args) == 2
-                arg = _latexify(ex.args[2])
-                return DESMOS_FUNCTIONS_1ARG[func](arg)
-            else
-                # Multi-argument: join with commas
-                args_str = join([_latexify(arg) for arg in ex.args[2:end]], ",")
-                return DESMOS_FUNCTIONS_1ARG[func](args_str)
-            end
+            arg = _latexify(ex.args[2])
+            template = DESMOS_FUNCTIONS_1ARG[func]
+            return replace(template, "ARG1" => arg)
+        elseif nargs == 2 && haskey(DESMOS_FUNCTIONS_2ARG, func)
+            # Two-argument function
+            arg1 = _latexify(ex.args[2])
+            arg2 = _latexify(ex.args[3])
+            template = DESMOS_FUNCTIONS_2ARG[func]
+            return replace(template, "ARG1" => arg1, "ARG2" => arg2)
+        elseif haskey(DESMOS_FUNCTIONS_nARG, func)
+            # Variable-argument function
+            args_str = join([_latexify(arg) for arg in ex.args[2:end]], ",")
+            template = DESMOS_FUNCTIONS_nARG[func]
+            return replace(template, "ARGS" => args_str)
         end
 
         # General function call

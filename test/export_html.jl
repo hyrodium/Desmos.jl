@@ -138,16 +138,18 @@ end
 
         # Extract LaTeX strings and their corresponding testset sections
         expression_list = Desmos.AbstractDesmosExpression[]
+        current_folder_id = nothing
 
         for line in lines
             # Check if this line starts a new @testset
             testset_match = match(testset_pattern, line)
             if testset_match !== nothing
-                # Add a text element for the section header
+                # Create a folder for the section
+                current_folder_id = string(length(expression_list) + 1)
                 push!(
-                    expression_list, Desmos.DesmosText(
-                        text = testset_match.captures[1],
-                        id = string(length(expression_list) + 1)
+                    expression_list, Desmos.DesmosFolder(
+                        title = testset_match.captures[1],
+                        id = current_folder_id
                     )
                 )
             end
@@ -160,7 +162,8 @@ end
                 push!(
                     expression_list, Desmos.DesmosExpression(
                         latex = latex_str,
-                        id = string(length(expression_list) + 1)
+                        id = string(length(expression_list) + 1),
+                        folder_id = current_folder_id
                     )
                 )
             end

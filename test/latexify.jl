@@ -1,4 +1,144 @@
 @testset "latexify" begin
+    @testset "Constants" begin
+        @test Desmos.desmos_latexify(:(a = 2)) == "a=2"
+        @test Desmos.desmos_latexify(:(b = 3)) == "b=3"
+        @test Desmos.desmos_latexify(:(c = 5)) == "c=5"
+        @test Desmos.desmos_latexify(:(u = [0, 1, 2, 3, 4, 5, 6, 7])) == "u=\\left[0,1,2,3,4,5,6,7\\right]"
+        @test Desmos.desmos_latexify(:(v = [1, 1, 2, 3, 5, 8, 13, 21])) == "v=\\left[1,1,2,3,5,8,13,21\\right]"
+    end
+
+    @testset "TRIG FUNCTIONS" begin
+        @test Desmos.desmos_latexify(:(sin(x))) == "\\sin\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(cos(x))) == "\\cos\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(tan(x))) == "\\tan\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(cot(x))) == "\\cot\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(sec(x))) == "\\sec\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(csc(x))) == "\\csc\\left(x\\right)"
+    end
+
+    @testset "INVERSE TRIG FUNCTIONS" begin
+        @test Desmos.desmos_latexify(:(asin(x))) == "\\arcsin\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(acos(x))) == "\\arccos\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(atan(x))) == "\\arctan\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(acot(x))) == "\\arccot\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(asec(x))) == "\\arcsec\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(acsc(x))) == "\\arccsc\\left(x\\right)"
+    end
+
+    @testset "STATISTICS" begin
+        @test Desmos.desmos_latexify(:(mean(v))) == "\\operatorname{mean}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(median(v))) == "\\operatorname{median}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(minimum(v))) == "\\min\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(maximum(v))) == "\\max\\left(v\\right)"
+        # @test Desmos.desmos_latexify(:(quartile(v, 2))) == "\\operatorname{quartile}\\left(v,2\\right)"
+        @test Desmos.desmos_latexify(:(quantile(v, 0.5))) == "\\operatorname{quantile}\\left(v,0.5\\right)"
+        @test Desmos.desmos_latexify(:(stdev(v))) == "\\operatorname{stdev}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(stdevp(v))) == "\\operatorname{stdevp}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(var(v))) == "\\operatorname{var}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(varp(v))) == "\\operatorname{varp}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(cov(u, v))) == "\\operatorname{cov}\\left(u,v\\right)"
+        @test Desmos.desmos_latexify(:(covp(u, v))) == "\\operatorname{covp}\\left(u,v\\right)"
+        @test Desmos.desmos_latexify(:(mad(v))) == "\\operatorname{mad}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(corr(u, v))) == "\\operatorname{corr}\\left(u,v\\right)"
+        # @test Desmos.desmos_latexify(:(spearman(u, v))) == "\\operatorname{spearman}\\left(u,v\\right)"
+        @test Desmos.desmos_latexify(:(stats(v))) == "\\operatorname{stats}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(count(v))) == "\\operatorname{count}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(total(v))) == "\\operatorname{total}\\left(v\\right)"
+    end
+
+    @testset "LIST OPERATIONS" begin
+        @test Desmos.desmos_latexify(:(fill(a,5))) == "\\operatorname{repeat}\\left(a,5\\right)"
+        @test Desmos.desmos_latexify(:(hcat(u,v))) == "\\operatorname{join}\\left(u,v\\right)"
+        @test Desmos.desmos_latexify(:(sort(x))) == "\\operatorname{sort}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(shuffle(x))) == "\\operatorname{shuffle}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(unique(x))) == "\\operatorname{unique}\\left(x\\right)"
+    end
+
+    @testset "VISUALIZATIONS" begin
+        @test Desmos.desmos_latexify(:(histogram(x))) == "\\operatorname{histogram}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(dotplot(x))) == "\\operatorname{dotplot}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(boxplot(x))) == "\\operatorname{boxplot}\\left(x\\right)"
+    end
+
+    @testset "PROBABILITY DISTRIBUTIONS" begin
+        @test Desmos.desmos_latexify(:(normaldist(x))) == "\\operatorname{normaldist}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(tdist(x))) == "\\operatorname{tdist}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(chisqdist(x))) == "\\operatorname{chisqdist}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(uniformdist(x))) == "\\operatorname{uniformdist}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(binomialdist(x))) == "\\operatorname{binomialdist}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(poissondist(x))) == "\\operatorname{poissondist}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(geodist(x))) == "\\operatorname{geodist}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(pdf(x))) == "\\operatorname{pdf}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(cdf(x))) == "\\operatorname{cdf}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(inversecdf(x))) == "\\operatorname{inversecdf}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(random(x))) == "\\operatorname{random}\\left(x\\right)"
+    end
+
+    @testset "INFERENCE" begin
+        @test Desmos.desmos_latexify(:(ztest(x))) == "\\operatorname{ztest}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(ttest(x))) == "\\operatorname{ttest}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(zproptest(x))) == "\\operatorname{zproptest}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(chisqtest(x))) == "\\operatorname{chisqtest}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(chisqgof(x))) == "\\operatorname{chisqgof}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(pleft(x))) == "\\operatorname{pleft}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(pright(x))) == "\\operatorname{pright}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(score(x))) == "\\operatorname{score}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(dof(x))) == "\\operatorname{dof}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(stderr(x))) == "\\operatorname{stderr}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(conf(x))) == "\\operatorname{conf}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(lower(x))) == "\\operatorname{lower}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(upper(x))) == "\\operatorname{upper}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(estimate(x))) == "\\operatorname{estimate}\\left(x\\right)"
+    end
+
+    @testset "CALCULUS" begin
+        @test Desmos.desmos_latexify(:(exp(x))) == "\\exp\\left(x\\right)"
+    end
+
+    @testset "HYPERBOLIC TRIG FUNCTIONS" begin
+        @test Desmos.desmos_latexify(:(sinh(x))) == "\\sinh\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(cosh(x))) == "\\cosh\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(tanh(x))) == "\\tanh\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(coth(x))) == "\\coth\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(sech(x))) == "\\sech\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(csch(x))) == "\\csch\\left(x\\right)"
+    end
+
+    @testset "GEOMETRY" begin
+        # No functions added yet
+    end
+
+    @testset "CUSTOM COLORS" begin
+        # No functions added yet
+    end
+
+    @testset "SOUND" begin
+        # No functions added yet
+    end
+
+    @testset "NUMBER THEORY" begin
+        @test Desmos.desmos_latexify(:(lcm(x))) == "\\operatorname{lcm}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(gcd(x))) == "\\operatorname{gcd}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(mod(x))) == "\\operatorname{mod}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(ceil(x))) == "\\operatorname{ceil}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(floor(x))) == "\\operatorname{floor}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(round(x))) == "\\operatorname{round}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(sign(x))) == "\\operatorname{sign}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(nPr(x))) == "\\operatorname{nPr}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(nCr(x))) == "\\operatorname{nCr}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(sqrt(x))) == "\\sqrt\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(cbrt(x))) == "\\sqrt[3]\\left(x\\right)"
+    end
+
+    @testset "ADVANCED" begin
+        # No functions added yet
+    end
+
+    @testset "OTHERS" begin
+        @test Desmos.desmos_latexify(:(abs(x))) == "\\operatorname{abs}\\left(x\\right)"
+        @test Desmos.desmos_latexify(:(factorial(x))) == "\\left(x\\right)!"
+    end
+
     @testset "Arithmetic" begin
         @test Desmos.desmos_latexify(:(1 + 1)) == "1+1"
         @test Desmos.desmos_latexify(:(x - y)) == "x-y"
@@ -9,23 +149,6 @@
         @test Desmos.desmos_latexify(:(-x)) == "-x"
         @test Desmos.desmos_latexify(:(a + b - c)) == "a+b-c"
         @test Desmos.desmos_latexify(:(2 * x + 3)) == "2\\cdot x+3"
-    end
-
-    @testset "Functions" begin
-        @test Desmos.desmos_latexify(:(sin(x))) == "\\sin\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(cos(θ))) == "\\cos\\left(\\theta\\right)"
-        @test Desmos.desmos_latexify(:(tan(x))) == "\\tan\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(exp(x))) == "\\exp\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(sqrt(x))) == "\\sqrt\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(cbrt(x))) == "\\sqrt[3]\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(abs(x))) == "\\operatorname{abs}\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(sinh(x))) == "\\sinh\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(cosh(x))) == "\\cosh\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(tanh(x))) == "\\tanh\\left(x\\right)"
-        # Inverse trig functions (Julia asin -> Desmos arcsin)
-        @test Desmos.desmos_latexify(:(asin(x))) == "\\arcsin\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(acos(x))) == "\\arccos\\left(x\\right)"
-        @test Desmos.desmos_latexify(:(atan(x))) == "\\arctan\\left(x\\right)"
     end
 
     @testset "Logarithms" begin

@@ -150,33 +150,6 @@ function _latexify_assignment(ex::Expr)
     return "$lhs=$rhs"
 end
 
-function _latexify_comparison(ex::Expr)
-    # Comparison and relational operators: >, <, ==, >=, <=, !=, ≥, ≤, ≠, ~
-    op = ex.args[1]
-    lhs = _latexify(ex.args[2])
-    rhs = _latexify(ex.args[3])
-
-    # Check for unsupported operators
-    if op in (:(!=), :≠)
-        throw(UnsupportedDesmosSyntaxError("The inequality operator '$op' (\\ne) is not supported by Desmos. Use other comparison operators instead."))
-    end
-
-    # Map Julia operators to LaTeX
-    op_map = Dict(
-        :> => ">",
-        :< => "<",
-        :(==) => "=",
-        :(>=) => "\\ge ",
-        :(<=) => "\\le ",
-        :≥ => "\\ge ",
-        :≤ => "\\le ",
-        :~ => "\\sim "
-    )
-
-    op_str = get(op_map, op, string(op))
-    return "$lhs$op_str$rhs"
-end
-
 function _latexify_block(ex::Expr)
     # Block expressions often contain LineNumberNode entries
     # Filter them out and process only the actual expressions
@@ -198,6 +171,11 @@ function _latexify_call(ex::Expr)
 
     # If func is a Symbol, dispatch based on its value
     if func isa Symbol
+        # Check for unsupported operators first
+        if func in UNSUPPORTED_OPERATORS
+            throw(UnsupportedDesmosSyntaxError("The inequality operator '$func' (\\ne) is not supported by Desmos. Use other comparison operators instead."))
+        end
+
         # Binary operators
         if func == :+
             return _latexify_plus(ex)
@@ -209,11 +187,6 @@ function _latexify_call(ex::Expr)
             return _latexify_divide(ex)
         elseif func == :^
             return _latexify_power(ex)
-        end
-
-        # Comparison and relational operators
-        if func in (:>, :<, :(==), :(>=), :(<=), :(!=), :≥, :≤, :≠, :~)
-            return _latexify_comparison(ex)
         end
 
         # Special functions

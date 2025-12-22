@@ -12,7 +12,7 @@ const GREEK_LETTERS = Dict(
 )
 
 # Greek letters that are not supported by Desmos (look like Latin letters)
-const UNSUPPORTED_GREEK_LETTERS = Set(['Α', 'Β', 'Ε', 'Ζ', 'Η', 'Ι', 'Κ', 'Μ', 'Ν', 'Ρ', 'Τ', 'Χ'])
+const UNSUPPORTED_GREEK_LETTERS = ['Α', 'Β', 'Ε', 'Ζ', 'Η', 'Ι', 'Κ', 'Μ', 'Ν', 'Ρ', 'Τ', 'Χ']
 
 const SUPERSCRIPT_MAP = Dict(
     '⁰' => "0", '¹' => "1", '²' => "2", '³' => "3", '⁴' => "4",
@@ -23,6 +23,9 @@ const SUBSCRIPT_MAP = Dict(
     '₀' => "0", '₁' => "1", '₂' => "2", '₃' => "3", '₄' => "4",
     '₅' => "5", '₆' => "6", '₇' => "7", '₈' => "8", '₉' => "9"
 )
+
+# Unsupported operators that should throw errors
+const UNSUPPORTED_OPERATORS = [:(!=), :≠]
 
 # Map Julia function names to LaTeX string templates
 # Each template uses ARG1 as a placeholder for the argument
@@ -160,6 +163,16 @@ const DESMOS_FUNCTIONS_2ARG = Dict{Symbol, String}(
 
     # LIST OPERATIONS
     :fill => "\\operatorname{repeat}\\left(ARG1,ARG2\\right)",
+
+    # OHTERS
+    :> => "ARG1>ARG2",
+    :< => "ARG1<ARG2",
+    :(==) => "ARG1=ARG2",
+    :(>=) => "ARG1\\ge ARG2",
+    :(<=) => "ARG1\\le ARG2",
+    :≥ => "ARG1\\ge ARG2",
+    :≤ => "ARG1\\le ARG2",
+    :~ => "ARG1\\sim ARG2",
 )
 
 # Map Julia function names to LaTeX string templates (3 arguments)

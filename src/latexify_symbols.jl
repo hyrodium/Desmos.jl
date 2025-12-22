@@ -61,7 +61,7 @@ const DESMOS_FUNCTIONS_1ARG = Dict{Symbol, String}(
     :mad => "\\operatorname{mad}\\left(ARG1\\right)",
     # :spearman => "\\operatorname{spearman}\\left(ARG1\\right)",
     :stats => "\\operatorname{stats}\\left(ARG1\\right)",
-    :count => "\\operatorname{count}\\left(ARG1\\right)",
+    :length => "\\operatorname{count}\\left(ARG1\\right)",
     :total => "\\operatorname{total}\\left(ARG1\\right)",
     :sum => "\\operatorname{total}\\left(ARG1\\right)",
 
@@ -139,7 +139,7 @@ const DESMOS_FUNCTIONS_1ARG = Dict{Symbol, String}(
     :round => "\\operatorname{round}\\left(ARG1\\right)",
     :sign => "\\operatorname{sign}\\left(ARG1\\right)",
     :nPr => "\\operatorname{nPr}\\left(ARG1\\right)",
-    :nCr => "\\operatorname{nCr}\\left(ARG1\\right)",
+    :binomial => "\\operatorname{nCr}\\left(ARG1\\right)",
     :sqrt => "\\sqrt\\left(ARG1\\right)",
     :cbrt => "\\sqrt[3]\\left(ARG1\\right)",
 

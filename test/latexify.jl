@@ -42,7 +42,7 @@
         @test Desmos.desmos_latexify(:(corr(u, v))) == "\\operatorname{corr}\\left(u,v\\right)"
         # @test Desmos.desmos_latexify(:(spearman(u, v))) == "\\operatorname{spearman}\\left(u,v\\right)"
         @test Desmos.desmos_latexify(:(stats(v))) == "\\operatorname{stats}\\left(v\\right)"
-        @test Desmos.desmos_latexify(:(count(v))) == "\\operatorname{count}\\left(v\\right)"
+        @test Desmos.desmos_latexify(:(length(v))) == "\\operatorname{count}\\left(v\\right)"
         @test Desmos.desmos_latexify(:(total(v))) == "\\operatorname{total}\\left(v\\right)"
     end
 
@@ -187,6 +187,7 @@
 
     @testset "Symbols" begin
         @test Desmos.desmos_latexify(:(x)) == "x"
+        @test Desmos.desmos_latexify(:(x1)) == "x_{1}"
         @test Desmos.desmos_latexify(:(x_1)) == "x_{1}"
         @test Desmos.desmos_latexify(:(x_y)) == "x_{y}"
         @test Desmos.desmos_latexify(:(x_abc)) == "x_{abc}"
@@ -248,13 +249,23 @@
         @test Desmos.desmos_latexify(:(f(x) ~ g(x))) == "f\\left(x\\right)\\sim g\\left(x\\right)"
     end
 
-    @testset "Complex expressions" begin
+    @testset "Multi-term expressions" begin
         @test Desmos.desmos_latexify(:(x^2 + y^2)) == "x^{2}+y^{2}"
         @test Desmos.desmos_latexify(:(sin(x) + cos(x))) == "\\sin\\left(x\\right)+\\cos\\left(x\\right)"
         @test Desmos.desmos_latexify(:((x + y)^2)) == "\\left(x+y\\right)^{2}"
         @test Desmos.desmos_latexify(:(x / (y + z))) == "\\frac{x}{y+z}"
         @test Desmos.desmos_latexify(:((a * b) / (c + d))) == "\\frac{ab}{c+d}"
     end
+
+    @testset "For comprehension notations" begin
+        # Basic list comprehensions
+        @test Desmos.desmos_latexify(:([sin(x) for x in xs])) == "\\left[\\sin\\left(x\\right)\\ \\operatorname{for}\\ x=x_{s}\\right]"
+        @test Desmos.desmos_latexify(:([x^2 for x in A])) == "\\left[x^{2}\\ \\operatorname{for}\\ x=A\\right]"
+        @test Desmos.desmos_latexify(:([cos(θ) for θ in angles])) == "\\left[\\cos\\left(\\theta\\right)\\ \\operatorname{for}\\ \\theta=a_{ngles}\\right]"
+        @test Desmos.desmos_latexify(:([a * b for a in A])) == "\\left[ab\\ \\operatorname{for}\\ a=A\\right]"
+        @test Desmos.desmos_latexify(:([i + 1 for i in nums])) == "\\left[i+1\\ \\operatorname{for}\\ i=n_{ums}\\right]"
+    end
+
 
     @testset "Sum and integral" begin
         @test Desmos.desmos_latexify(:(sum(n^2 for n in 1:5))) == "\\sum_{n=1}^{5}n^{2}"

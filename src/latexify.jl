@@ -27,6 +27,8 @@ function _latexify(ex::Expr)
         return _latexify_tuple(ex)
     elseif ex.head == :vect
         return _latexify_vect(ex)
+    elseif ex.head == :comprehension
+        return _latexify_comprehension(ex)
     elseif ex.head == :block
         return _latexify_block(ex)
     elseif ex.head == :(=)
@@ -110,6 +112,27 @@ end
 function _latexify_vect(ex::Expr)
     elements = [_latexify(arg) for arg in ex.args]
     return "\\left[$(join(elements, ","))\\right]"
+end
+
+function _latexify_comprehension(ex::Expr)
+    # [sin(x) for x in xs] -> \left[\sin\left(x\right)\operatorname{for}x=x_{s}\right]
+    # The comprehension has a generator expression as its only argument
+    gen = ex.args[1]
+    if gen.head != :generator
+        error("Expected generator expression in comprehension")
+    end
+
+    # Extract the term and iterator
+    term = _latexify(gen.args[1])
+    iter = gen.args[2]
+
+    if iter.head == :(=)
+        var = _latexify(iter.args[1])
+        collection = _latexify(iter.args[2])
+        return "\\left[$term\\ \\operatorname{for}\\ $var=$collection\\right]"
+    else
+        error("Unsupported iterator syntax in comprehension")
+    end
 end
 
 function _latexify_assignment(ex::Expr)

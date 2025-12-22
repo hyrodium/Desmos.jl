@@ -74,6 +74,7 @@ end
     id::String
     color::String = "#000000"
     show_label::Union{Bool, Nothing} = nothing & (json = (name = "showLabel",),)
+    label_size::Union{String, Nothing} = nothing & (json = (name = "labelSize",),)
     lines::Union{Bool, Nothing} = nothing
     line_style::Union{String, Nothing} = nothing & (json = (name = "lineStyle",),)
     point_style::Union{String, Nothing} = nothing & (json = (name = "pointStyle",),)
@@ -131,6 +132,8 @@ end
     type::String = "folder"
     id::String
     title::Union{String, Nothing} = nothing
+    hidden::Union{Bool, Nothing} = nothing
+    collapsed::Union{Bool, Nothing} = nothing
 end
 
 @omit_null @kwarg struct DesmosTicker

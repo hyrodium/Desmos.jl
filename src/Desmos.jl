@@ -17,6 +17,7 @@ export DesmosState
 export set_desmos_display_config
 export get_desmos_display_config
 export clipboard_desmos_state
+export UnsupportedDesmosSyntaxError
 
 include("json_types.jl")
 include("config.jl")

@@ -144,10 +144,12 @@ end
             testset_match = match(testset_pattern, line)
             if testset_match !== nothing
                 # Add a text element for the section header
-                push!(expression_list, Desmos.DesmosText(
-                    text = testset_match.captures[1],
-                    id = string(length(expression_list) + 1)
-                ))
+                push!(
+                    expression_list, Desmos.DesmosText(
+                        text = testset_match.captures[1],
+                        id = string(length(expression_list) + 1)
+                    )
+                )
             end
 
             # Check if this line has a @test
@@ -155,11 +157,13 @@ end
             if test_match !== nothing
                 # Unescape the captured string (convert \\ to \)
                 latex_str = replace(test_match.captures[1], "\\\\" => "\\")
-                push!(expression_list, Desmos.DesmosExpression(
-                    latex = latex_str,
-                    color = "#2464b4",
-                    id = string(length(expression_list) + 1)
-                ))
+                push!(
+                    expression_list, Desmos.DesmosExpression(
+                        latex = latex_str,
+                        color = "#2464b4",
+                        id = string(length(expression_list) + 1)
+                    )
+                )
             end
         end
 

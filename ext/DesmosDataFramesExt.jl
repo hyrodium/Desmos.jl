@@ -19,7 +19,7 @@ function Desmos.generate_table(df::DataFrame; id, color = "#000000")
 
     for colname in names(df)
         values = string.(getproperty(df, colname))
-        latex = Desmos.desmos_latexify(colname)
+        latex = desmos_latexify(colname)
 
         column = Desmos.DesmosColumn(
             id = string(id_column),

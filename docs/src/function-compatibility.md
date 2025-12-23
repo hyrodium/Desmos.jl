@@ -187,19 +187,20 @@ desmos_latexify(:(a / b))
 
 Some operators are not supported by Desmos:
 
-```julia
+```@repl
+using Desmos
+
 # This will throw an error:
 desmos_latexify(:(x != y))  # Error: \ne not supported
-
-# Use other comparison operators instead:
-desmos_latexify(:(x < y || x > y))
 ```
 
 ### 4. Greek Letters in Subscripts
 
 Greek letters are not allowed in subscripts:
 
-```julia
+```@repl
+using Desmos
+
 # This will throw an error:
 desmos_latexify(:(xα))  # Error: Greek letters not allowed in subscripts
 

@@ -78,14 +78,19 @@ macro expression(ex, kwargs...)
             end
         end
     end
-    if ex.head === :macrocall
-        if ex.args[1] === Symbol("@L_str")
-            latex = desmos_latexify(eval(ex))
+    if isa(ex, Expr)
+        if ex.head === :macrocall
+            if ex.args[1] === Symbol("@L_str")
+                latex = desmos_latexify(eval(ex))
+            else
+                error("Unsupported expression $(ex)")
+            end
         else
-            error("Unsupported expression $(ex)")
+            latex = desmos_latexify(ex)
         end
     else
-        latex = desmos_latexify(ex)
+        # Handle LaTeXString or other literal values directly
+        latex = desmos_latexify(eval(ex))
     end
     return generate_expression(; latex, id, color, slider, lines, hidden, domain, parametric_domain)
 end

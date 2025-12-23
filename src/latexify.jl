@@ -187,9 +187,14 @@ function _latexify_call(ex::Expr)
                 return _latexify_prod(ex)
             end
             # Otherwise, treat as normal function
-        elseif func == :int
+        elseif func == :integrate
             if length(ex.args) ≥ 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
-                return _latexify_int(ex)
+                return _latexify_integrate(ex)
+            end
+        elseif func == :int
+            # Deprecated: use `integrate` instead
+            if length(ex.args) ≥ 2 && ex.args[2] isa Expr && ex.args[2].head == :generator
+                return _latexify_integrate(ex)
             end
         end
 
@@ -308,8 +313,8 @@ function _latexify_prod(ex::Expr)
     throw(UnsupportedDesmosSyntaxError("Unsupported prod syntax"))
 end
 
-function _latexify_int(ex::Expr)
-    # int(x^2 for x in 1 .. 5) -> \int_{1}^{5}x^{2}dx
+function _latexify_integrate(ex::Expr)
+    # integrate(x^2 for x in 1 .. 5) -> \int_{1}^{5}x^{2}dx
     gen = ex.args[2]
     term = _latexify(gen.args[1])
 
@@ -326,5 +331,5 @@ function _latexify_int(ex::Expr)
         end
     end
 
-    throw(UnsupportedDesmosSyntaxError("Unsupported int syntax"))
+    throw(UnsupportedDesmosSyntaxError("Unsupported integrate syntax"))
 end

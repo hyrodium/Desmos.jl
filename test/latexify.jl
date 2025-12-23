@@ -274,11 +274,14 @@
         @test Desmos.desmos_latexify(:(prod(n^2 for n in 1:5))) == "\\prod_{n=1}^{5}n^{2}"
         @test Desmos.desmos_latexify(:(prod(i for i in 0:10))) == "\\prod_{i=0}^{10}i"
         @test Desmos.desmos_latexify(:(prod(x_i for i in 1:n))) == "\\prod_{i=1}^{n}x_{i}"
-        @test Desmos.desmos_latexify(:(int(x^2 for x in 1 .. 5))) == "\\int_{1}^{5}x^{2}dx"
-        @test Desmos.desmos_latexify(:(int(y for y in -5 .. -2))) == "\\int_{-5}^{-2}ydy"
+        @test Desmos.desmos_latexify(:(integrate(x^2 for x in 1 .. 5))) == "\\int_{1}^{5}x^{2}dx"
+        @test Desmos.desmos_latexify(:(integrate(y for y in -5 .. -2))) == "\\int_{-5}^{-2}ydy"
     end
 
     @testset "Integral" begin
+        @test Desmos.desmos_latexify(:(integrate(x^2 for x in 1 .. 5))) == "\\int_{1}^{5}x^{2}dx"
+        @test Desmos.desmos_latexify(:(integrate(sin(t) for t in 0 .. π))) == "\\int_{0}^{\\pi}\\sin\\left(t\\right)dt"
+        # Deprecated: int() still works for backward compatibility
         @test Desmos.desmos_latexify(:(int(x^2 for x in 1 .. 5))) == "\\int_{1}^{5}x^{2}dx"
         @test Desmos.desmos_latexify(:(int(sin(t) for t in 0 .. π))) == "\\int_{0}^{\\pi}\\sin\\left(t\\right)dt"
     end
@@ -291,6 +294,8 @@
     @testset "Sum normal function calls" begin
         @test Desmos.desmos_latexify(:(sum(v))) == "\\operatorname{total}\\left(v\\right)"
         @test Desmos.desmos_latexify(:(sum([1, 2, 3]))) == "\\operatorname{total}\\left(\\left[1,2,3\\right]\\right)"
+        @test Desmos.desmos_latexify(:(sum(n^2 for n in 1:5))) == "\\sum_{n=1}^{5}n^{2}"
+        @test Desmos.desmos_latexify(:(sum([n^2 for n in 1:5]))) == "\\operatorname{total}\\left(\\left[n^{2}\\ \\operatorname{for}\\ n=\\left[1,...,5\\right]\\right]\\right)"
     end
 
     @testset "LaTeXString input" begin
@@ -389,8 +394,10 @@
         @test Desmos.desmos_latexify(:(sum(i * j for i in 1:n))) == "\\sum_{i=1}^{n}ij"
         @test Desmos.desmos_latexify(:(prod(1 for i in 1:10))) == "\\prod_{i=1}^{10}1"
         @test Desmos.desmos_latexify(:(prod(i * j for i in 1:n))) == "\\prod_{i=1}^{n}ij"
+        @test Desmos.desmos_latexify(:(integrate(1 for x in 0 .. 1))) == "\\int_{0}^{1}1dx"
+        @test Desmos.desmos_latexify(:(integrate(x * y for x in a .. b))) == "\\int_{a}^{b}xydx"
+        # Deprecated: int() still works
         @test Desmos.desmos_latexify(:(int(1 for x in 0 .. 1))) == "\\int_{0}^{1}1dx"
-        @test Desmos.desmos_latexify(:(int(x * y for x in a .. b))) == "\\int_{a}^{b}xydx"
     end
 
     @testset "Edge cases: Function assignments" begin

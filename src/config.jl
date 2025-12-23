@@ -4,7 +4,7 @@
 Configuration for Desmos graph display in plot panes.
 
 # Fields
-- `width::Int`: Width of the Desmos container in pixels (default: 600)
+- `width::Int`: Width of the Desmos container in pixels (default: 600). Set to 0 for automatic width (100%)
 - `height::Int`: Height of the Desmos container in pixels (default: 400)
 - `clipboard::Bool`: Enable clipboard export button (default: false)
 - `api_version::Int`: Desmos API v1 minor version (default: 10 for v1.10)
@@ -29,7 +29,7 @@ const DESMOS_DISPLAY_CONFIG = DesmosDisplayConfig()
 Set display options for Desmos graphs.
 
 # Arguments
-- `width::Int`: Width of the Desmos container in pixels
+- `width::Int`: Width of the Desmos container in pixels. Set to 0 for automatic width (100%)
 - `height::Int`: Height of the Desmos container in pixels
 - `clipboard::Bool`: Enable clipboard export button
 - `api_version::Int`: Desmos API v1 minor version (e.g., 10 for v1.10)
@@ -39,6 +39,9 @@ Set display options for Desmos graphs.
 ```julia
 # Set clipboard mode with custom size
 Desmos.set_desmos_display_config(width=800, height=600, clipboard=true)
+
+# Enable automatic width (responsive)
+Desmos.set_desmos_display_config(width=0)
 
 # Enable only clipboard mode
 Desmos.set_desmos_display_config(clipboard=true)

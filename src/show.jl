@@ -2,8 +2,9 @@ function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
     config = get_desmos_display_config()
     obj_id = objectid(state)
 
+    width_style = config.width == 0 ? "width:100%;max-width:100%;min-width:600px;" : "width:$(config.width)px;"
     html = """
-        <div class="desmos-container" id="desmos-$(obj_id)" style="width:$(config.width)px;height:$(config.height)px;"></div>
+        <div class="desmos-container" id="desmos-$(obj_id)" style="$(width_style)height:$(config.height)px;"></div>
     """
 
     if config.clipboard

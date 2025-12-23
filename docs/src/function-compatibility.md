@@ -276,6 +276,7 @@ If you need to input LaTeX expressions directly without conversion, you can use 
 ```@example
 using Desmos
 using LaTeXStrings
+set_desmos_display_config(width=0,height=400,clipboard=false,api_version=10,api_key="dcb31709b452b1cf9dc26972add0fda6") # hide
 
 # Direct LaTeX input using the L"..." string macro
 myexpression = L"\sin(x)"

@@ -4,11 +4,11 @@
 Configuration for Desmos graph display in plot panes.
 
 # Fields
-- `width::Int`: Width of the Desmos container in pixels (default: 600). Set to 0 for automatic width (100%)
-- `height::Int`: Height of the Desmos container in pixels (default: 400)
-- `clipboard::Bool`: Enable clipboard export button (default: false)
-- `api_version::Int`: Desmos API v1 minor version (default: 10 for v1.10)
-- `api_key::String`: Desmos API key (default: "dcb31709b452b1cf9dc26972add0fda6". See https://www.desmos.com/api/v1.10/docs/index.html)
+- `width::Int`: Width of the Desmos container in pixels (default: `600`). Set to 0 for automatic width (100%)
+- `height::Int`: Height of the Desmos container in pixels (default: `400`)
+- `clipboard::Bool`: Enable clipboard export button (default: `false`)
+- `api_version::Int`: Desmos API v1 minor version (default: `10` for v1.10)
+- `api_key::String`: Desmos API key (default: `"dcb31709b452b1cf9dc26972add0fda6"`. See https://www.desmos.com/api/v1.10/docs/index.html)
 """
 Base.@kwdef mutable struct DesmosDisplayConfig
     width::Int = 600

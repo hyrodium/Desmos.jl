@@ -155,6 +155,7 @@ const DESMOS_FUNCTIONS_2ARG = Dict{Symbol, String}(
     # ARITHMETIC OPERATORS
     :- => "ARG1-ARG2",  # Binary minus
     :/ => "\\frac{ARG1}{ARG2}",  # Division
+    :(:) => "\\left[ARG1,...,ARG2\\right]",  # Range with step 1
 
     # STATISTICS
     :cov => "\\operatorname{cov}\\left(ARG1,ARG2\\right)",
@@ -191,6 +192,7 @@ const DESMOS_FUNCTIONS_2ARG = Dict{Symbol, String}(
 const DESMOS_FUNCTIONS_3ARG = Dict{Symbol, String}(
     # OTHERS
     :ifelse => "\\left\\{ARG1:ARG2,ARG3\\right\\}",
+    :(:) => "\\left[ARG1,ARG1+ARG2,...,ARG3\\right]",  # Range with custom step
 )
 
 # Map Julia function names to LaTeX string templates (n arguments)

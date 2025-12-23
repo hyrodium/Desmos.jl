@@ -17,6 +17,7 @@ makedocs(;
     pages = [
         "Home" => "index.md",
         "Examples" => "examples.md",
+        "Function Compatibility" => "function-compatibility.md",
         "Display Configuration" => "config.md",
         "Working with Desmos Text I/O" => "desmos-text-io.md",
         "API" => "api.md",

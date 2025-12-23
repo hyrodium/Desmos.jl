@@ -13,9 +13,9 @@ function desmos_latexify(s::LaTeXString)
 end
 
 function desmos_latexify(c::RGB)
-    r = red(c)*255
-    g = green(c)*255
-    b = blue(c)*255
+    r = red(c) * 255
+    g = green(c) * 255
+    b = blue(c) * 255
     str = "\\operatorname{rgb}\\left($r,$g,$b\\right)"
     return LaTeXString(str)
 end

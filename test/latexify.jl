@@ -294,6 +294,8 @@
     @testset "Sum normal function calls" begin
         @test Desmos.desmos_latexify(:(sum(v))) == "\\operatorname{total}\\left(v\\right)"
         @test Desmos.desmos_latexify(:(sum([1, 2, 3]))) == "\\operatorname{total}\\left(\\left[1,2,3\\right]\\right)"
+        @test Desmos.desmos_latexify(:(sum(n^2 for n in 1:5))) == "\\sum_{n=1}^{5}n^{2}"
+        @test Desmos.desmos_latexify(:(sum([n^2 for n in 1:5]))) == "\\operatorname{total}\\left(\\left[n^{2}\\ \\operatorname{for}\\ n=\\left[1,...,5\\right]\\right]\\right)"
     end
 
     @testset "LaTeXString input" begin

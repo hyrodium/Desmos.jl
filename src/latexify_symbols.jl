@@ -193,6 +193,7 @@ const DESMOS_FUNCTIONS_3ARG = Dict{Symbol, String}(
     # OTHERS
     :ifelse => "\\left\\{ARG1:ARG2,ARG3\\right\\}",
     :(:) => "\\left[ARG1,ARG1+ARG2,...,ARG3\\right]",  # Range with custom step
+    :RGB => "\\operatorname{rgb}\\left(255\\left(ARG1\\right),255\\left(ARG2\\right),255\\left(ARG3\\right)\\right)",
 )
 
 # Map Julia function names to LaTeX string templates (n arguments)

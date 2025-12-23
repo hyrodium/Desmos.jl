@@ -40,7 +40,7 @@ Desmos.set_desmos_display_config(clipboard=true)
 state = @desmos begin
     @text "My graph"
     @expression sin(x) + cos(2x)
-    @expression y = x^2 domain = -2..2
+    @expression y = x^2
 end
 ```
 
@@ -75,8 +75,8 @@ The [`clipboard_desmos_state`](@ref) function works both ways:
 using Desmos
 
 state = @desmos begin
-    @expression y = sin(x) * cos(2x)
-    @expression y = x^2 - 3 domain = -2..2
+    y = sin(x) * cos(2x)
+    y = x^2 - 3
 end
 ```
 
@@ -91,7 +91,7 @@ Desmos.clipboard_desmos_state(state)
 ```julia
 # 1. Create and export a graph
 state = @desmos begin
-    @expression f(x) = x^2
+    f(x) = x^2
 end
 Desmos.clipboard_desmos_state(state)
 

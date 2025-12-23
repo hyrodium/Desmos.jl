@@ -1,4 +1,4 @@
-# Examples
+# Example Gallery
 
 ## Basic function definitions
 ```@example

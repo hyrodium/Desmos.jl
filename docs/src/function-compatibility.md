@@ -26,7 +26,7 @@ Here's a practical example demonstrating how Julia expressions are automatically
 
 ```@example
 using Desmos, Colors
-set_desmos_display_config(width=600, height=400, clipboard=false, api_version=10, api_key="dcb31709b452b1cf9dc26972add0fda6") # hide
+set_desmos_display_config(width=0, height=600, clipboard=false, api_version=10, api_key="dcb31709b452b1cf9dc26972add0fda6") # hide
 
 # Create a graph with various mathematical expressions
 @desmos begin
@@ -47,7 +47,7 @@ This example shows:
 
 ## The `desmos_latexify` Function
 
-The `desmos_latexify` function is the core of the conversion system. It takes a Julia expression and returns a `LaTeXString`:
+The [`desmos_latexify`](@ref) function is the core of the conversion system. It takes a Julia expression and returns a `LaTeXString`:
 
 ```@repl
 using Desmos
@@ -123,18 +123,15 @@ desmos_latexify(:(gradient(f(x), x)))
 desmos_latexify(:(gradient(x^2 + y^2, x)))
 ```
 
-!!! note "Not Julia's standard gradient"
-    This is not related to Julia's `gradient` function for vector calculus. In Desmos.jl, `gradient` creates the derivative notation `d/dx`.
+### Integrals: `integrate`
 
-### Integrals: `int`
-
-Use `int` with a generator expression for definite integrals:
+Use `integrate` with a generator expression for definite integrals:
 
 ```@repl
 using Desmos
 
-desmos_latexify(:(int(x^2 for x in 1..5)))
-desmos_latexify(:(int(sin(t) for t in 0..π)))
+desmos_latexify(:(integrate(x^2 for x in 1..5)))
+desmos_latexify(:(integrate(sin(t) for t in 0..π)))
 ```
 
 ### Summation and Products
@@ -160,7 +157,7 @@ desmos_latexify(:(Uniform(0, 1)))
 desmos_latexify(:(Binomial(10, 0.5)))
 ```
 
-These constructors are designed to be compatible with `Distributions.jl` naming conventions, but no `using Distributions` is required—Desmos.jl defines its own constructors that generate the appropriate Desmos syntax.
+These constructors are designed to be compatible with [`Distributions.jl`](https://juliastats.org/Distributions.jl/stable/) naming conventions, but no `using Distributions` is required—Desmos.jl defines its own constructors that generate the appropriate Desmos syntax.
 
 ## Common Pitfalls
 
@@ -206,7 +203,7 @@ Greek letters are not allowed in subscripts:
 # This will throw an error:
 desmos_latexify(:(xα))  # Error: Greek letters not allowed in subscripts
 
-# Use Latin letters or digits:
+# Use alphabets or digits for subscripts:
 desmos_latexify(:(x1))
 ```
 
@@ -276,7 +273,7 @@ If you need to input LaTeX expressions directly without conversion, you can use 
 ```@example
 using Desmos
 using LaTeXStrings
-set_desmos_display_config(width=0,height=400,clipboard=false,api_version=10,api_key="dcb31709b452b1cf9dc26972add0fda6") # hide
+set_desmos_display_config(width=0, height=400, clipboard=false, api_version=10, api_key="dcb31709b452b1cf9dc26972add0fda6") # hide
 
 # Direct LaTeX input using the L"..." string macro
 myexpression = L"\sin(x)"

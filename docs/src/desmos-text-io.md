@@ -26,27 +26,32 @@ This makes it easy to:
 
 ## Exporting from Julia to Desmos
 
-1. Create a graph in Julia using Desmos.jl
-2. Enable clipboard mode in the [display configuration](config.md):
+1. Enable clipboard mode in the [display configuration](config.md)
+2. Create your graph in Julia using Desmos.jl
+3. Click the clipboard export button in the rendered plot pane (alternatively, run [`clipboard_desmos_state`](@ref))
+4. Open [Desmos Graphing Calculator](https://www.desmos.com/calculator)
+5. Use the Desmos Text I/O extension to import the copied JSON
 
 ```@example desmos-text-io
 using Desmos
 
-# Enable clipboard export button
+# 1. Enable clipboard mode
 set_desmos_display_config(width=600,height=400,clipboard=false,api_version=10,api_key="dcb31709b452b1cf9dc26972add0fda6") # hide
 Desmos.set_desmos_display_config(clipboard=true)
 
-# Create your graph
+# 2. Create your graph
 state = @desmos begin
     @text "My graph"
     @expression sin(x) + cos(2x)
     @expression y = x^2
 end
-```
 
-3. Click the clipboard export button in the rendered plot pane
-4. Open [Desmos Graphing Calculator](https://www.desmos.com/calculator)
-5. Use the Desmos Text I/O extension to import the copied JSON
+# 3. Click the clipboard export button in the rendered plot pane (alternatively, run `clipboard_desmos_state(state)`)
+clipboard_desmos_state(state)
+
+# 4. Open [Desmos Graphing Calculator](https://www.desmos.com/calculator)
+# 5. Use the Desmos Text I/O extension to import the copied JSON
+```
 
 ## Importing from Desmos to Julia
 
@@ -60,7 +65,7 @@ The easiest way to import a graph from Desmos is using the [`clipboard_desmos_st
 using Desmos
 
 # Import the graph state from clipboard
-state = Desmos.clipboard_desmos_state()
+state = clipboard_desmos_state()
 ```
 
 The function reads JSON data from the system clipboard and parses it into a [`DesmosState`](@ref) object.
@@ -82,7 +87,7 @@ end
 
 ```julia
 # Copy the state to clipboard as JSON
-Desmos.clipboard_desmos_state(state)
+clipboard_desmos_state(state)
 # Now you can paste it into Desmos using the Text I/O extension
 ```
 
@@ -93,12 +98,12 @@ Desmos.clipboard_desmos_state(state)
 state = @desmos begin
     f(x) = x^2
 end
-Desmos.clipboard_desmos_state(state)
+clipboard_desmos_state(state)
 
 # 2. Edit in Desmos web interface, then export using Text I/O extension
 
 # 3. Import the modified graph back to Julia
-modified_state = Desmos.clipboard_desmos_state()
+modified_state = clipboard_desmos_state()
 ```
 
 ## Saving and Loading Graphs

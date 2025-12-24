@@ -71,6 +71,6 @@ function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
     return write(io, html)
 end
 
-function Base.show(io::IO, ::MIME"juliavscode/html", agif::DesmosState)
-    return show(io, MIME("text/html"), agif)
+function Base.show(io::IO, ::MIME"juliavscode/html", state::DesmosState)
+    return show(io, MIME("text/html"), state)
 end

@@ -25,7 +25,7 @@ This subscript behavior means that `xy` is treated as a single variable "x with 
 Here's a practical example demonstrating how Julia expressions are automatically converted to Desmos notation:
 
 ```@example
-using Desmos, Colors
+using Desmos
 set_desmos_display_config(width=0, height=600, clipboard=false, api_version=10, api_key="dcb31709b452b1cf9dc26972add0fda6") # hide
 
 # Create a graph with various mathematical expressions

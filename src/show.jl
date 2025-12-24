@@ -1,5 +1,4 @@
-function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
-    config = get_desmos_display_config()
+function _generate_html(state::DesmosState, config::DesmosDisplayConfig)
     obj_id = objectid(state)
 
     width_style = config.width == 0 ? "width:100%;max-width:100%;min-width:400px;" : "width:$(config.width)px;"
@@ -68,6 +67,12 @@ function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
         </script>
     """
 
+    return html
+end
+
+function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
+    config = get_desmos_display_config()
+    html = _generate_html(state, config)
     return write(io, html)
 end
 

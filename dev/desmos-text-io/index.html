@@ -9,15 +9,15 @@ state = @desmos begin
     @text &quot;My graph&quot;
     @expression sin(x) + cos(2x)
     @expression y = x^2
-end</code></pre>    <div class="desmos-container" id="desmos-2647538227520211812" style="width:600px;height:400px;"></div>
+end</code></pre>    <div class="desmos-container" id="desmos-2923208980520893125" style="width:600px;height:400px;"></div>
 <div style="margin-top:10px;">
-    <button id="export-btn-2647538227520211812" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
-    <span id="export-status-2647538227520211812" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
+    <button id="export-btn-2923208980520893125" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
+    <span id="export-status-2923208980520893125" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
 </div>
     <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     <script>
         (function() {
-            var elt = document.getElementById("desmos-2647538227520211812");
+            var elt = document.getElementById("desmos-2923208980520893125");
             var calculator = Desmos.GraphingCalculator(elt);
             calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"text","id":"1","text":"My graph"},{"type":"expression","id":"2","color":"#000000","latex":"\\sin\\left(x\\right)+\\cos\\left(2x\\right)"},{"type":"expression","id":"3","color":"#000000","latex":"y=x^{2}"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
 
@@ -33,8 +33,8 @@ end</code></pre>    <div class="desmos-container" id="desmos-2647538227520211812
                 }
             }, false); // Use bubble phase, not capture
 
-        var exportBtn = document.getElementById("export-btn-2647538227520211812");
-        var exportStatus = document.getElementById("export-status-2647538227520211812");
+        var exportBtn = document.getElementById("export-btn-2923208980520893125");
+        var exportStatus = document.getElementById("export-status-2923208980520893125");
         exportBtn.addEventListener('click', function() {
             var currentState = calculator.getState();
             var stateJson = JSON.stringify(currentState, null, 2);
@@ -63,15 +63,15 @@ state = Desmos.clipboard_desmos_state()</code></pre><p>The function reads JSON d
 state = @desmos begin
     y = sin(x) * cos(2x)
     y = x^2 - 3
-end</code></pre>    <div class="desmos-container" id="desmos-8010905569667353560" style="width:600px;height:400px;"></div>
+end</code></pre>    <div class="desmos-container" id="desmos-18358660725690058806" style="width:600px;height:400px;"></div>
 <div style="margin-top:10px;">
-    <button id="export-btn-8010905569667353560" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
-    <span id="export-status-8010905569667353560" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
+    <button id="export-btn-18358660725690058806" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
+    <span id="export-status-18358660725690058806" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
 </div>
     <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     <script>
         (function() {
-            var elt = document.getElementById("desmos-8010905569667353560");
+            var elt = document.getElementById("desmos-18358660725690058806");
             var calculator = Desmos.GraphingCalculator(elt);
             calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"expression","id":"1","color":"#000000","latex":"y=\\sin\\left(x\\right)\\cos\\left(2x\\right)"},{"type":"expression","id":"2","color":"#000000","latex":"y=x^{2}-3"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
 
@@ -87,8 +87,8 @@ end</code></pre>    <div class="desmos-container" id="desmos-8010905569667353560
                 }
             }, false); // Use bubble phase, not capture
 
-        var exportBtn = document.getElementById("export-btn-8010905569667353560");
-        var exportStatus = document.getElementById("export-status-8010905569667353560");
+        var exportBtn = document.getElementById("export-btn-18358660725690058806");
+        var exportStatus = document.getElementById("export-status-18358660725690058806");
         exportBtn.addEventListener('click', function() {
             var currentState = calculator.getState();
             var stateJson = JSON.stringify(currentState, null, 2);
@@ -138,4 +138,4 @@ loaded_state = JSON.parsefile(&quot;my_graph.json&quot;)</code></pre><pre class=
   &quot;graph&quot;                   =&gt; Object{String, Any}()
   &quot;expressions&quot;             =&gt; Object{String, Any}(&quot;list&quot;=&gt;Any[Object{String, A…
   &quot;includeFunctionParamete… =&gt; true
-  &quot;doNotMigrateMovablePoin… =&gt; true</code></pre><h2 id="Related-Configuration"><a class="docs-heading-anchor" href="#Related-Configuration">Related Configuration</a><a id="Related-Configuration-1"></a><a class="docs-heading-anchor-permalink" href="#Related-Configuration" title="Permalink"></a></h2><p>See the <a href="../config/">Display Configuration</a> page for details on enabling clipboard mode and other display options that enhance the Desmos Text I/O workflow.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../config/">Display Configuration »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Tuesday 23 December 2025 14:36">Tuesday 23 December 2025</span>. Using Julia version 1.12.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  &quot;doNotMigrateMovablePoin… =&gt; true</code></pre><h2 id="Related-Configuration"><a class="docs-heading-anchor" href="#Related-Configuration">Related Configuration</a><a id="Related-Configuration-1"></a><a class="docs-heading-anchor-permalink" href="#Related-Configuration" title="Permalink"></a></h2><p>See the <a href="../config/">Display Configuration</a> page for details on enabling clipboard mode and other display options that enhance the Desmos Text I/O workflow.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../config/">Display Configuration »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Wednesday 24 December 2025 15:19">Wednesday 24 December 2025</span>. Using Julia version 1.12.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

@@ -13,15 +13,15 @@ end
 
 # 3. Click the clipboard export button in the rendered plot pane (alternatively, run `clipboard_desmos_state(state)`)
 # 4. Open [Desmos Graphing Calculator](https://www.desmos.com/calculator)
-# 5. Use the Desmos Text I/O extension to import the copied JSON</code></pre>    <div class="desmos-container" id="desmos-6920374086820562669" style="width:600px;height:400px;"></div>
+# 5. Use the Desmos Text I/O extension to import the copied JSON</code></pre>    <div class="desmos-container" id="desmos-32338546793343383" style="width:600px;height:400px;"></div>
 <div style="margin-top:10px;">
-    <button id="export-btn-6920374086820562669" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
-    <span id="export-status-6920374086820562669" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
+    <button id="export-btn-32338546793343383" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
+    <span id="export-status-32338546793343383" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
 </div>
     <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     <script>
         (function() {
-            var elt = document.getElementById("desmos-6920374086820562669");
+            var elt = document.getElementById("desmos-32338546793343383");
             var calculator = Desmos.GraphingCalculator(elt);
             calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"text","id":"1","text":"My graph"},{"type":"expression","id":"2","color":"#000000","latex":"\\sin\\left(x\\right)+\\cos\\left(2x\\right)"},{"type":"expression","id":"3","color":"#000000","latex":"y=x^{2}"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
 
@@ -37,8 +37,8 @@ end
                 }
             }, false); // Use bubble phase, not capture
 
-        var exportBtn = document.getElementById("export-btn-6920374086820562669");
-        var exportStatus = document.getElementById("export-status-6920374086820562669");
+        var exportBtn = document.getElementById("export-btn-32338546793343383");
+        var exportStatus = document.getElementById("export-status-32338546793343383");
         exportBtn.addEventListener('click', function() {
             var currentState = calculator.getState();
             var stateJson = JSON.stringify(currentState, null, 2);
@@ -67,15 +67,15 @@ state = clipboard_desmos_state()</code></pre><p>The function reads JSON data fro
 state = @desmos begin
     y = sin(x) * cos(2x)
     y = x^2 - 3
-end</code></pre>    <div class="desmos-container" id="desmos-5843788176705371578" style="width:600px;height:400px;"></div>
+end</code></pre>    <div class="desmos-container" id="desmos-3993253777177681966" style="width:600px;height:400px;"></div>
 <div style="margin-top:10px;">
-    <button id="export-btn-5843788176705371578" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
-    <span id="export-status-5843788176705371578" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
+    <button id="export-btn-3993253777177681966" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
+    <span id="export-status-3993253777177681966" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
 </div>
     <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     <script>
         (function() {
-            var elt = document.getElementById("desmos-5843788176705371578");
+            var elt = document.getElementById("desmos-3993253777177681966");
             var calculator = Desmos.GraphingCalculator(elt);
             calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"expression","id":"1","color":"#000000","latex":"y=\\sin\\left(x\\right)\\cos\\left(2x\\right)"},{"type":"expression","id":"2","color":"#000000","latex":"y=x^{2}-3"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
 
@@ -91,8 +91,8 @@ end</code></pre>    <div class="desmos-container" id="desmos-5843788176705371578
                 }
             }, false); // Use bubble phase, not capture
 
-        var exportBtn = document.getElementById("export-btn-5843788176705371578");
-        var exportStatus = document.getElementById("export-status-5843788176705371578");
+        var exportBtn = document.getElementById("export-btn-3993253777177681966");
+        var exportStatus = document.getElementById("export-status-3993253777177681966");
         exportBtn.addEventListener('click', function() {
             var currentState = calculator.getState();
             var stateJson = JSON.stringify(currentState, null, 2);

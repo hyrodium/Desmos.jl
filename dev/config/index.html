@@ -7,11 +7,11 @@ Desmos.set_desmos_display_config(width=800, height=600)
 # Now all Desmos graphs will be displayed with these dimensions
 state = @desmos begin
     @expression sin(x)
-end</code></pre>    <div class="desmos-container" id="desmos-16470839063668289240" style="width:800px;height:600px;"></div>
+end</code></pre>    <div class="desmos-container" id="desmos-17214451024884379424" style="width:800px;height:600px;"></div>
     <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     <script>
         (function() {
-            var elt = document.getElementById("desmos-16470839063668289240");
+            var elt = document.getElementById("desmos-17214451024884379424");
             var calculator = Desmos.GraphingCalculator(elt);
             calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"expression","id":"1","color":"#000000","latex":"\\sin\\left(x\\right)"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
 
@@ -33,15 +33,15 @@ Desmos.set_desmos_display_config(clipboard=true)
 
 state = @desmos begin
     @expression cos(x)
-end</code></pre>    <div class="desmos-container" id="desmos-5498875758345650001" style="width:800px;height:600px;"></div>
+end</code></pre>    <div class="desmos-container" id="desmos-9927432004012856099" style="width:800px;height:600px;"></div>
 <div style="margin-top:10px;">
-    <button id="export-btn-5498875758345650001" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
-    <span id="export-status-5498875758345650001" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
+    <button id="export-btn-9927432004012856099" style="padding:4px 12px;font-size:14px;cursor:pointer;border:1px solid #ccc;border-radius:4px;background-color:#f8f9fa;">Export State to Clipboard</button>
+    <span id="export-status-9927432004012856099" style="margin-left:10px;font-size:14px;font-weight:bold;"></span>
 </div>
     <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     <script>
         (function() {
-            var elt = document.getElementById("desmos-5498875758345650001");
+            var elt = document.getElementById("desmos-9927432004012856099");
             var calculator = Desmos.GraphingCalculator(elt);
             calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"expression","id":"1","color":"#000000","latex":"\\cos\\left(x\\right)"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
 
@@ -57,8 +57,8 @@ end</code></pre>    <div class="desmos-container" id="desmos-5498875758345650001
                 }
             }, false); // Use bubble phase, not capture
 
-        var exportBtn = document.getElementById("export-btn-5498875758345650001");
-        var exportStatus = document.getElementById("export-status-5498875758345650001");
+        var exportBtn = document.getElementById("export-btn-9927432004012856099");
+        var exportStatus = document.getElementById("export-status-9927432004012856099");
         exportBtn.addEventListener('click', function() {
             var currentState = calculator.getState();
             var stateJson = JSON.stringify(currentState, null, 2);

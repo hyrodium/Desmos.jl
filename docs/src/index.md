@@ -31,12 +31,22 @@ On Jupyter, the output plot will be shown in the output cell.
 
 ![](jupyter.png)
 
-## Table of contents
+## Overview of the document
 
--[Home](index.md)
--[Working with Desmos Text I/O](desmos-text-io.md)
--[Display Configuration](config.md)
--[Function Compatibility](function-compatibility.md)
--[Example Gallery](examples.md)
--[Desmos.jl API](api.md)
--[License](license.md)
+- [Home](index.md)
+  - This page introduces Desmos.jl and shows a first example of creating Desmos graphs.
+- [Working with Desmos Text I/O](desmos-text-io.md)
+  - [Desmos Text I/O](https://github.com/hyrodium/desmos-text-io) browser extension enables importing and exporting Desmos graphs as text/JSON.
+  - [`clipboard_desmos_state`](@ref) function allows transferring graphs between Julia and the Desmos web interface.
+- [Display Configuration](config.md)
+  - Configuration options to customize how graphs are displayed in plot panes.
+  - Options include width, height, clipboard export button, API version, and API key.
+- [Function Compatibility](function-compatibility.md)
+  - How Julia expressions are translated to Desmos LaTeX format.
+  - Design principles, function mappings, and common pitfalls.
+- [Example Gallery](examples.md)
+  - Examples including basic functions, variable definitions, and Newton's method visualization.
+- [Desmos.jl API](api.md)
+  - Complete API reference for public and private functions, macros, etc.
+- [License](license.md)
+  - MIT License for Desmos.jl and notes about Desmos API usage terms.

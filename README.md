@@ -19,7 +19,17 @@ state = @desmos begin
 end
 ```
 
+On vscode, the output plot will be shown in the plot pane.
+
 ![](docs/src/vscode.png)
+
+On Pluto.jl, the output plot will be shown above the code.
+
+![](docs/src/pluto.png)
+
+On Jupyter, the output plot will be shown in the output cell.
+
+![](docs/src/jupyter.png)
 
 See [documentation](https://hyrodium.github.io/Desmos.jl/dev/) for more information.
 

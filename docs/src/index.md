@@ -22,3 +22,21 @@ end
 On vscode, the output plot will be shown in the plot pane.
 
 ![](vscode.png)
+
+On Pluto.jl, the output plot will be shown above the code.
+
+![](pluto.png)
+
+On Jupyter, the output plot will be shown in the output cell.
+
+![](jupyter.png)
+
+## Table of contents
+
+-[Home](index.md)
+-[Working with Desmos Text I/O](desmos-text-io.md)
+-[Display Configuration](config.md)
+-[Function Compatibility](function-compatibility.md)
+-[Example Gallery](examples.md)
+-[Desmos.jl API](api.md)
+-[License](license.md)

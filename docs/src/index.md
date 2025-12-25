@@ -22,3 +22,11 @@ end
 On vscode, the output plot will be shown in the plot pane.
 
 ![](vscode.png)
+
+On Pluto.jl, the output plot will be shown above the code.
+
+![](pluto.png)
+
+On Jupyter, the output plot will be shown in the output cell.
+
+![](jupyter.png)

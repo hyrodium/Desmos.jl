@@ -47,8 +47,6 @@ state = @desmos begin
 end
 
 # 3. Click the clipboard export button in the rendered plot pane (alternatively, run `clipboard_desmos_state(state)`)
-clipboard_desmos_state(state)
-
 # 4. Open [Desmos Graphing Calculator](https://www.desmos.com/calculator)
 # 5. Use the Desmos Text I/O extension to import the copied JSON
 ```

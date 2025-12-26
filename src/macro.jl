@@ -39,17 +39,6 @@ julia> Desmos.@expression x^2 domain=-5..5
 
 julia> Desmos.@expression f(x) = x^3 hidden=true
 (Desmos.DesmosExpression("expression", "0", "#000000", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, true, "f\\left(x\\right)=x^{3}", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing), 1)
-
-julia> Desmos.@expression L"\\frac{x^2}{4} + \\frac{y^2}{9} = 1" color=RGB(0, 0.5, 1)
-ERROR: LoadError: UndefVarError: `@L_str` not defined in `Desmos`
-Suggestion: check for spelling errors or missing imports.
-Stacktrace:
- [1] eval(m::Module, e::Any)
-   @ Core ./boot.jl:489
- [2] var"@expression"(__source__::LineNumberNode, __module__::Module, ex::Any, kwargs::Vararg{Any})
-   @ Desmos ~/.julia/dev/Desmos/src/macro.jl:84
-in expression starting at none:1
-in expression starting at none:1
 ```
 
 # See also

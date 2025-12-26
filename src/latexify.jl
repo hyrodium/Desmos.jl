@@ -1,32 +1,18 @@
 """
-    desmos_latexify(ex) -> LaTeXString
+    desmos_latexify(ex) -> String
 
 Convert Julia expressions to LaTeX strings suitable for Desmos.
 This is a simpler, Desmos-focused alternative to `Latexify.latexify`.
 """
-function desmos_latexify(ex)
-    return LaTeXString(desmos_latexify(ex))
-end
-
-function desmos_latexify(s::LaTeXString)
-    return LaTeXString(chopsuffix(chopprefix(s, "\$"), "\$"))
-end
+function desmos_latexify end
 
 function desmos_latexify(c::RGB)
     r = red(c) * 255
     g = green(c) * 255
     b = blue(c) * 255
     str = "\\operatorname{rgb}\\left($r,$g,$b\\right)"
-    return LaTeXString(str)
+    return String(str)
 end
-
-"""
-    desmos_latexify(ex) -> String
-
-Convert a Julia expression to LaTeX string.
-Main dispatcher for different expression types.
-"""
-function _latexify end
 
 function desmos_latexify(ex::Expr)
     if ex.head == :call

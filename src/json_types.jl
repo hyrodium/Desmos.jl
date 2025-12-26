@@ -4,7 +4,7 @@ abstract type AbstractDesmosExpression end
     id::String
     color::String = "#000000"
     values::Union{Vector{String}, Nothing} = nothing
-    latex::Union{LaTeXString, Nothing} = nothing
+    latex::Union{String, Nothing} = nothing
     hidden::Union{Bool, Nothing} = nothing
     lines::Union{Bool, Nothing} = nothing
     point_outline::Union{Bool, Nothing} = nothing & (json = (name = "pointOutline",),)
@@ -60,13 +60,13 @@ end
 end
 
 @omit_null @kwarg struct DesmosDomain
-    min::LaTeXString
-    max::LaTeXString
+    min::String
+    max::String
 end
 
 @omit_null @kwarg struct DesmosClickableInfo
     enabled::Bool
-    latex::Union{LaTeXString, Nothing} = nothing
+    latex::Union{String, Nothing} = nothing
 end
 
 @omit_null @kwarg struct DesmosExpression <: AbstractDesmosExpression
@@ -79,17 +79,17 @@ end
     line_style::Union{String, Nothing} = nothing & (json = (name = "lineStyle",),)
     point_style::Union{String, Nothing} = nothing & (json = (name = "pointStyle",),)
     point_outline::Union{Bool, Nothing} = nothing & (json = (name = "pointOutline",),)
-    line_opacity::Union{LaTeXString, Nothing} = nothing & (json = (name = "lineOpacity",),)
-    line_width::Union{LaTeXString, Nothing} = nothing & (json = (name = "lineWidth",),)
-    fill_opacity::Union{LaTeXString, Nothing} = nothing & (json = (name = "fillOpacity",),)
+    line_opacity::Union{String, Nothing} = nothing & (json = (name = "lineOpacity",),)
+    line_width::Union{String, Nothing} = nothing & (json = (name = "lineWidth",),)
+    fill_opacity::Union{String, Nothing} = nothing & (json = (name = "fillOpacity",),)
     clickable_info::Union{DesmosClickableInfo, Nothing} = nothing & (json = (name = "clickableInfo",),)
     hidden::Union{Bool, Nothing} = nothing
-    latex::Union{LaTeXString, Nothing} = nothing
+    latex::Union{String, Nothing} = nothing
     slider::Union{DesmosSlider, Nothing} = nothing
     domain::Union{DesmosDomain, Nothing} = nothing
     parametric_domain::Union{DesmosParametricDomain, Nothing} = nothing & (json = (name = "parametricDomain",),)
     folder_id::Union{String, Nothing} = nothing & (json = (name = "folderId",),)
-    color_latex::Union{LaTeXString, Nothing} = nothing & (json = (name = "colorLatex",),)
+    color_latex::Union{String, Nothing} = nothing & (json = (name = "colorLatex",),)
     display_evaluation_as_fraction::Union{Bool, Nothing} = nothing & (json = (name = "displayEvaluationAsFraction",),)
     residual_variable::Union{String, Nothing} = nothing & (json = (name = "residualVariable",),)
     regression_parameters::Union{Dict{String, Float64}, Nothing} = nothing & (json = (name = "regressionParameters",),)
@@ -112,7 +112,7 @@ end
     name::Union{String, Nothing} = nothing
     width::Union{String, Nothing} = nothing
     height::Union{String, Nothing} = nothing
-    center::Union{LaTeXString, Nothing} = nothing
+    center::Union{String, Nothing} = nothing
     angle::Union{String, Nothing} = nothing
     opacity::Union{String, Nothing} = nothing
     forground::Union{Bool, Nothing} = nothing

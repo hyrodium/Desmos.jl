@@ -34,6 +34,7 @@ This example may not work correctly in Firefox.
 Please try running code with [julia-vscode](https://github.com/julia-vscode/julia-vscode) or [desmos-text-io](https://github.com/hyrodium/desmos-text-io) if you encounter any problems.
 ```@example
 using Desmos
+using LaTeXStrings
 set_desmos_display_config(width=0,height=400,clipboard=false,api_version=10,api_key="dcb31709b452b1cf9dc26972add0fda6") # hide
 image_url = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMethod/b3fcb1f935439d671e3ddb3eb3b19fd261f6b067/example1a.png"
 state = @desmos begin
@@ -54,7 +55,7 @@ state = @desmos begin
     b(0) = b₀
     a(i) = A(a(i-1),b(i-1))
     b(i) = B(a(i-1),b(i-1))
-    @expression L"I = [0,...,10]"
+    @expression $(L"I = [0,...,10]")
     (a₀,b₀)
     @expression (a(I),b(I)) lines = true
     @image image_url = $image_url width = 20 height = 20 name = "regions"

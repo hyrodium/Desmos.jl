@@ -89,7 +89,7 @@ end
             b(0) = b₀
             a(i) = A(a(i - 1), b(i - 1))
             b(i) = B(a(i - 1), b(i - 1))
-            @expression L"I = [0,...,10]"
+            @expression $(L"I = [0,...,10]")
             (a₀, b₀)
             @expression (a(I), b(I)) lines = true
             @image image_url = $image_url width = 20 height = 20 name = "regions"

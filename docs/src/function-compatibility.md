@@ -279,7 +279,6 @@ set_desmos_display_config(width=0, height=400, clipboard=false, api_version=10, 
 # Direct LaTeX input using the L"..." string macro
 myexpression = L"\sin(x)"
 @desmos begin
-    @expression L"\cos(x)"
     @expression $myexpression
 end
 ```

@@ -1,6 +1,6 @@
 name = "Desmos"
 uuid = "4511bacd-46ac-4e41-b5d2-355eeb7547f4"
-version = "0.2.2"
+version = "0.3.0-DEV"
 authors = ["hyrodium <hyrodium@gmail.com> and contributors"]
 
 [deps]
@@ -12,14 +12,15 @@ ImageIO = "82e4d734-157c-48bb-816b-45c225c6df19"
 InteractiveUtils = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 IntervalSets = "8197267c-284f-5f27-9208-e0e47529a953"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
-LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 
 [weakdeps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 QuadraticOptimizer = "e7241e48-3d3b-4ed3-9130-818aaeb8a636"
 
 [extensions]
 DesmosDataFramesExt = "DataFrames"
+DesmosLaTeXStringsExt = "LaTeXStrings"
 DesmosQuadraticOptimizerExt = "QuadraticOptimizer"
 
 [compat]
@@ -41,8 +42,9 @@ julia = "1.10"
 [extras]
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 QuadraticOptimizer = "e7241e48-3d3b-4ed3-9130-818aaeb8a636"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Aqua", "DataFrames", "QuadraticOptimizer", "Test"]
+test = ["Aqua", "DataFrames", "LaTeXStrings", "QuadraticOptimizer", "Test"]

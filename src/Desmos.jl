@@ -4,7 +4,6 @@ using JSON
 # https://github.com/JuliaIO/JSON.jl/pull/418
 using JSON.StructUtils: @kwarg
 using Colors
-using LaTeXStrings
 using IntervalSets
 using ImageIO
 using FileIO

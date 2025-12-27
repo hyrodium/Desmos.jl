@@ -171,7 +171,7 @@ const DESMOS_FUNCTIONS_2ARG = Dict{Symbol, String}(
 
     # CALCULUS
     :log => "\\log_{ARG1}\\left(ARG2\\right)",  # 2-arg: logarithm with custom base
-    :gradient => "\\frac{d}{dARG2}ARG1",  # gradient(f, x) -> d/dx f
+    :gradient => "\\frac{d}{dARG2}ONETERM_ARG1",  # gradient(f, x) -> d/dx f
 
     # LIST OPERATIONS
     :fill => "\\operatorname{repeat}\\left(ARG1,ARG2\\right)",

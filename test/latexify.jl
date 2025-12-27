@@ -152,6 +152,18 @@
         @test desmos_latexify(:(2 * x + 3)) == "2x+3"
     end
 
+    @testset "Arithmetic (oneterm)" begin
+        @test desmos_latexify(:(1 + 1), true) == "\\left(1+1\\right)"
+        @test desmos_latexify(:(x - y), true) == "\\left(x-y\\right)"
+        @test desmos_latexify(:(a * b), true) == "ab"
+        @test desmos_latexify(:(x / y), true) == "\\frac{x}{y}"
+        @test desmos_latexify(:(x^2), true) == "x^{2}"
+        @test desmos_latexify(:(x^y), true) == "x^{y}"
+        @test desmos_latexify(:(-x), true) == "-x"
+        @test desmos_latexify(:(a + b - c), true) == "\\left(a+b-c\\right)"
+        @test desmos_latexify(:(2 * x + 3), true) == "\\left(2x+3\\right)"
+    end
+
     @testset "Logarithms" begin
         # ln is not supported, and is parsed as standard function
         @test desmos_latexify(:(ln(x))) == "l_{n}\\left(x\\right)"
@@ -481,5 +493,17 @@
         @test desmos_latexify(:([x^2, y^2, z^2])) == "\\left[x^{2},y^{2},z^{2}\\right]"
         @test desmos_latexify(:([sin(x), cos(x), tan(x)])) == "\\left[\\sin\\left(x\\right),\\cos\\left(x\\right),\\tan\\left(x\\right)\\right]"
         @test desmos_latexify(:([a / b, c / d])) == "\\left[\\frac{a}{b},\\frac{c}{d}\\right]"
+    end
+
+    @testset "QuadraticOptimizer extension" begin
+        q1 = Quadratic{1}([2.0], [3.0], 1.0)
+        @test desmos_latexify(q1) == "\\frac{1}{2}\\left(2.0\\right)x^2+3.0x+1.0"
+        @test desmos_latexify(q1, false) == "\\frac{1}{2}\\left(2.0\\right)x^2+3.0x+1.0"
+        @test desmos_latexify(q1, true) == "\\left(\\frac{1}{2}\\left(2.0\\right)x^2+3.0x+1.0\\right)"
+
+        q2 = Quadratic{2}([1.0, 2.0, 3.0], [4.0, 5.0], 6.0)
+        @test desmos_latexify(q2) == "\\frac{1}{2}\\left(\\left(1.0\\right)x^2+2\\left(2.0\\right)xy+\\left(3.0\\right)y^2\\right)+4.0x+5.0y+6.0"
+        @test desmos_latexify(q2, false) == "\\frac{1}{2}\\left(\\left(1.0\\right)x^2+2\\left(2.0\\right)xy+\\left(3.0\\right)y^2\\right)+4.0x+5.0y+6.0"
+        @test desmos_latexify(q2, true) == "\\left(\\frac{1}{2}\\left(\\left(1.0\\right)x^2+2\\left(2.0\\right)xy+\\left(3.0\\right)y^2\\right)+4.0x+5.0y+6.0\\right)"
     end
 end

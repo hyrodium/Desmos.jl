@@ -9,7 +9,7 @@ to ensure it represents a single term (e.g., for + or - operations).
 """
 function desmos_latexify end
 
-function desmos_latexify(c::RGB, oneterm=false)
+function desmos_latexify(c::RGB, oneterm = false)
     r = red(c) * 255
     g = green(c) * 255
     b = blue(c) * 255
@@ -17,7 +17,7 @@ function desmos_latexify(c::RGB, oneterm=false)
     return String(str)
 end
 
-function desmos_latexify(ex::Expr, oneterm=false)
+function desmos_latexify(ex::Expr, oneterm = false)
     if ex.head == :call
         return _latexify_call(ex, oneterm)
     elseif ex.head == :tuple
@@ -35,7 +35,7 @@ function desmos_latexify(ex::Expr, oneterm=false)
     end
 end
 
-function desmos_latexify(n::Number, oneterm=false)
+function desmos_latexify(n::Number, oneterm = false)
     if n == Inf
         return "\\infty"
     elseif n == -Inf
@@ -45,12 +45,12 @@ function desmos_latexify(n::Number, oneterm=false)
     end
 end
 
-function desmos_latexify(s::Symbol, oneterm=false)
+function desmos_latexify(s::Symbol, oneterm = false)
     str = string(s)
     return desmos_latexify(str, oneterm)
 end
 
-function desmos_latexify(str::AbstractString, oneterm=false)
+function desmos_latexify(str::AbstractString, oneterm = false)
     # Special case: Inf
     if str == "Inf"
         return "\\infty"
@@ -154,7 +154,7 @@ function _latexify_block(ex::Expr)
     end
 end
 
-function _latexify_call(ex::Expr, oneterm=false)
+function _latexify_call(ex::Expr, oneterm = false)
     func = ex.args[1]
 
     # If func is a Symbol, dispatch based on its value

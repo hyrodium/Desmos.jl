@@ -5,6 +5,7 @@ using Aqua
 using Colors
 using LaTeXStrings
 using DataFrames
+using QuadraticOptimizer
 
 Aqua.test_all(Desmos)
 

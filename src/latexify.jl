@@ -1,12 +1,15 @@
 """
-    desmos_latexify(ex) -> String
+    desmos_latexify(ex, oneterm=false) -> String
 
 Convert Julia expressions to LaTeX strings suitable for Desmos.
 This is a simpler, Desmos-focused alternative to `Latexify.latexify`.
+
+If `oneterm=true`, the result will be wrapped in parentheses when necessary
+to ensure it represents a single term (e.g., for + or - operations).
 """
 function desmos_latexify end
 
-function desmos_latexify(c::RGB)
+function desmos_latexify(c::RGB, oneterm = false)
     r = red(c) * 255
     g = green(c) * 255
     b = blue(c) * 255
@@ -14,9 +17,9 @@ function desmos_latexify(c::RGB)
     return String(str)
 end
 
-function desmos_latexify(ex::Expr)
+function desmos_latexify(ex::Expr, oneterm = false)
     if ex.head == :call
-        return _latexify_call(ex)
+        return _latexify_call(ex, oneterm)
     elseif ex.head == :tuple
         return _latexify_tuple(ex)
     elseif ex.head == :vect
@@ -32,7 +35,7 @@ function desmos_latexify(ex::Expr)
     end
 end
 
-function desmos_latexify(n::Number)
+function desmos_latexify(n::Number, oneterm = false)
     if n == Inf
         return "\\infty"
     elseif n == -Inf
@@ -42,12 +45,12 @@ function desmos_latexify(n::Number)
     end
 end
 
-function desmos_latexify(s::Symbol)
+function desmos_latexify(s::Symbol, oneterm = false)
     str = string(s)
-    return desmos_latexify(str)
+    return desmos_latexify(str, oneterm)
 end
 
-function desmos_latexify(str::AbstractString)
+function desmos_latexify(str::AbstractString, oneterm = false)
     # Special case: Inf
     if str == "Inf"
         return "\\infty"
@@ -151,7 +154,7 @@ function _latexify_block(ex::Expr)
     end
 end
 
-function _latexify_call(ex::Expr)
+function _latexify_call(ex::Expr, oneterm = false)
     func = ex.args[1]
 
     # If func is a Symbol, dispatch based on its value
@@ -197,29 +200,58 @@ function _latexify_call(ex::Expr)
 
         if nargs == 1 && haskey(DESMOS_FUNCTIONS_1ARG, func)
             # Single-argument function
-            arg = desmos_latexify(ex.args[2])
             template = DESMOS_FUNCTIONS_1ARG[func]
-            return replace(template, "ARG1" => arg)
+
+            # Compute both regular and oneterm versions
+            oneterm_arg1 = desmos_latexify(ex.args[2], true)
+            arg1 = desmos_latexify(ex.args[2], false)
+
+            # Replace both ONETERM_ARG* and regular ARG* placeholders
+            return replace(template, "ONETERM_ARG1" => oneterm_arg1, "ARG1" => arg1)
         elseif nargs == 2 && haskey(DESMOS_FUNCTIONS_2ARG, func)
             # Two-argument function
-            arg1 = desmos_latexify(ex.args[2])
-            arg2 = desmos_latexify(ex.args[3])
             template = DESMOS_FUNCTIONS_2ARG[func]
-            return replace(template, "ARG1" => arg1, "ARG2" => arg2)
+
+            # Compute both regular and oneterm versions
+            oneterm_arg1 = desmos_latexify(ex.args[2], true)
+            oneterm_arg2 = desmos_latexify(ex.args[3], true)
+            arg1 = desmos_latexify(ex.args[2], false)
+            arg2 = desmos_latexify(ex.args[3], false)
+
+            # Replace both ONETERM_ARG* and regular ARG* placeholders
+            result = replace(template, "ONETERM_ARG1" => oneterm_arg1, "ONETERM_ARG2" => oneterm_arg2, "ARG1" => arg1, "ARG2" => arg2)
+
+            # Add parentheses if oneterm=true and func is - (binary minus)
+            if oneterm && func == :-
+                return "\\left($result\\right)"
+            end
+            return result
         elseif nargs == 3 && haskey(DESMOS_FUNCTIONS_3ARG, func)
             # Three-argument function
-            arg1 = desmos_latexify(ex.args[2])
-            arg2 = desmos_latexify(ex.args[3])
-            arg3 = desmos_latexify(ex.args[4])
             template = DESMOS_FUNCTIONS_3ARG[func]
-            return replace(template, "ARG1" => arg1, "ARG2" => arg2, "ARG3" => arg3)
+
+            # Compute both regular and oneterm versions
+            oneterm_arg1 = desmos_latexify(ex.args[2], true)
+            oneterm_arg2 = desmos_latexify(ex.args[3], true)
+            oneterm_arg3 = desmos_latexify(ex.args[4], true)
+            arg1 = desmos_latexify(ex.args[2], false)
+            arg2 = desmos_latexify(ex.args[3], false)
+            arg3 = desmos_latexify(ex.args[4], false)
+
+            # Replace both ONETERM_ARG* and regular ARG* placeholders
+            return replace(template, "ONETERM_ARG1" => oneterm_arg1, "ONETERM_ARG2" => oneterm_arg2, "ONETERM_ARG3" => oneterm_arg3, "ARG1" => arg1, "ARG2" => arg2, "ARG3" => arg3)
         elseif haskey(DESMOS_FUNCTIONS_nARG, func)
             # Variable-argument function
             # Special case for addition: join with "+" instead of ","
             separator = (func == :+) ? "+" : ","
             args_str = join([desmos_latexify(arg) for arg in ex.args[2:end]], separator)
             template = DESMOS_FUNCTIONS_nARG[func]
-            return replace(template, "ARGS" => args_str)
+            result = replace(template, "ARGS" => args_str)
+            # Add parentheses if oneterm=true and func is +
+            if oneterm && func == :+
+                return "\\left($result\\right)"
+            end
+            return result
         end
 
         # General function call
@@ -278,7 +310,7 @@ end
 function _latexify_sum(ex::Expr)
     # sum(n^2 for n in 1:5) -> \sum_{n=1}^{5}n^{2}
     gen = ex.args[2]
-    term = desmos_latexify(gen.args[1])
+    term = desmos_latexify(gen.args[1], true)  # Use oneterm=true
 
     # Parse the iterator
     iter = gen.args[2]
@@ -293,7 +325,7 @@ end
 function _latexify_prod(ex::Expr)
     # prod(n^2 for n in 1:5) -> \prod_{n=1}^{5}n^{2}
     gen = ex.args[2]
-    term = desmos_latexify(gen.args[1])
+    term = desmos_latexify(gen.args[1], true)  # Use oneterm=true
 
     # Parse the iterator
     iter = gen.args[2]

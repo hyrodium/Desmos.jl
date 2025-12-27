@@ -152,6 +152,18 @@
         @test desmos_latexify(:(2 * x + 3)) == "2x+3"
     end
 
+    @testset "Arithmetic (oneterm)" begin
+        @test desmos_latexify(:(1 + 1), true) == "\\left(1+1\\right)"
+        @test desmos_latexify(:(x - y), true) == "\\left(x-y\\right)"
+        @test desmos_latexify(:(a * b), true) == "ab"
+        @test desmos_latexify(:(x / y), true) == "\\frac{x}{y}"
+        @test desmos_latexify(:(x^2), true) == "x^{2}"
+        @test desmos_latexify(:(x^y), true) == "x^{y}"
+        @test desmos_latexify(:(-x), true) == "-x"
+        @test desmos_latexify(:(a + b - c), true) == "\\left(a+b-c\\right)"
+        @test desmos_latexify(:(2 * x + 3), true) == "\\left(2x+3\\right)"
+    end
+
     @testset "Logarithms" begin
         # ln is not supported, and is parsed as standard function
         @test desmos_latexify(:(ln(x))) == "l_{n}\\left(x\\right)"
@@ -271,9 +283,16 @@
         @test desmos_latexify(:(sum(n^2 for n in 1:5))) == "\\sum_{n=1}^{5}n^{2}"
         @test desmos_latexify(:(sum(i for i in 0:10))) == "\\sum_{i=0}^{10}i"
         @test desmos_latexify(:(sum(x_i for i in 1:n))) == "\\sum_{i=1}^{n}x_{i}"
+        # Test sum with multi-term expressions (should add parentheses)
+        @test desmos_latexify(:(sum(x^2 + y^2 for i in 1:5))) == "\\sum_{i=1}^{5}\\left(x^{2}+y^{2}\\right)"
+        @test desmos_latexify(:(sum(x + y for i in 1:3))) == "\\sum_{i=1}^{3}\\left(x+y\\right)"
         @test desmos_latexify(:(prod(n^2 for n in 1:5))) == "\\prod_{n=1}^{5}n^{2}"
         @test desmos_latexify(:(prod(i for i in 0:10))) == "\\prod_{i=0}^{10}i"
         @test desmos_latexify(:(prod(x_i for i in 1:n))) == "\\prod_{i=1}^{n}x_{i}"
+        # Test prod with multi-term expressions (should add parentheses)
+        @test desmos_latexify(:(prod(x + y for i in 1:3))) == "\\prod_{i=1}^{3}\\left(x+y\\right)"
+        # Test prod with single-term expressions (no parentheses)
+        @test desmos_latexify(:(prod(x * y for i in 1:3))) == "\\prod_{i=1}^{3}xy"
         @test desmos_latexify(:(integrate(x^2 for x in 1 .. 5))) == "\\int_{1}^{5}x^{2}dx"
         @test desmos_latexify(:(integrate(y for y in -5 .. -2))) == "\\int_{-5}^{-2}ydy"
     end
@@ -289,6 +308,12 @@
     @testset "Gradient" begin
         @test desmos_latexify(:(gradient(f, x))) == "\\frac{d}{dx}f"
         @test desmos_latexify(:(gradient(g, t))) == "\\frac{d}{dt}g"
+        # Test gradient with multi-term expressions (should add parentheses)
+        @test desmos_latexify(:(gradient(x^2 + y^2, y))) == "\\frac{d}{dy}\\left(x^{2}+y^{2}\\right)"
+        @test desmos_latexify(:(gradient(x - y, y))) == "\\frac{d}{dy}\\left(x-y\\right)"
+        # Test gradient with single-term expressions (no parentheses needed)
+        @test desmos_latexify(:(gradient(x^2, y))) == "\\frac{d}{dy}x^{2}"
+        @test desmos_latexify(:(gradient(x * y, y))) == "\\frac{d}{dy}xy"
     end
 
     @testset "Sum normal function calls" begin
@@ -468,5 +493,17 @@
         @test desmos_latexify(:([x^2, y^2, z^2])) == "\\left[x^{2},y^{2},z^{2}\\right]"
         @test desmos_latexify(:([sin(x), cos(x), tan(x)])) == "\\left[\\sin\\left(x\\right),\\cos\\left(x\\right),\\tan\\left(x\\right)\\right]"
         @test desmos_latexify(:([a / b, c / d])) == "\\left[\\frac{a}{b},\\frac{c}{d}\\right]"
+    end
+
+    @testset "QuadraticOptimizer extension" begin
+        q1 = Quadratic{1}([2.0], [3.0], 1.0)
+        @test desmos_latexify(q1) == "\\frac{1}{2}\\left(2.0\\right)x^2+3.0x+1.0"
+        @test desmos_latexify(q1, false) == "\\frac{1}{2}\\left(2.0\\right)x^2+3.0x+1.0"
+        @test desmos_latexify(q1, true) == "\\left(\\frac{1}{2}\\left(2.0\\right)x^2+3.0x+1.0\\right)"
+
+        q2 = Quadratic{2}([1.0, 2.0, 3.0], [4.0, 5.0], 6.0)
+        @test desmos_latexify(q2) == "\\frac{1}{2}\\left(\\left(1.0\\right)x^2+2\\left(2.0\\right)xy+\\left(3.0\\right)y^2\\right)+4.0x+5.0y+6.0"
+        @test desmos_latexify(q2, false) == "\\frac{1}{2}\\left(\\left(1.0\\right)x^2+2\\left(2.0\\right)xy+\\left(3.0\\right)y^2\\right)+4.0x+5.0y+6.0"
+        @test desmos_latexify(q2, true) == "\\left(\\frac{1}{2}\\left(\\left(1.0\\right)x^2+2\\left(2.0\\right)xy+\\left(3.0\\right)y^2\\right)+4.0x+5.0y+6.0\\right)"
     end
 end

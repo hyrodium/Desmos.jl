@@ -35,6 +35,14 @@ function desmos_latexify(ex::Expr, oneterm = false)
     end
 end
 
+function desmos_latexify(n::Real, oneterm = false)
+    return desmos_latexify(Float64(n))
+end
+
+function desmos_latexify(n::Integer, oneterm = false)
+    return string(n)
+end
+
 function desmos_latexify(n::AbstractFloat, oneterm = false)
     if n == Inf
         return "\\infty"

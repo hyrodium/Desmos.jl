@@ -258,7 +258,7 @@
         @test desmos_latexify(1.5e10) == "1.5\\times10^{10}"
         @test desmos_latexify(2.0e-5) == "2.0\\times10^{-5}"
         @test desmos_latexify(-3.14e20) == "-3.14\\times10^{20}"
-        @test desmos_latexify(5e-100) == "5.0\\times10^{-100}"
+        @test desmos_latexify(5.0e-100) == "5.0\\times10^{-100}"
         @test desmos_latexify(1.23e8) == "1.23\\times10^{8}"
 
         # AbstractFloat - infinity
@@ -266,9 +266,9 @@
         @test desmos_latexify(-Inf) == "-\\infty"
 
         # Rational
-        @test desmos_latexify(1//2) == "\\frac{1}{2}"
-        @test desmos_latexify(3//4) == "\\frac{3}{4}"
-        @test desmos_latexify(-5//7) == "\\frac{-5}{7}"
+        @test desmos_latexify(1 // 2) == "\\frac{1}{2}"
+        @test desmos_latexify(3 // 4) == "\\frac{3}{4}"
+        @test desmos_latexify(-5 // 7) == "\\frac{-5}{7}"
 
         # Real (dispatch to Float64)
         @test desmos_latexify(π) == string(Float64(π))

@@ -49,7 +49,15 @@ function desmos_latexify(n::AbstractFloat, oneterm = false)
     elseif n == -Inf
         return "-\\infty"
     else
-        return string(n)
+        str = string(n)
+        if occursin('e', str)
+            parts = split(str, 'e')
+            mantissa = parts[1]
+            exponent = parts[2]
+            return "$mantissa\\times10^{$exponent}"
+        else
+            return str
+        end
     end
 end
 

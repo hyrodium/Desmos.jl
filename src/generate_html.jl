@@ -25,7 +25,7 @@ write("output.html", html)
 html_fragment = generate_desmos_html(state; full_html=false)
 ```
 """
-function generate_desmos_html(state::DesmosState; config::DesmosDisplayConfig=get_desmos_display_config(), full_html::Bool=true)
+function generate_desmos_html(state::DesmosState; config::DesmosDisplayConfig = get_desmos_display_config(), full_html::Bool = true)
     obj_id = objectid(state)
 
     width_style = config.width == 0 ? "width:100%;max-width:100%;min-width:400px;" : "width:$(config.width)px;"
@@ -114,7 +114,7 @@ end
 
 function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
     config = get_desmos_display_config()
-    html = generate_desmos_html(state; config=config, full_html=false)
+    html = generate_desmos_html(state; config = config, full_html = false)
     return write(io, html)
 end
 

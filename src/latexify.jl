@@ -35,7 +35,7 @@ function desmos_latexify(ex::Expr, oneterm = false)
     end
 end
 
-function desmos_latexify(n::Number, oneterm = false)
+function desmos_latexify(n::AbstractFloat, oneterm = false)
     if n == Inf
         return "\\infty"
     elseif n == -Inf
@@ -43,6 +43,10 @@ function desmos_latexify(n::Number, oneterm = false)
     else
         return string(n)
     end
+end
+
+function desmos_latexify(n::Rational, oneterm = false)
+    return "\\frac{$(numerator(n))}{$(denominator(n))}"
 end
 
 function desmos_latexify(s::Symbol, oneterm = false)

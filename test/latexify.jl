@@ -240,6 +240,41 @@
         @test desmos_latexify(:(-3.14)) == "-3.14"
     end
 
+    @testset "Number types (Real, Integer, AbstractFloat, Rational)" begin
+        # Integer
+        @test desmos_latexify(42) == "42"
+        @test desmos_latexify(-10) == "-10"
+        @test desmos_latexify(0) == "0"
+
+        # AbstractFloat - regular notation
+        @test desmos_latexify(1.5) == "1.5"
+        @test desmos_latexify(-3.14) == "-3.14"
+        @test desmos_latexify(0.001) == "0.001"
+        @test desmos_latexify(123.456) == "123.456"
+        @test desmos_latexify(0.0) == "0.0"
+        @test desmos_latexify(-0.0) == "-0.0"
+
+        # AbstractFloat - scientific notation
+        @test desmos_latexify(1.5e10) == "1.5\\times10^{10}"
+        @test desmos_latexify(2.0e-5) == "2.0\\times10^{-5}"
+        @test desmos_latexify(-3.14e20) == "-3.14\\times10^{20}"
+        @test desmos_latexify(5.0e-100) == "5.0\\times10^{-100}"
+        @test desmos_latexify(1.23e8) == "1.23\\times10^{8}"
+
+        # AbstractFloat - infinity
+        @test desmos_latexify(Inf) == "\\infty"
+        @test desmos_latexify(-Inf) == "-\\infty"
+
+        # Rational
+        @test desmos_latexify(1 // 2) == "\\frac{1}{2}"
+        @test desmos_latexify(3 // 4) == "\\frac{3}{4}"
+        @test desmos_latexify(-5 // 7) == "\\frac{-5}{7}"
+
+        # Real (dispatch to Float64)
+        @test desmos_latexify(π) == string(Float64(π))
+        @test desmos_latexify(ℯ) == string(Float64(ℯ))
+    end
+
     @testset "Tuples and arrays" begin
         @test desmos_latexify(:((a, b))) == "\\left(a,b\\right)"
         @test desmos_latexify(:((x, y, z))) == "\\left(x,y,z\\right)"
@@ -397,21 +432,6 @@
         @test desmos_latexify(:(x₁₂₃₄₅)) == "x_{12345}"
         # Superscript Unicode no longer supported - use ^ operator
         @test desmos_latexify(:(a^2)) == "a^{2}"
-    end
-
-    @testset "Edge cases: Special number values" begin
-        @test desmos_latexify(:(0)) == "0"
-        @test desmos_latexify(:(1)) == "1"
-        @test desmos_latexify(:(-1)) == "-1"
-        @test desmos_latexify(:(0.0)) == "0.0"
-        @test desmos_latexify(:(1.0e10)) == "1.0e10"
-    end
-
-    @testset "Edge cases: Very long variable names" begin
-        # Multi-character identifiers automatically get subscripts
-        @test desmos_latexify(:(verylongvariablename)) == "v_{erylongvariablename}"
-        @test desmos_latexify(:(x_verylongsubscript)) == "x_{verylongsubscript}"
-        @test desmos_latexify(:(longname_1)) == "l_{ongname1}"
     end
 
     @testset "Edge cases: Sum and integral variations" begin

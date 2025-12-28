@@ -35,14 +35,34 @@ function desmos_latexify(ex::Expr, oneterm = false)
     end
 end
 
-function desmos_latexify(n::Number, oneterm = false)
+function desmos_latexify(n::Real, oneterm = false)
+    return desmos_latexify(Float64(n))
+end
+
+function desmos_latexify(n::Integer, oneterm = false)
+    return string(n)
+end
+
+function desmos_latexify(n::AbstractFloat, oneterm = false)
     if n == Inf
         return "\\infty"
     elseif n == -Inf
         return "-\\infty"
     else
-        return string(n)
+        str = string(n)
+        if occursin('e', str)
+            parts = split(str, 'e')
+            mantissa = parts[1]
+            exponent = parts[2]
+            return "$mantissa\\times10^{$exponent}"
+        else
+            return str
+        end
     end
+end
+
+function desmos_latexify(n::Rational, oneterm = false)
+    return "\\frac{$(numerator(n))}{$(denominator(n))}"
 end
 
 function desmos_latexify(s::Symbol, oneterm = false)

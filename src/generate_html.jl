@@ -1,4 +1,31 @@
-function _generate_html(state::DesmosState, config::DesmosDisplayConfig)
+"""
+    generate_desmos_html(state::DesmosState; config::DesmosDisplayConfig=get_desmos_display_config(), full_html::Bool=true)
+
+Generate HTML content for displaying a Desmos graph.
+
+# Arguments
+- `state`: The DesmosState object to visualize
+- `config`: Optional DesmosDisplayConfig for customizing the display (width, height, API settings)
+- `full_html`: If `true`, generates a complete HTML document with `<html>`, `<head>`, and `<body>` tags.
+              If `false`, generates only the calculator div and script tags (for embedding).
+
+# Returns
+A string containing the generated HTML.
+
+# Examples
+```julia
+# Generate complete HTML document
+state = @desmos begin
+    @expression sin(x)
+end
+html = generate_desmos_html(state)
+write("output.html", html)
+
+# Generate embeddable HTML fragment
+html_fragment = generate_desmos_html(state; full_html=false)
+```
+"""
+function generate_desmos_html(state::DesmosState; config::DesmosDisplayConfig = get_desmos_display_config(), full_html::Bool = true)
     obj_id = objectid(state)
 
     width_style = config.width == 0 ? "width:100%;max-width:100%;min-width:400px;" : "width:$(config.width)px;"
@@ -67,12 +94,27 @@ function _generate_html(state::DesmosState, config::DesmosDisplayConfig)
         </script>
     """
 
+    if full_html
+        html = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Desmos.jl</title>
+        </head>
+        <body>
+        $(html)
+        </body>
+        </html>
+        """
+    end
     return html
 end
 
 function Base.show(io::IO, ::MIME"text/html", state::DesmosState)
     config = get_desmos_display_config()
-    html = _generate_html(state, config)
+    html = generate_desmos_html(state; config = config, full_html = false)
     return write(io, html)
 end
 

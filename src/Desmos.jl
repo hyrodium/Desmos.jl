@@ -18,10 +18,11 @@ export get_desmos_display_config
 export clipboard_desmos_state
 export UnsupportedDesmosSyntaxError
 export desmos_latexify
+export generate_desmos_html
 
 include("json_types.jl")
 include("config.jl")
-include("show.jl")
+include("generate_html.jl")
 include("utils.jl")
 include("latexify_symbols.jl")
 include("latexify.jl")

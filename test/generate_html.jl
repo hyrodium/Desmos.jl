@@ -4,11 +4,11 @@ df = DataFrame(x_1 = [1, 2, 3], y_1 = [2, 4, 9])
 nt = (x_2 = [1, 2, 3, 4], y_2 = [1, 4, 9, 16])
 
 @testset "Export HTML" begin
-    mkpath(joinpath(@__DIR__, "export_html"))
+    mkpath(joinpath(@__DIR__, "generate_html"))
 
     @testset "BasicFunctions" begin
         name = "BasicFunctions"
-        path = joinpath(@__DIR__, "export_html", "$name.html")
+        path = joinpath(@__DIR__, "generate_html", "$name.html")
         rm(path, force = true)
         @test !isfile(path)
         state = @desmos begin
@@ -25,7 +25,7 @@ nt = (x_2 = [1, 2, 3, 4], y_2 = [1, 4, 9, 16])
 
     @testset "VariableDefinitions" begin
         name = "VariableDefinitions"
-        path = joinpath(@__DIR__, "export_html", "$name.html")
+        path = joinpath(@__DIR__, "generate_html", "$name.html")
         rm(path, force = true)
         @test !isfile(path)
 
@@ -43,7 +43,7 @@ nt = (x_2 = [1, 2, 3, 4], y_2 = [1, 4, 9, 16])
 
     @testset "NewtonMethod" begin
         name = "NewtonMethod"
-        path = joinpath(@__DIR__, "export_html", "$name.html")
+        path = joinpath(@__DIR__, "generate_html", "$name.html")
         rm(path, force = true)
         @test !isfile(path)
         state = @desmos begin
@@ -75,7 +75,7 @@ nt = (x_2 = [1, 2, 3, 4], y_2 = [1, 4, 9, 16])
 
     @testset "Tables" begin
         name = "Tables"
-        path = joinpath(@__DIR__, "export_html", "$name.html")
+        path = joinpath(@__DIR__, "generate_html", "$name.html")
         rm(path, force = true)
         @test !isfile(path)
         state = @desmos begin
@@ -98,7 +98,7 @@ nt = (x_2 = [1, 2, 3, 4], y_2 = [1, 4, 9, 16])
 
     @testset "LatexifyTest" begin
         name = "LatexifyTest"
-        path = joinpath(@__DIR__, "export_html", "$name.html")
+        path = joinpath(@__DIR__, "generate_html", "$name.html")
         rm(path, force = true)
         @test !isfile(path)
 

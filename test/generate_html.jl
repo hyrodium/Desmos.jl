@@ -3,31 +3,6 @@ image_url = "https://raw.githubusercontent.com/hyrodium/Visualize2dimNewtonMetho
 df = DataFrame(x_1 = [1, 2, 3], y_1 = [2, 4, 9])
 nt = (x_2 = [1, 2, 3, 4], y_2 = [1, 4, 9, 16])
 
-function write_html(path, title, state)
-    return open(path, "w") do io
-        write(
-            io, """
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <title>$(title)</title>
-            </head>
-            <body>
-            <h1>$(title)</h1>
-            """
-        )
-        show(io, MIME("text/html"), state)
-        write(
-            io, """
-            </body>
-            </html>
-            """
-        )
-    end
-end
-
 @testset "Export HTML" begin
     mkpath(joinpath(@__DIR__, "export_html"))
 
@@ -44,7 +19,7 @@ end
             @expression cot(x) hidden = true
             @expression (cosh(t), sinh(t)) parametric_domain = -2 .. 3
         end
-        write_html(path, name, state)
+        write(path, generate_desmos_html(state))
         @test isfile(path)
     end
 
@@ -62,7 +37,7 @@ end
             $(2 + 2)
             sin($(2b) * a - c * x)
         end
-        write_html(path, name, state)
+        write(path, generate_desmos_html(state))
         @test isfile(path)
     end
 
@@ -94,7 +69,7 @@ end
             @expression (a(I), b(I)) lines = true
             @image image_url = $image_url width = 20 height = 20 name = "regions"
         end
-        write_html(path, name, state)
+        write(path, generate_desmos_html(state))
         @test isfile(path)
     end
 
@@ -117,7 +92,7 @@ end
             z_5 = [1, 8, 27]
             @table (x_5 = [1, 2, 3], z_5)
         end
-        write_html(path, name, state)
+        write(path, generate_desmos_html(state))
         @test isfile(path)
     end
 
@@ -171,7 +146,7 @@ end
 
         # Create DesmosState
         state = Desmos.DesmosState(expressions = Desmos.DesmosExpressions(list = expression_list))
-        write_html(path, name, state)
+        write(path, generate_desmos_html(state))
         @test isfile(path)
     end
 end

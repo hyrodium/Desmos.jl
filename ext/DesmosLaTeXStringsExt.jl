@@ -3,7 +3,7 @@ module DesmosLaTeXStringsExt
 using Desmos
 using LaTeXStrings
 
-function Desmos.desmos_latexify(s::LaTeXString, oneterm = false)
+function Desmos.desmos_latexify(s::LaTeXString)
     return String(chopsuffix(chopprefix(s, "\$"), "\$"))
 end
 

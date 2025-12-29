@@ -9,7 +9,11 @@ to ensure it represents a single term (e.g., for + or - operations).
 """
 function desmos_latexify end
 
-function desmos_latexify(c::RGB, oneterm = false)
+function desmos_latexify(ex::Any, ::Bool)
+    return desmos_latexify(ex)
+end
+
+function desmos_latexify(c::RGB)
     r = red(c) * 255
     g = green(c) * 255
     b = blue(c) * 255
@@ -17,7 +21,7 @@ function desmos_latexify(c::RGB, oneterm = false)
     return String(str)
 end
 
-function desmos_latexify(ex::Expr, oneterm = false)
+function desmos_latexify(ex::Expr, oneterm::Bool = false)
     if ex.head == :call
         return _latexify_call(ex, oneterm)
     elseif ex.head == :tuple
@@ -35,15 +39,15 @@ function desmos_latexify(ex::Expr, oneterm = false)
     end
 end
 
-function desmos_latexify(n::Real, oneterm = false)
+function desmos_latexify(n::Real)
     return desmos_latexify(Float64(n))
 end
 
-function desmos_latexify(n::Integer, oneterm = false)
+function desmos_latexify(n::Integer)
     return string(n)
 end
 
-function desmos_latexify(n::AbstractFloat, oneterm = false)
+function desmos_latexify(n::AbstractFloat)
     if n == Inf
         return "\\infty"
     elseif n == -Inf
@@ -61,16 +65,16 @@ function desmos_latexify(n::AbstractFloat, oneterm = false)
     end
 end
 
-function desmos_latexify(n::Rational, oneterm = false)
+function desmos_latexify(n::Rational)
     return "\\frac{$(numerator(n))}{$(denominator(n))}"
 end
 
-function desmos_latexify(s::Symbol, oneterm = false)
+function desmos_latexify(s::Symbol)
     str = string(s)
-    return desmos_latexify(str, oneterm)
+    return desmos_latexify(str)
 end
 
-function desmos_latexify(str::AbstractString, oneterm = false)
+function desmos_latexify(str::AbstractString)
     # Special case: Inf
     if str == "Inf"
         return "\\infty"
@@ -174,7 +178,7 @@ function _latexify_block(ex::Expr)
     end
 end
 
-function _latexify_call(ex::Expr, oneterm = false)
+function _latexify_call(ex::Expr, oneterm::Bool = false)
     func = ex.args[1]
 
     # If func is a Symbol, dispatch based on its value

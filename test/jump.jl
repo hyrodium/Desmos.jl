@@ -5,11 +5,11 @@ using IntervalSets
 @testset "JuMP" begin
 
     @testset "Basic model" begin
-        m = Model(optimizer_with_attributes(Ipopt.Optimizer, "print_level"=>0))
+        m = Model(optimizer_with_attributes(Ipopt.Optimizer, "print_level" => 0))
         @variable   m             0 ≤ x ≤ 2
         @variable   m             0 ≤ y ≤ 2
-        @constraint m        sin(x*y) ≥ 1/2
-        @constraint m        x^2 + 5x*y ≤ 8
+        @constraint m        sin(x * y) ≥ 1 / 2
+        @constraint m        x^2 + 5x * y ≤ 8
         @objective  m  Min   x^3 + y^3 + 4x
 
         optimize!(m)
@@ -26,10 +26,10 @@ using IntervalSets
             "c=$obj_val",
             "\\left($x_val,$y_val\\right)",
             "x_1=x",
-            "x_2=y"
+            "x_2=y",
         ]
 
-        @constraint m x+y == 2
+        @constraint m x + y == 2
         optimize!(m)
         state = Desmos.DesmosState(m)
         exprs = [expr.latex for expr in state.expressions.list]
@@ -45,19 +45,19 @@ using IntervalSets
             "c=$obj_val",
             "\\left($x_val,$y_val\\right)",
             "x_1=x",
-            "x_2=y"
+            "x_2=y",
         ]
     end
     @testset "Parametric model" begin
         m = Model()
 
-        @variable   m  -1 ≤ x₁ ≤ 1   start=0.1
-        @variable   m       x₂       start=0.1
-        @variable   m       p ∈ Parameter(5/4)
-        @variable   m       a ∈ Parameter(1/2)
-        @variable   m       b ∈ Parameter(3/2)
+        @variable   m  -1 ≤ x₁ ≤ 1   start = 0.1
+        @variable   m       x₂       start = 0.1
+        @variable   m       p ∈ Parameter(5 / 4)
+        @variable   m       a ∈ Parameter(1 / 2)
+        @variable   m       b ∈ Parameter(3 / 2)
         @constraint m         abs(x₁)^p + abs(x₂)^p ≤ 1
-        @objective  m Min          a*x₁ + b*x₂
+        @objective  m Min          a * x₁ + b * x₂
 
         q = p / (p - 1)
         denom = (abs(a)^q + abs(b)^q)^(1 / q)
@@ -66,9 +66,10 @@ using IntervalSets
             x₂ => -sign(b) * (abs(b) / denom)^(q - 1),
         )
 
-        state = Desmos.DesmosState(m,
-            parameter_ranges=Dict(p => 1..3),
-            parametric_solution=solution,
+        state = Desmos.DesmosState(
+            m,
+            parameter_ranges = Dict(p => 1 .. 3),
+            parametric_solution = solution,
         )
 
         exprs = [expr.latex for expr in state.expressions.list]
@@ -89,7 +90,7 @@ using IntervalSets
         slider = state.expressions.list[1].slider
         @test slider.min == "1" && slider.max == "3" && isnothing(slider.step)
 
-        set_optimizer(m, optimizer_with_attributes(Ipopt.Optimizer, "print_level"=>0))
+        set_optimizer(m, optimizer_with_attributes(Ipopt.Optimizer, "print_level" => 0))
         optimize!(m)
         obj_val = objective_value(m)
         x₁_val = value(x₁)

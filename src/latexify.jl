@@ -10,7 +10,7 @@ to ensure it represents a single term (e.g., for + or - operations).
 function desmos_latexify end
 
 function desmos_latexify(ex::Any, ::Bool)
-    desmos_latexify(ex)
+    return desmos_latexify(ex)
 end
 
 function desmos_latexify(c::RGB)

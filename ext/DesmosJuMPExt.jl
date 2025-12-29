@@ -18,6 +18,8 @@ const SUPPORTED_SETS{T} = Union{
 }
 
 const DESMOS_MIME = MIME("text/desmos")
+const OPREFIX_DESMOS_MIME = MIME("text/desmos_o")
+const AnyDesmosMIME = Union{typeof(DESMOS_MIME), typeof(OPREFIX_DESMOS_MIME)}
 
 function Desmos.DesmosState(model::JuMP.GenericModel{T};
     parameter_ranges=Dict(), parametric_solution=Dict()
@@ -59,7 +61,7 @@ function Desmos.DesmosState(model::JuMP.GenericModel{T};
             JuMP.constraint_string(DESMOS_MIME, "", co)  # ignore constraint names
         ))
         co.func isa JuMP.GenericVariableRef || push!(con_strings, s)  # skip bounds for expressions
-        domain *= wrap_for_domain(s)  # keep bounds for domain
+        co.set isa JuMP.MOI.EqualTo || (domain *= wrap_for_domain(s))  # skip equalities for domain
     end
 
     # 2. build each constraint expression, restricted to domain
@@ -79,7 +81,7 @@ function Desmos.DesmosState(model::JuMP.GenericModel{T};
         push!(expressions, Desmos.DesmosExpression(;
             latex=desmos_latexify(Meta.parse(
                 JuMP.function_string(DESMOS_MIME, obj)
-            )) * " = c",  # NOTE: no domain restriction for objective level curve
+            )) * "=c",  # NOTE: no domain restriction for objective level curve
             id="objective function",
             color="green",
         ))
@@ -89,25 +91,25 @@ function Desmos.DesmosState(model::JuMP.GenericModel{T};
 
     if !isempty(parametric_solution)
         push!(expressions, Desmos.DesmosExpression(;
-            latex="o_{x$(JuMP.index(x).value)} = " * desmos_latexify(Meta.parse(
+            latex="o_{x$(JuMP.index(x).value)}=" * desmos_latexify(Meta.parse(
                 "$(JuMP.function_string(DESMOS_MIME, parametric_solution[x]))"
             )),
             id="solution x"
         ))
         push!(expressions, Desmos.DesmosExpression(;
-            latex="o_{x$(JuMP.index(y).value)} = " * desmos_latexify(Meta.parse(
+            latex="o_{x$(JuMP.index(y).value)}=" * desmos_latexify(Meta.parse(
                 "$(JuMP.function_string(DESMOS_MIME, parametric_solution[y]))"
             )),
             id="solution y"
         ))
         push!(expressions, Desmos.DesmosExpression(;
-            latex="(o_{x$(JuMP.index(x).value)}, o_{x$(JuMP.index(y).value)})",
+            latex="(o_{x$(JuMP.index(x).value)},o_{x$(JuMP.index(y).value)})",
             id="parametric solution",
             color="red",
         ))
         push!(expressions, Desmos.DesmosExpression(;
-            latex="c = " * desmos_latexify(Meta.parse(
-                JuMP.function_string(MIME("text/desmos_o"), obj)
+            latex="c=" * desmos_latexify(Meta.parse(
+                JuMP.function_string(OPREFIX_DESMOS_MIME, obj)
             )),
             id="objective level",
         ))
@@ -132,12 +134,12 @@ function Desmos.DesmosState(model::JuMP.GenericModel{T};
     end
 
     push!(expressions, Desmos.DesmosExpression(;
-        latex="x_$(JuMP.index(x).value) = x",
+        latex="x_$(JuMP.index(x).value)=x",
         id="xmap",
         hidden=true,
     ))
     push!(expressions, Desmos.DesmosExpression(;
-        latex="x_$(JuMP.index(y).value) = y",
+        latex="x_$(JuMP.index(y).value)=y",
         id="ymap",
         hidden=true,
     ))
@@ -153,54 +155,40 @@ end
 # FIXME: support this in Desmos.jl?
 wrap_for_domain(s) = "\\left\\{$s\\right\\}"
 
-# JuMP patches for MIME("text/desmos")
-function JuMP._math_symbol(::typeof(DESMOS_MIME), name::Symbol)
+# JuMP printing patches
+function JuMP._math_symbol(::AnyDesmosMIME, name::Symbol)
     if name == :leq
         return Sys.iswindows() ? "<=" : "≤"
     elseif name == :geq
         return Sys.iswindows() ? ">=" : "≥"
     elseif name == :eq
         return Sys.iswindows() ? "==" : "="
-    elseif name == :sq
-        # desmos: x² -> x^2
-        return "^2"
     else
-        @assert name == :in
-        return Sys.iswindows() ? "in" : "∈"
+        # desmos: x² -> x^2
+        name == :sq || error("Unexpected symbol $name not supported in Desmos.")
+        return "^2"
     end
 end
-function JuMP._term_string(mode::typeof(DESMOS_MIME), coef, factor)
+function JuMP._term_string(mode::AnyDesmosMIME, coef, factor)
     if JuMP._is_one_for_printing(coef)
         return factor
-    elseif JuMP._is_im_for_printing(coef)
-        # desmos: `4 x` -> `4*x`
-        return string(factor, "*", JuMP._string_round(mode, abs, coef))
     else
+        JuMP._is_im_for_printing(coef) && error("DesmosJuMP does not support complex numbers.")
         # desmos: `4 x` -> `4*x`
         return string(JuMP._string_round(mode, abs, coef), "*", factor)
     end
 end
 function JuMP.function_string(::typeof(DESMOS_MIME), v::JuMP.AbstractVariableRef)
-    if !JuMP.is_valid(JuMP.owner_model(v), v)
-        return "InvalidVariableRef"
-    end
-    # desmos: use x/y instead of JuMP.name
+    JuMP.is_valid(JuMP.owner_model(v), v) || error("Invalid variable $v")
     idx = JuMP.index(v).value
-
     if JuMP.is_parameter(v)
         return JuMP.name(v)
     else
         return "x_$idx"
     end
 end
-function JuMP.in_set_string(m::typeof(DESMOS_MIME), s::JuMP.MOI.Parameter{T}) where T
-    return "= $(JuMP._string_round(m, abs, s.value))"
+function JuMP.function_string(::typeof(OPREFIX_DESMOS_MIME), v::JuMP.AbstractVariableRef)
+    (JuMP.is_parameter(v) ? "" : "o_") * JuMP.function_string(DESMOS_MIME, v)
 end
-
-# to substitute x_1 -> o_x1, x_2 -> o_x2 when a solution expression is available
-JuMP._math_symbol(::MIME"text/desmos_o", name::Symbol) = JuMP._math_symbol(DESMOS_MIME, name)
-JuMP._term_string(::MIME"text/desmos_o", coef, factor) = JuMP._term_string(DESMOS_MIME, coef, factor)
-JuMP.in_set_string(::MIME"text/desmos_o", s::JuMP.MOI.Parameter{T}) where T = JuMP.in_set_string(DESMOS_MIME, s)
-JuMP.function_string(::MIME"text/desmos_o", v::JuMP.AbstractVariableRef) = (JuMP.is_parameter(v) ? "" : "o_") * JuMP.function_string(DESMOS_MIME, v)
 
 end # module

@@ -3,7 +3,7 @@ module DesmosQuadraticOptimizerExt
 using Desmos
 using QuadraticOptimizer
 
-function Desmos.desmos_latexify(q::Quadratic{1}, oneterm = false)
+function Desmos.desmos_latexify(q::Quadratic{1}, oneterm::Bool = false)
     a = desmos_latexify(q.a[1])
     b = desmos_latexify(q.b[1])
     c = desmos_latexify(q.c)
@@ -14,7 +14,7 @@ function Desmos.desmos_latexify(q::Quadratic{1}, oneterm = false)
     return str
 end
 
-function Desmos.desmos_latexify(q::Quadratic{2}, oneterm = false)
+function Desmos.desmos_latexify(q::Quadratic{2}, oneterm::Bool = false)
     a1 = desmos_latexify(q.a[1])
     a2 = desmos_latexify(q.a[2])
     a3 = desmos_latexify(q.a[3])

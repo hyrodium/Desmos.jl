@@ -25,8 +25,8 @@ using IntervalSets
             "x_{1}^{3.0}+4x_{1}+x_{2}^{3.0}=c",
             "c=$obj_val",
             "\\left($x_val,$y_val\\right)",
-            "x_1=x",
-            "x_2=y",
+            "x_{1}=x",
+            "x_{2}=y",
         ]
 
         @constraint m x + y == 2
@@ -44,8 +44,8 @@ using IntervalSets
             "x_{1}^{3.0}+4x_{1}+x_{2}^{3.0}=c",
             "c=$obj_val",
             "\\left($x_val,$y_val\\right)",
-            "x_1=x",
-            "x_2=y",
+            "x_{1}=x",
+            "x_{2}=y",
         ]
     end
     @testset "Parametric model" begin
@@ -81,10 +81,10 @@ using IntervalSets
             "ax_{1}+bx_{2}=c",
             "o_{x1}=\\left(-\\operatorname{sign}\\left(a\\right)\\right)\\left(\\frac{\\operatorname{abs}\\left(a\\right)}{\\left(\\left(\\operatorname{abs}\\left(a\\right)\\right)^{\\frac{p}{p-1}}+\\left(\\operatorname{abs}\\left(b\\right)\\right)^{\\frac{p}{p-1}}\\right)^{\\frac{1.0}{\\frac{p}{p-1}}}}\\right)^{\\frac{p}{p-1}-1.0}",
             "o_{x2}=\\left(-\\operatorname{sign}\\left(b\\right)\\right)\\left(\\frac{\\operatorname{abs}\\left(b\\right)}{\\left(\\left(\\operatorname{abs}\\left(a\\right)\\right)^{\\frac{p}{p-1}}+\\left(\\operatorname{abs}\\left(b\\right)\\right)^{\\frac{p}{p-1}}\\right)^{\\frac{1.0}{\\frac{p}{p-1}}}}\\right)^{\\frac{p}{p-1}-1.0}",
-            "(o_{x1},o_{x2})",
+            "\\left(o_{x1},o_{x2}\\right)",
             "c=ao_{x1}+bo_{x2}",
-            "x_1=x",
-            "x_2=y",
+            "x_{1}=x",
+            "x_{2}=y",
         ]
 
         slider = state.expressions.list[1].slider
@@ -105,8 +105,8 @@ using IntervalSets
             "ax_{1}+bx_{2}=c",
             "c=$obj_val",
             "\\left($x₁_val,$x₂_val\\right)",
-            "x_1=x",
-            "x_2=y",
+            "x_{1}=x",
+            "x_{2}=y",
         ]
     end
 end

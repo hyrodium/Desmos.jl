@@ -23,7 +23,8 @@ const AnyDesmosMIME = Union{typeof(DESMOS_MIME), typeof(OPREFIX_DESMOS_MIME)}
 
 function Desmos.DesmosState(
         model::JuMP.GenericModel{T};
-        parameter_ranges = Dict(), parametric_solution = Dict()
+        parameter_ranges = Dict(), parametric_solution = Dict(),
+        objective_value_variable="c"
     ) where {T}
 
     expressions = []
@@ -34,15 +35,11 @@ function Desmos.DesmosState(
             idx = JuMP.index(vp).value
             val = JuMP.parameter_value(vp)
             name = JuMP.name(vp)
-            name == "c" && error("The parameter name `c` is reserved.")
+            name == "$objective_value_variable" && error("The parameter name `$objective_value_variable` is reserved.")  #FIXME: better error
             push!(
                 expressions, Desmos.DesmosExpression(;
-                    latex = desmos_latexify(
-                        Meta.parse(
-                            "$(name) = $(val)"
-                        )
-                    ),
-                    id = "parameter $(idx)",
+                    latex = desmos_latexify(:($name = $val)),
+                    id = "parameter $idx",
                     slider = Desmos.desmos_slider(get(parameter_ranges, vp, -10 .. 10))
                 )
             )
@@ -52,6 +49,8 @@ function Desmos.DesmosState(
     end
     length(variables) == 2 || error("JuMP model must have exactly two variables.")
     x, y = variables[1], variables[2]
+    x_str = JuMP.function_string(DESMOS_MIME, x)
+    y_str = JuMP.function_string(DESMOS_MIME, y)
 
     # 1. build domain restriction string
 
@@ -62,13 +61,11 @@ function Desmos.DesmosState(
         co.func isa SUPPORTED_FUNCS{T} || error("Got unsupported function $(co.func) of type $(typeof(co.func))")
         co.set isa SUPPORTED_SETS{T} || error("Got unsupported set $(co.set) of type $(typeof(co.set))")
         co.set isa JuMP.MOI.Parameter && continue  # already handled above
-        s = desmos_latexify(
-            Meta.parse(
-                JuMP.constraint_string(DESMOS_MIME, "", co)  # ignore constraint names
-            )
+        con_s = parse_desmos_latexify(
+            JuMP.constraint_string(DESMOS_MIME, "", co)  # ignore constraint names
         )
-        co.func isa JuMP.GenericVariableRef || push!(con_strings, s)  # skip bounds for expressions
-        co.set isa JuMP.MOI.EqualTo || (domain *= wrap_for_domain(s))  # skip equalities for domain
+        co.func isa JuMP.GenericVariableRef || push!(con_strings, con_s)  # skip bounds for expressions
+        co.set isa JuMP.MOI.EqualTo || (domain *= wrap_for_domain(con_s))  # skip equalities for domain
     end
 
     # 2. build each constraint expression, restricted to domain
@@ -87,13 +84,10 @@ function Desmos.DesmosState(
 
     obj = JuMP.objective_function(model)
     if obj != JuMP.GenericAffExpr{T, JuMP.GenericVariableRef{T}}(0)
+        obj_str = JuMP.function_string(DESMOS_MIME, obj)
         push!(
             expressions, Desmos.DesmosExpression(;
-                latex = desmos_latexify(
-                    Meta.parse(
-                        JuMP.function_string(DESMOS_MIME, obj)
-                    )
-                ) * "=c",  # NOTE: no domain restriction for objective level curve
+                latex = parse_desmos_latexify("$obj_str = $objective_value_variable"),
                 id = "objective function",
                 color = "green",
             )
@@ -103,40 +97,35 @@ function Desmos.DesmosState(
     # 4. build solution and objective expressions
 
     if !isempty(parametric_solution)
+        haskey(parametric_solution, x) || error("Parametric solution is incomplete: $x not found")
+        haskey(parametric_solution, y) || error("Parametric solution is incomplete: $y not found")
+        x_ostr = JuMP.function_string(OPREFIX_DESMOS_MIME, x)
+        y_ostr = JuMP.function_string(OPREFIX_DESMOS_MIME, y)
+        obj_ostr = JuMP.function_string(OPREFIX_DESMOS_MIME, obj)
+        x_solstr = JuMP.function_string(DESMOS_MIME, parametric_solution[x])
+        y_solstr = JuMP.function_string(DESMOS_MIME, parametric_solution[y])
         push!(
             expressions, Desmos.DesmosExpression(;
-                latex = "o_{x$(JuMP.index(x).value)}=" * desmos_latexify(
-                    Meta.parse(
-                        "$(JuMP.function_string(DESMOS_MIME, parametric_solution[x]))"
-                    )
-                ),
+                latex = parse_desmos_latexify("$x_ostr = $x_solstr"),
                 id = "solution x"
             )
         )
         push!(
             expressions, Desmos.DesmosExpression(;
-                latex = "o_{x$(JuMP.index(y).value)}=" * desmos_latexify(
-                    Meta.parse(
-                        "$(JuMP.function_string(DESMOS_MIME, parametric_solution[y]))"
-                    )
-                ),
+                latex = parse_desmos_latexify("$y_ostr = $y_solstr"),
                 id = "solution y"
             )
         )
         push!(
             expressions, Desmos.DesmosExpression(;
-                latex = "(o_{x$(JuMP.index(x).value)},o_{x$(JuMP.index(y).value)})",
+                latex = parse_desmos_latexify("($x_ostr, $y_ostr)"),
                 id = "parametric solution",
                 color = "red",
             )
         )
         push!(
             expressions, Desmos.DesmosExpression(;
-                latex = "c=" * desmos_latexify(
-                    Meta.parse(
-                        JuMP.function_string(OPREFIX_DESMOS_MIME, obj)
-                    )
-                ),
+                latex = parse_desmos_latexify("$objective_value_variable = $obj_ostr"),
                 id = "objective level",
             )
         )
@@ -145,18 +134,16 @@ function Desmos.DesmosState(
         val = has_result ? JuMP.objective_value(model) : 0
         push!(
             expressions, Desmos.DesmosExpression(;
-                latex = desmos_latexify(
-                    :(c = $val)
-                ),
+                latex = parse_desmos_latexify("$objective_value_variable = $val"),
                 id = "objective level",
             )
         )
         if has_result
+            x_val = JuMP.value(x)
+            y_val = JuMP.value(y)
             push!(
                 expressions, Desmos.DesmosExpression(;
-                    latex = desmos_latexify(
-                        :($(JuMP.value(x)), $(JuMP.value(y)))
-                    ),
+                    latex = parse_desmos_latexify("($x_val, $y_val)"),
                     id = "solution",
                     color = "red",
                 )
@@ -166,14 +153,14 @@ function Desmos.DesmosState(
 
     push!(
         expressions, Desmos.DesmosExpression(;
-            latex = "x_$(JuMP.index(x).value)=x",
+            latex = parse_desmos_latexify("$x_str = x"),
             id = "xmap",
             hidden = true,
         )
     )
     push!(
         expressions, Desmos.DesmosExpression(;
-            latex = "x_$(JuMP.index(y).value)=y",
+            latex = parse_desmos_latexify("$y_str = y"),
             id = "ymap",
             hidden = true,
         )
@@ -189,18 +176,19 @@ end
 
 # FIXME: support this in Desmos.jl?
 wrap_for_domain(s) = "\\left\\{$s\\right\\}"
+parse_desmos_latexify(s) = desmos_latexify(Meta.parse(s))
 
 # JuMP printing patches
 function JuMP._math_symbol(::AnyDesmosMIME, name::Symbol)
     if name == :leq
-        return Sys.iswindows() ? "<=" : "≤"
+        return "<="
     elseif name == :geq
-        return Sys.iswindows() ? ">=" : "≥"
+        return ">="
     elseif name == :eq
-        return Sys.iswindows() ? "==" : "="
+        return "=="
     else
         # desmos: x² -> x^2
-        name == :sq || error("Unexpected symbol $name not supported in Desmos.")
+        name == :sq || error("DesmosJuMP does not support the symbol $name.")
         return "^2"
     end
 end
@@ -213,17 +201,15 @@ function JuMP._term_string(mode::AnyDesmosMIME, coef, factor)
         return string(JuMP._string_round(mode, abs, coef), "*", factor)
     end
 end
-function JuMP.function_string(::typeof(DESMOS_MIME), v::JuMP.AbstractVariableRef)
-    JuMP.is_valid(JuMP.owner_model(v), v) || error("Invalid variable $v")
+function JuMP.function_string(mode::AnyDesmosMIME, v::JuMP.AbstractVariableRef)
+    JuMP.is_valid(JuMP.owner_model(v), v) || error("Invalid variable $v.")
     idx = JuMP.index(v).value
     if JuMP.is_parameter(v)
         return JuMP.name(v)
     else
-        return "x_$idx"
+        prefix = mode isa typeof(OPREFIX_DESMOS_MIME) ? "o_" : ""
+        return prefix * "x_$idx"
     end
-end
-function JuMP.function_string(::typeof(OPREFIX_DESMOS_MIME), v::JuMP.AbstractVariableRef)
-    return (JuMP.is_parameter(v) ? "" : "o_") * JuMP.function_string(DESMOS_MIME, v)
 end
 
 end # module

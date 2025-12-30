@@ -55,26 +55,25 @@ function Desmos.DesmosState(
     # 1. build domain restriction string
 
     domain = ""
-    con_strings = []
+    con_texs = []
     for con in JuMP.all_constraints(model, include_variable_in_set_constraints = true)
         co = JuMP.constraint_object(con)
         co.func isa SUPPORTED_FUNCS{T} || error("Got unsupported function $(co.func) of type $(typeof(co.func))")
         co.set isa SUPPORTED_SETS{T} || error("Got unsupported set $(co.set) of type $(typeof(co.set))")
         co.set isa JuMP.MOI.Parameter && continue  # already handled above
-        con_s = parse_desmos_latexify(
-            JuMP.constraint_string(DESMOS_MIME, "", co)  # ignore constraint names
-        )
-        co.func isa JuMP.GenericVariableRef || push!(con_strings, con_s)  # skip bounds for expressions
-        co.set isa JuMP.MOI.EqualTo || (domain *= wrap_for_domain(con_s))  # skip equalities for domain
+        con_str = JuMP.constraint_string(DESMOS_MIME, "", co)  # ignore constraint names
+        con_tex = parse_desmos_latexify(con_str)
+        co.func isa JuMP.GenericVariableRef || push!(con_texs, con_tex)  # skip bounds for expressions
+        co.set isa JuMP.MOI.EqualTo || (domain *= wrap_for_domain(con_tex))  # skip equalities for domain
     end
 
     # 2. build each constraint expression, restricted to domain
 
-    for (i, con_s) in enumerate(con_strings)
+    for (i, con_tex) in enumerate(con_texs)
         push!(
             expressions, Desmos.DesmosExpression(;
                 # exclude con from domain to get outlines
-                latex = con_s * replace(domain, wrap_for_domain(con_s) => ""),
+                latex = con_tex * replace(domain, wrap_for_domain(con_tex) => ""),
                 id = "constraint $i",
             )
         )

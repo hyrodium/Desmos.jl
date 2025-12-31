@@ -93,12 +93,20 @@ function Desmos.desmos_latexify(ex::Symbolics.SymbolicUtils.BasicSymbolic, onete
         elseif ex.f === Base.:log
             _args = desmos_latexify.(ex.args)
             return "\\ln\\left($(_args[1])\\right)"
+        elseif ex.f isa Differential
+            D = desmos_latexify(ex.f)
+            arg1 = desmos_latexify(ex.args[1], true)
+            return "$D$arg1"
         else
             # TODO: add more functions
             error("$(ex.f) is not supported yet!")
         end
     end
     error("Unsupported Symbolics expression type. Properties: $(propertynames(ex))")
+end
+
+function Desmos.desmos_latexify(D::Differential)
+    return "\\frac{d}{d$(desmos_latexify(D.x))}"^D.order
 end
 
 end # module

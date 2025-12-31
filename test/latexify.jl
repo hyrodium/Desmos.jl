@@ -584,9 +584,14 @@
 
         # Derivatives
         D = Differential(x)
+        D2 = Differential(x,2)
+        @test desmos_latexify(D(x^2)) == "\\frac{d}{dx}x^{2}"
+        @test desmos_latexify(D(x^3 - x + 1)) == "\\frac{d}{dx}\\left(-x+x^{3}+1\\right)"
         @test desmos_latexify(expand_derivatives(D(x^2))) == "2x"
         @test desmos_latexify(expand_derivatives(D(x^3 - x + 1))) == "3x^{2}-1"
-        @test_broken desmos_latexify(D(x^2)) == "\\frac{d}{dx}x^2"
-        @test_broken desmos_latexify(D(x^3 - x + 1)) == "\\frac{d}{dx}\\left(x^3-x+1\\right)"
+        @test desmos_latexify(D2(x^2)) == "\\frac{d}{dx}\\frac{d}{dx}x^{2}"
+        @test desmos_latexify(D2(x^3 - x + 1)) == "\\frac{d}{dx}\\frac{d}{dx}\\left(-x+x^{3}+1\\right)"
+        @test desmos_latexify(expand_derivatives(D2(x^2))) == "2"
+        @test desmos_latexify(expand_derivatives(D2(x^3 - x + 1))) == "6x"
     end
 end

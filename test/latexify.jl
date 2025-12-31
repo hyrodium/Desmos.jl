@@ -584,7 +584,7 @@
 
         # Derivatives
         D = Differential(x)
-        D2 = Differential(x,2)
+        D2 = Differential(x, 2)
         @test desmos_latexify(D(x^2)) == "\\frac{d}{dx}x^{2}"
         @test desmos_latexify(D(x^3 - x + 1)) == "\\frac{d}{dx}\\left(-x+x^{3}+1\\right)"
         @test desmos_latexify(expand_derivatives(D(x^2))) == "2x"

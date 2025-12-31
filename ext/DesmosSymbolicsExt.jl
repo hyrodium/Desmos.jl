@@ -3,9 +3,9 @@ module DesmosSymbolicsExt
 using Desmos
 using Symbolics
 
-function Desmos.desmos_latexify(ex::Symbolics.Num)
+function Desmos.desmos_latexify(ex::Symbolics.Num, oneterm::Bool = false)
     # Unwrap Num to get the underlying BasicSymbolic
-    return desmos_latexify(Symbolics.SymbolicUtils.unwrap(ex))
+    return desmos_latexify(Symbolics.SymbolicUtils.unwrap(ex), oneterm)
 end
 
 function Desmos.desmos_latexify(ex::Symbolics.SymbolicUtils.BasicSymbolic, oneterm::Bool = false)
@@ -51,7 +51,7 @@ function Desmos.desmos_latexify(ex::Symbolics.SymbolicUtils.BasicSymbolic, onete
                 elseif startswith(_values[i], '-')
                     coeff = _values[i]
                 else
-                    coeff = '-' * _values[i]
+                    coeff = '+' * _values[i]
                 end
                 str *= coeff * _keys[i]
             end
@@ -98,7 +98,7 @@ function Desmos.desmos_latexify(ex::Symbolics.SymbolicUtils.BasicSymbolic, onete
             error("$(ex.f) is not supported yet!")
         end
     end
-    error("Not implemented yet!")
+    error("Unsupported Symbolics expression type. Properties: $(propertynames(ex))")
 end
 
 end # module

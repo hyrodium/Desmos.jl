@@ -526,4 +526,86 @@
         @test desmos_latexify(q2, false) == "\\frac{1}{2}\\left(\\left(1.0\\right)x^2+2\\left(2.0\\right)xy+\\left(3.0\\right)y^2\\right)+4.0x+5.0y+6.0"
         @test desmos_latexify(q2, true) == "\\left(\\frac{1}{2}\\left(\\left(1.0\\right)x^2+2\\left(2.0\\right)xy+\\left(3.0\\right)y^2\\right)+4.0x+5.0y+6.0\\right)"
     end
+
+    @testset "Symbolics.jl integration" begin
+        @variables x y z
+        @syms a::Real b::Real c::Real
+
+        # Basic operations
+        @test desmos_latexify(x) == "x"
+        @test desmos_latexify(-x) == "-x"
+        @test desmos_latexify(x + y) == "x+y"
+        @test desmos_latexify(x - y) == "x-y"
+        @test desmos_latexify(-x - y) == "-x-y"
+        @test desmos_latexify(x * y) == "xy"
+        @test desmos_latexify(-x * y) == "-xy"
+        @test desmos_latexify(x^2) == "x^{2}"
+        @test desmos_latexify(x / y) == "\\frac{x}{y}"
+        @test desmos_latexify((x + y) / (x - y)) == "\\frac{x+y}{x-y}"
+        @test desmos_latexify(-x * y) == "-xy"
+        @test desmos_latexify(-x + y) == "-x+y"
+        @test desmos_latexify(x - 2y + z) == "x-2y+z"
+        @test desmos_latexify(x + y + 1) == "x+y+1"
+        @test desmos_latexify(x + 2y - 1) == "x+2y-1"
+        @test desmos_latexify(x + y * 1) == "x+y"
+        @test desmos_latexify(x + y^1) == "x+y"
+
+        # Basic operations with `oneterm=true`
+        @test desmos_latexify(x, true) == "x"
+        @test desmos_latexify(-x, true) == "-x"
+        @test desmos_latexify(x + y, true) == "\\left(x+y\\right)"
+        @test desmos_latexify(x - y, true) == "\\left(x-y\\right)"
+        @test desmos_latexify(-x - y, true) == "\\left(-x-y\\right)"
+        @test desmos_latexify(x * y, true) == "xy"
+        @test desmos_latexify(-x * y, true) == "-xy"
+        @test desmos_latexify(x^2, true) == "x^{2}"
+        @test desmos_latexify(x / y, true) == "\\frac{x}{y}"
+        @test desmos_latexify((x + y) / (x - y), true) == "\\frac{x+y}{x-y}"
+        @test desmos_latexify(-x * y, true) == "-xy"
+        @test desmos_latexify(-x + y, true) == "\\left(-x+y\\right)"
+        @test desmos_latexify(x - 2y + z, true) == "\\left(x-2y+z\\right)"
+        @test desmos_latexify(x + y + 1, true) == "\\left(x+y+1\\right)"
+        @test desmos_latexify(x + 2y - 1, true) == "\\left(x+2y-1\\right)"
+        @test desmos_latexify(x + y * 1, true) == "\\left(x+y\\right)"
+        @test desmos_latexify(x + y^1, true) == "\\left(x+y\\right)"
+
+        # SymbolicUtils @syms
+        @test desmos_latexify(a) == "a"
+        @test desmos_latexify(a + b) == "a+b"
+        @test desmos_latexify(a * b) == "ab"
+
+        # Basic functions
+        @test desmos_latexify(sin(x)) == "\\sin\\left(x\\right)"
+        @test desmos_latexify(cos(x)) == "\\cos\\left(x\\right)"
+        @test desmos_latexify(tan(x)) == "\\tan\\left(x\\right)"
+        @test desmos_latexify(exp(x)) == "\\exp\\left(x\\right)"
+        @test desmos_latexify(log(x)) == "\\ln\\left(x\\right)"
+        @test desmos_latexify(sqrt(x)) == "\\sqrt{x}"
+
+        # Derivatives
+        D = Differential(x)
+        D2 = Differential(x, 2)
+        @test desmos_latexify(D(x^2)) == "\\frac{d}{dx}x^{2}"
+        @test desmos_latexify(D(x^3 - x + 1)) == "\\frac{d}{dx}\\left(-x+x^{3}+1\\right)"
+        @test desmos_latexify(expand_derivatives(D(x^2))) == "2x"
+        @test desmos_latexify(expand_derivatives(D(x^3 - x + 1))) == "3x^{2}-1"
+        @test desmos_latexify(D2(x^2)) == "\\frac{d}{dx}\\frac{d}{dx}x^{2}"
+        @test desmos_latexify(D2(x^3 - x + 1)) == "\\frac{d}{dx}\\frac{d}{dx}\\left(-x+x^{3}+1\\right)"
+        @test desmos_latexify(expand_derivatives(D2(x^2))) == "2"
+        @test desmos_latexify(expand_derivatives(D2(x^3 - x + 1))) == "6x"
+
+        # Comparison operators
+        @test desmos_latexify(x > 0) == "x>0"
+        @test desmos_latexify(x < 0) == "x<0"
+        @test desmos_latexify(x == y) == "x=y"
+        @test desmos_latexify(x >= 1) == "x\\ge 1"
+        @test desmos_latexify(x <= 1) == "x\\le 1"
+        @test desmos_latexify(a + b > c) == "a+b>c"
+        @test desmos_latexify(x^2 < y^2) == "x^{2}<y^{2}"
+
+        # ifelse
+        @test desmos_latexify(ifelse(x > 0, x, 0)) == "\\left\\{x>0:x,0\\right\\}"
+        @test desmos_latexify(ifelse(x > y, x, y)) == "\\left\\{x>y:x,y\\right\\}"
+        @test desmos_latexify(ifelse(a + b > 0, a + b, 0)) == "\\left\\{a+b>0:a+b,0\\right\\}"
+    end
 end

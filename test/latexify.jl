@@ -538,7 +538,7 @@
         @test desmos_latexify(x - y) == "x-y"
         @test desmos_latexify(-x - y) == "-x-y"
         @test desmos_latexify(x * y) == "xy"
-        @test desmos_lat-exify(x * y) == "-xy"
+        @test desmos_latexify(-x * y) == "-xy"
         @test desmos_latexify(x^2) == "x^{2}"
         @test desmos_latexify(x / y) == "\\frac{x}{y}"
         @test desmos_latexify((x + y) / (x - y)) == "\\frac{x+y}{x-y}"
@@ -548,7 +548,7 @@
         @test desmos_latexify(x + y + 1) == "x+y+1"
         @test desmos_latexify(x + 2y - 1) == "x+2y-1"
         @test desmos_latexify(x + y * 1) == "x+y"
-        @test desmos_latexify(x + y ^ 1) == "x+y"
+        @test desmos_latexify(x + y^1) == "x+y"
 
         # Basic operations with `oneterm=true`
         @test desmos_latexify(x, true) == "x"
@@ -567,7 +567,7 @@
         @test desmos_latexify(x + y + 1, true) == "\\left(x+y+1\\right)"
         @test desmos_latexify(x + 2y - 1, true) == "\\left(x+2y-1\\right)"
         @test desmos_latexify(x + y * 1, true) == "\\left(x+y\\right)"
-        @test desmos_latexify(x + y ^ 1, true) == "\\left(x+y\\right)"
+        @test desmos_latexify(x + y^1, true) == "\\left(x+y\\right)"
 
         # SymbolicUtils @syms
         @test desmos_latexify(a) == "a"

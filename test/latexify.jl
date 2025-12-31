@@ -593,5 +593,19 @@
         @test desmos_latexify(D2(x^3 - x + 1)) == "\\frac{d}{dx}\\frac{d}{dx}\\left(-x+x^{3}+1\\right)"
         @test desmos_latexify(expand_derivatives(D2(x^2))) == "2"
         @test desmos_latexify(expand_derivatives(D2(x^3 - x + 1))) == "6x"
+
+        # Comparison operators
+        @test desmos_latexify(x > 0) == "x>0"
+        @test desmos_latexify(x < 0) == "x<0"
+        @test desmos_latexify(x == y) == "x=y"
+        @test desmos_latexify(x >= 1) == "x\\ge 1"
+        @test desmos_latexify(x <= 1) == "x\\le 1"
+        @test desmos_latexify(a + b > c) == "a+b>c"
+        @test desmos_latexify(x^2 < y^2) == "x^{2}<y^{2}"
+
+        # ifelse
+        @test desmos_latexify(ifelse(x > 0, x, 0)) == "\\left\\{x>0:x,0\\right\\}"
+        @test desmos_latexify(ifelse(x > y, x, y)) == "\\left\\{x>y:x,y\\right\\}"
+        @test desmos_latexify(ifelse(a + b > 0, a + b, 0)) == "\\left\\{a+b>0:a+b,0\\right\\}"
     end
 end

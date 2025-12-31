@@ -24,7 +24,7 @@ const AnyDesmosMIME = Union{typeof(DESMOS_MIME), typeof(OPREFIX_DESMOS_MIME)}
 function Desmos.DesmosState(
         model::JuMP.GenericModel{T};
         parameter_ranges = Dict(), parametric_solution = Dict(),
-        objective_value_variable="c"
+        objective_value_variable = "c"
     ) where {T}
 
     expressions = []

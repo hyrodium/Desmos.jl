@@ -531,11 +531,14 @@
         @variables x y z
         @syms a::Real b::Real c::Real
 
-        # Basic @variables
+        # Basic operations
         @test desmos_latexify(x) == "x"
+        @test desmos_latexify(-x) == "-x"
         @test desmos_latexify(x + y) == "x+y"
         @test desmos_latexify(x - y) == "x-y"
+        @test desmos_latexify(-x - y) == "-x-y"
         @test desmos_latexify(x * y) == "xy"
+        @test desmos_lat-exify(x * y) == "-xy"
         @test desmos_latexify(x^2) == "x^{2}"
         @test desmos_latexify(x / y) == "\\frac{x}{y}"
         @test desmos_latexify((x + y) / (x - y)) == "\\frac{x+y}{x-y}"
@@ -543,14 +546,18 @@
         @test desmos_latexify(-x + y) == "-x+y"
         @test desmos_latexify(x - 2y + z) == "x-2y+z"
         @test desmos_latexify(x + y + 1) == "x+y+1"
-        @test desmos_latexify(x + y - 1) == "x+y-1"
+        @test desmos_latexify(x + 2y - 1) == "x+2y-1"
         @test desmos_latexify(x + y * 1) == "x+y"
         @test desmos_latexify(x + y ^ 1) == "x+y"
 
+        # Basic operations with `oneterm=true`
         @test desmos_latexify(x, true) == "x"
+        @test desmos_latexify(-x, true) == "-x"
         @test desmos_latexify(x + y, true) == "\\left(x+y\\right)"
         @test desmos_latexify(x - y, true) == "\\left(x-y\\right)"
+        @test desmos_latexify(-x - y, true) == "\\left(-x-y\\right)"
         @test desmos_latexify(x * y, true) == "xy"
+        @test desmos_latexify(-x * y, true) == "-xy"
         @test desmos_latexify(x^2, true) == "x^{2}"
         @test desmos_latexify(x / y, true) == "\\frac{x}{y}"
         @test desmos_latexify((x + y) / (x - y), true) == "\\frac{x+y}{x-y}"
@@ -558,7 +565,7 @@
         @test desmos_latexify(-x + y, true) == "\\left(-x+y\\right)"
         @test desmos_latexify(x - 2y + z, true) == "\\left(x-2y+z\\right)"
         @test desmos_latexify(x + y + 1, true) == "\\left(x+y+1\\right)"
-        @test desmos_latexify(x + y - 1, true) == "\\left(x+y-1\\right)"
+        @test desmos_latexify(x + 2y - 1, true) == "\\left(x+2y-1\\right)"
         @test desmos_latexify(x + y * 1, true) == "\\left(x+y\\right)"
         @test desmos_latexify(x + y ^ 1, true) == "\\left(x+y\\right)"
 
@@ -567,7 +574,7 @@
         @test desmos_latexify(a + b) == "a+b"
         @test desmos_latexify(a * b) == "ab"
 
-        # Functions
+        # Basic functions
         @test desmos_latexify(sin(x)) == "\\sin\\left(x\\right)"
         @test desmos_latexify(cos(x)) == "\\cos\\left(x\\right)"
         @test desmos_latexify(tan(x)) == "\\tan\\left(x\\right)"
@@ -575,7 +582,7 @@
         @test desmos_latexify(log(x)) == "\\ln\\left(x\\right)"
         @test desmos_latexify(sqrt(x)) == "\\sqrt{x}"
 
-        # Expanded derivatives
+        # Derivatives
         D = Differential(x)
         @test desmos_latexify(expand_derivatives(D(x^2))) == "2x"
         @test desmos_latexify(expand_derivatives(D(x^3 - x + 1))) == "3x^{2}-1"

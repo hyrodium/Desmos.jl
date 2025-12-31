@@ -24,7 +24,9 @@ const AnyDesmosMIME = Union{typeof(DESMOS_MIME), typeof(OPREFIX_DESMOS_MIME)}
 function Desmos.DesmosState(
         model::JuMP.GenericModel{T};
         parameter_ranges = Dict(), parametric_solution = Dict(),
-        objective_value_variable = "c"
+        objective_value_variable = "c",
+        restrict_objective_domain = false,
+        objective_level_multipliers = T[],
     ) where {T}
 
     expressions = []
@@ -84,9 +86,12 @@ function Desmos.DesmosState(
     obj = JuMP.objective_function(model)
     if obj != JuMP.GenericAffExpr{T, JuMP.GenericVariableRef{T}}(0)
         obj_str = JuMP.function_string(DESMOS_MIME, obj)
+        obj_mults = isempty(objective_level_multipliers) ? "" : string(objective_level_multipliers)
+        obj_tex = parse_desmos_latexify("$obj_str = $obj_mults$objective_value_variable")
+        restrict_objective_domain && (obj_tex *= domain)
         push!(
             expressions, Desmos.DesmosExpression(;
-                latex = parse_desmos_latexify("$obj_str = $objective_value_variable"),
+                latex = obj_tex,
                 id = "objective function",
                 color = "green",
             )

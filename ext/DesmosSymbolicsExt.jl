@@ -8,7 +8,7 @@ function Desmos.desmos_latexify(ex::Symbolics.Num)
     return desmos_latexify(Symbolics.SymbolicUtils.unwrap(ex))
 end
 
-function Desmos.desmos_latexify(ex::Symbolics.SymbolicUtils.BasicSymbolic, oneterm::Bool=false)
+function Desmos.desmos_latexify(ex::Symbolics.SymbolicUtils.BasicSymbolic, oneterm::Bool = false)
     if hasproperty(ex, :name)
         # if `ex` is a variable
         return desmos_latexify(string(ex.name))
@@ -28,10 +28,10 @@ function Desmos.desmos_latexify(ex::Symbolics.SymbolicUtils.BasicSymbolic, onete
                 return join(_keys)
             elseif ex.coeff == -1
                 # e.g. -xy
-                return '-'*join(_keys)
+                return '-' * join(_keys)
             else
                 # e.g. -3x
-                return desmos_latexify(ex.coeff)*join(_keys)
+                return desmos_latexify(ex.coeff) * join(_keys)
             end
         else
             # e.g. x - 2y + z
@@ -42,7 +42,7 @@ function Desmos.desmos_latexify(ex::Symbolics.SymbolicUtils.BasicSymbolic, onete
             else
                 coeff = _values[1]
             end
-            str = coeff*_keys[1]
+            str = coeff * _keys[1]
             for i in 2:_length
                 if _values[i] == "1"
                     coeff = "+"
@@ -51,9 +51,9 @@ function Desmos.desmos_latexify(ex::Symbolics.SymbolicUtils.BasicSymbolic, onete
                 elseif startswith(_values[i], '-')
                     coeff = _values[i]
                 else
-                    coeff = '-'*_values[i]
+                    coeff = '-' * _values[i]
                 end
-                str *= coeff*_keys[i]
+                str *= coeff * _keys[i]
             end
             intercept = desmos_latexify(ex.coeff)
             if startswith(intercept, '-')

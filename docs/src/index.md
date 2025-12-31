@@ -44,6 +44,9 @@ On Jupyter, the output plot will be shown in the output cell.
 - [Function Compatibility](function-compatibility.md)
   - How Julia expressions are translated to Desmos LaTeX format.
   - Design principles, function mappings, and common pitfalls.
+- [Working with other packages](package-integration.md)
+  - Integration with LaTeXStrings.jl, Symbolics.jl, QuadraticOptimizer.jl, JuMP.jl, and custom packages.
+  - How to extend Desmos.jl to support your own types.
 - [Example Gallery](examples.md)
   - Examples including basic functions, variable definitions, and Newton's method visualization.
 - [Desmos.jl API](api.md)

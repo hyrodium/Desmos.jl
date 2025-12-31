@@ -19,6 +19,7 @@ makedocs(;
         "Working with Desmos Text I/O" => "desmos-text-io.md",
         "Display Configuration" => "config.md",
         "Function Compatibility" => "function-compatibility.md",
+        "Working with other packages" => "package-integration.md",
         "Example Gallery" => "examples.md",
         "Desmos.jl API" => "api.md",
         "License" => "license.md",

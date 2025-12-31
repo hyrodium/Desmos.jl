@@ -93,6 +93,31 @@ function Desmos.desmos_latexify(ex::Symbolics.SymbolicUtils.BasicSymbolic, onete
         elseif ex.f === Base.:log
             _args = desmos_latexify.(ex.args)
             return "\\ln\\left($(_args[1])\\right)"
+        elseif ex.f === Base.:ifelse
+            _cond = desmos_latexify(ex.args[1])
+            _true_val = desmos_latexify(ex.args[2])
+            _false_val = desmos_latexify(ex.args[3])
+            return "\\left\\{$(_cond):$(_true_val),$(_false_val)\\right\\}"
+        elseif ex.f === Base.:(>)
+            _arg1 = desmos_latexify(ex.args[1])
+            _arg2 = desmos_latexify(ex.args[2])
+            return "$(_arg1)>$(_arg2)"
+        elseif ex.f === Base.:(<)
+            _arg1 = desmos_latexify(ex.args[1])
+            _arg2 = desmos_latexify(ex.args[2])
+            return "$(_arg1)<$(_arg2)"
+        elseif ex.f === Base.:(>=)
+            _arg1 = desmos_latexify(ex.args[1])
+            _arg2 = desmos_latexify(ex.args[2])
+            return "$(_arg1)\\ge $(_arg2)"
+        elseif ex.f === Base.:(<=)
+            _arg1 = desmos_latexify(ex.args[1])
+            _arg2 = desmos_latexify(ex.args[2])
+            return "$(_arg1)\\le $(_arg2)"
+        elseif ex.f === Base.:(==)
+            _arg1 = desmos_latexify(ex.args[1])
+            _arg2 = desmos_latexify(ex.args[2])
+            return "$(_arg1)=$(_arg2)"
         elseif ex.f isa Differential
             D = desmos_latexify(ex.f)
             arg1 = desmos_latexify(ex.args[1], true)

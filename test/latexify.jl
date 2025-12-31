@@ -526,4 +526,37 @@
         @test desmos_latexify(q2, false) == "\\frac{1}{2}\\left(\\left(1.0\\right)x^2+2\\left(2.0\\right)xy+\\left(3.0\\right)y^2\\right)+4.0x+5.0y+6.0"
         @test desmos_latexify(q2, true) == "\\left(\\frac{1}{2}\\left(\\left(1.0\\right)x^2+2\\left(2.0\\right)xy+\\left(3.0\\right)y^2\\right)+4.0x+5.0y+6.0\\right)"
     end
+
+    @testset "Symbolics.jl integration" begin
+        @variables x y z
+        @syms a::Real b::Real c::Real
+
+        # Basic @variables
+        @test desmos_latexify(x) == "x"
+        @test desmos_latexify(x + y) == "x+y"
+        @test desmos_latexify(x - y) == "x-y"
+        @test desmos_latexify(x * y) == "xy"
+        @test desmos_latexify(x^2) == "x^{2}"
+        @test desmos_latexify(x / y) == "\\frac{x}{y}"
+        @test desmos_latexify((x + y) / (x - y)) == "\\frac{x+y}{x-y}"
+
+        # SymbolicUtils @syms
+        @test desmos_latexify(a) == "a"
+        @test desmos_latexify(a + b) == "a+b"
+        @test desmos_latexify(a * b) == "ab"
+
+        # Functions
+        @test desmos_latexify(sin(x)) == "\\sin\\left(x\\right)"
+        @test desmos_latexify(cos(x)) == "\\cos\\left(x\\right)"
+        @test desmos_latexify(exp(x)) == "\\exp\\left(x\\right)"
+        @test desmos_latexify(log(x)) == "\\ln\\left(x\\right)"
+        @test desmos_latexify(sqrt(x)) == "\\sqrt{x}"
+
+        # Expanded derivatives
+        D = Differential(x)
+        @test desmos_latexify(expand_derivatives(D(x^2))) == "2x"
+        @test desmos_latexify(expand_derivatives(D(x^3-x+1))) == "3x^{2}-1"
+        @test_broken desmos_latexify(D(x^2)) == "\\frac{d}{dx}x^2"
+        @test_broken desmos_latexify(D(x^3-x+1)) == "\\frac{d}{dx}\\left(x^3-x+1\\right)"
+    end
 end

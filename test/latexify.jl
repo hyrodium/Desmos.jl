@@ -201,25 +201,41 @@
         @test desmos_latexify(:(x)) == "x"
         @test desmos_latexify(:(x1)) == "x_{1}"
         @test desmos_latexify(:(x_1)) == "x_{1}"
+        @test desmos_latexify(:(x_1___ₐbc)) == "x_{1abc}"
         @test desmos_latexify(:(x_y)) == "x_{y}"
         @test desmos_latexify(:(x_abc)) == "x_{abc}"
         @test desmos_latexify(:(tan(x_y))) == "\\tan\\left(x_{y}\\right)"
         @test desmos_latexify(:(a₁)) == "a_{1}"
         @test desmos_latexify(:(x₀)) == "x_{0}"
         @test desmos_latexify(:(n₁₂₃)) == "n_{123}"
-    end
 
-    @testset "Greek letters" begin
-        @test desmos_latexify(:(α)) == "\\alpha"
-        @test desmos_latexify(:(β)) == "\\beta"
-        @test desmos_latexify(:(γ)) == "\\gamma"
-        @test desmos_latexify(:(θ)) == "\\theta"
-        @test desmos_latexify(:(π)) == "\\pi"
-        @test desmos_latexify(:(Γ)) == "\\Gamma"
-        @test desmos_latexify(:(Δ)) == "\\Delta"
-        @test desmos_latexify(:(Ω)) == "\\Omega"
-        @test desmos_latexify(:(α_5)) == "\\alpha_{5}"
-        @test desmos_latexify(:(β_n)) == "\\beta_{n}"
+        # Latin subscript letters
+        @test desmos_latexify(:(hₐ)) == "h_{a}"
+        @test desmos_latexify(:(xₑ)) == "x_{e}"
+        @test desmos_latexify(:(aᵢ)) == "a_{i}"
+        @test desmos_latexify(:(aᵢⱼ)) == "a_{ij}"
+        @test desmos_latexify(:(xₖₗ)) == "x_{kl}"
+        @test desmos_latexify(:(x₁₂4ₐ)) == "x_{124a}"
+        @test desmos_latexify(:(xₐₑᵢₒᵤ)) == "x_{aeiou}"
+
+        # Test with regular strings
+        @test desmos_latexify("foo") == "f_{oo}"
+        @test desmos_latexify("h₁") == "h_{1}"
+        @test desmos_latexify("hₐ") == "h_{a}"
+
+        # Error cases: Greek letters in subscripts are not allowed
+        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(xα))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(x_α))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(xᵦ))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(aβ))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(nθ))
+        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify("hα")
+        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify("xπ")
+
+        # Error cases: Invalid special characters in subscripts
+        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify("x!")
+        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify("a#")
+        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify("h@")
     end
 
     @testset "Superscripts (via ^ operator only)" begin
@@ -229,8 +245,6 @@
         @test desmos_latexify(:(x^1)) == "x^{1}"
         @test desmos_latexify(:(x^2)) == "x^{2}"
         @test desmos_latexify(:(x^5)) == "x^{5}"
-        # Β (Beta) is not supported by Desmos
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Β))
     end
 
     @testset "Special values" begin

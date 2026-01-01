@@ -21,6 +21,18 @@ function desmos_latexify(c::RGB)
     return String(str)
 end
 
+function desmos_latexify(a::AbstractVector{<:Real})
+    return "\\left[$(join(desmos_latexify.(a),","))\\right]"
+end
+
+function desmos_latexify(a::AbstractRange{<:Real})
+    return "\\left[$(desmos_latexify(minimum(a))),$(desmos_latexify(minimum(a)+step(a))),...,$(desmos_latexify(maximum(a)))\\right]"
+end
+
+function desmos_latexify(a::AbstractUnitRange{<:Real})
+    return "\\left[$(desmos_latexify(minimum(a))),...,$(desmos_latexify(maximum(a)))\\right]"
+end
+
 function desmos_latexify(n::Real)
     return desmos_latexify(Float64(n))
 end

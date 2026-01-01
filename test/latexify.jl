@@ -282,6 +282,10 @@
         @test desmos_latexify(:([1, 2, 3])) == "\\left[1,2,3\\right]"
         @test desmos_latexify(:([a, b])) == "\\left[a,b\\right]"
         @test desmos_latexify(:([x + 1, y - 2])) == "\\left[x+1,y-2\\right]"
+        @test desmos_latexify(collect(1:2:9)) == "\\left[1,3,5,7,9\\right]"
+        @test desmos_latexify(1:2:9) == "\\left[1,3,...,9\\right]"
+        @test desmos_latexify(1:9) == "\\left[1,...,9\\right]"
+        @test desmos_latexify(Base.OneTo(8)) == "\\left[1,...,8\\right]"
     end
 
     @testset "Assignments" begin

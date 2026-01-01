@@ -52,6 +52,8 @@ function desmos_latexify(n::AbstractFloat)
         return "\\infty"
     elseif n == -Inf
         return "-\\infty"
+    elseif isnan(n)
+        return "\\frac{0}{0}"
     else
         str = string(n)
         if occursin('e', str)

@@ -261,9 +261,10 @@
         @test desmos_latexify(5.0e-100) == "5.0\\times10^{-100}"
         @test desmos_latexify(1.23e8) == "1.23\\times10^{8}"
 
-        # AbstractFloat - infinity
+        # AbstractFloat - non-finite
         @test desmos_latexify(Inf) == "\\infty"
         @test desmos_latexify(-Inf) == "-\\infty"
+        @test desmos_latexify(NaN) == "\\frac{0}{0}"
 
         # Rational
         @test desmos_latexify(1 // 2) == "\\frac{1}{2}"

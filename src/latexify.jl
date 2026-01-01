@@ -104,13 +104,10 @@ function desmos_latexify(str::AbstractString)
         elseif c in UNSUPPORTED_GREEK_LETTERS
             throw(UnsupportedDesmosSyntaxError("The Greek letter '$c' is not supported by Desmos."))
         elseif haskey(SUBSCRIPT_MAP, c)
-            # Unicode subscript: ₄ → 4
+            # Unicode subscript: ₄ → 4, ₐ → a
             subscript *= SUBSCRIPT_MAP[c]
-        elseif haskey(GREEK_LETTERS, c)
-            # Greek letters not allowed in subscripts
-            throw(UnsupportedDesmosSyntaxError("Greek letters are not allowed in subscripts. Use Latin letters or digits only."))
-        elseif isletter(c) || isdigit(c)
-            # Only Latin letters (a-z, A-Z) and digits (0-9) are allowed
+        elseif (isletter(c) || isdigit(c)) && isascii(c)
+            # Only ASCII Latin letters (a-z, A-Z) and digits (0-9) are allowed
             subscript *= string(c)
         else
             # Any other character is not allowed

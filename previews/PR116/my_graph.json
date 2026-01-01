@@ -1,0 +1,17 @@
+{
+  "version": 11,
+  "randomSeed": "00000000000000000000000000000000",
+  "graph": {},
+  "expressions": {
+    "list": [
+      {
+        "type": "expression",
+        "id": "1",
+        "color": "#000000",
+        "latex": "f\\left(x\\right)=\\sin\\left(x\\right)\\exp\\left(\\frac{-x}{10}\\right)"
+      }
+    ]
+  },
+  "includeFunctionParametersInRandomSeed": true,
+  "doNotMigrateMovablePointStyle": true
+}

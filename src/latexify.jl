@@ -21,24 +21,6 @@ function desmos_latexify(c::RGB)
     return String(str)
 end
 
-function desmos_latexify(ex::Expr, oneterm::Bool = false)
-    if ex.head == :call
-        return _latexify_call(ex, oneterm)
-    elseif ex.head == :tuple
-        return _latexify_tuple(ex)
-    elseif ex.head == :vect
-        return _latexify_vect(ex)
-    elseif ex.head == :comprehension
-        return _latexify_comprehension(ex)
-    elseif ex.head == :block
-        return _latexify_block(ex)
-    elseif ex.head == :(=)
-        return _latexify_assignment(ex)
-    else
-        throw(UnsupportedDesmosSyntaxError("Unsupported expression head: $(ex.head)"))
-    end
-end
-
 function desmos_latexify(n::Real)
     return desmos_latexify(Float64(n))
 end
@@ -52,6 +34,8 @@ function desmos_latexify(n::AbstractFloat)
         return "\\infty"
     elseif n == -Inf
         return "-\\infty"
+    elseif isnan(n)
+        return "\\frac{0}{0}"
     else
         str = string(n)
         if occursin('e', str)
@@ -123,6 +107,24 @@ function desmos_latexify(str::AbstractString)
     end
 
     return result * "_{$subscript}"
+end
+
+function desmos_latexify(ex::Expr, oneterm::Bool = false)
+    if ex.head == :call
+        return _latexify_call(ex, oneterm)
+    elseif ex.head == :tuple
+        return _latexify_tuple(ex)
+    elseif ex.head == :vect
+        return _latexify_vect(ex)
+    elseif ex.head == :comprehension
+        return _latexify_comprehension(ex)
+    elseif ex.head == :block
+        return _latexify_block(ex)
+    elseif ex.head == :(=)
+        return _latexify_assignment(ex)
+    else
+        throw(UnsupportedDesmosSyntaxError("Unsupported expression head: $(ex.head)"))
+    end
 end
 
 function _latexify_tuple(ex::Expr)

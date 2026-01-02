@@ -51,19 +51,6 @@ const UNSUPPORTED_GREEK_LETTERS = [
     'Χ',
 ]
 
-const SUPERSCRIPT_MAP = Dict(
-    '⁰' => "0",
-    '¹' => "1",
-    '²' => "2",
-    '³' => "3",
-    '⁴' => "4",
-    '⁵' => "5",
-    '⁶' => "6",
-    '⁷' => "7",
-    '⁸' => "8",
-    '⁹' => "9"
-)
-
 const SUBSCRIPT_MAP = Dict(
     '₀' => "0",
     '₁' => "1",

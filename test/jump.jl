@@ -3,6 +3,27 @@ using JuMP, Ipopt
 using IntervalSets
 
 @testset "JuMP" begin
+    @testset "Input validation" begin
+        m = Model()
+        @variable m x
+        @variable m y
+        @variable m z
+        @test_throws UnsupportedDesmosSyntaxError Desmos.DesmosState(m)
+
+        m = Model()
+        @variable m c in Parameter(1)
+        @variable m x
+        @variable m y
+        @test_throws UnsupportedDesmosSyntaxError Desmos.DesmosState(m)
+        state = Desmos.DesmosState(m, objective_value_variable="d")
+        exprs = [expr.latex for expr in state.expressions.list]
+        @test exprs == [
+            "c=1.0",
+            "d=0",
+            "x_{2}=x",
+            "x_{3}=y",
+        ]
+    end
 
     @testset "Basic model" begin
         m = Model(optimizer_with_attributes(Ipopt.Optimizer, "print_level" => 0))

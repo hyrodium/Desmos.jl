@@ -80,11 +80,9 @@ function desmos_latexify(str::AbstractString)
 
     # Handle first character
     first_char = chars[1]
-    if first_char in UNSUPPORTED_GREEK_LETTERS
-        throw(UnsupportedDesmosSyntaxError("The Greek letter '$first_char' is not supported by Desmos."))
-    elseif haskey(GREEK_LETTERS, first_char)
+    if haskey(GREEK_LETTERS, first_char)
         result = GREEK_LETTERS[first_char]
-    elseif isletter(first_char) || isdigit(first_char)
+    elseif (isletter(first_char) || isdigit(first_char)) && isascii(first_char)
         result = string(first_char)
     else
         throw(UnsupportedDesmosSyntaxError("Invalid identifier character: '$first_char'"))
@@ -101,8 +99,6 @@ function desmos_latexify(str::AbstractString)
         if c == '_'
             # Underscore is ignored (skip it)
             continue
-        elseif c in UNSUPPORTED_GREEK_LETTERS
-            throw(UnsupportedDesmosSyntaxError("The Greek letter '$c' is not supported by Desmos."))
         elseif haskey(SUBSCRIPT_MAP, c)
             # Unicode subscript: ₄ → 4, ₐ → a
             subscript *= SUBSCRIPT_MAP[c]

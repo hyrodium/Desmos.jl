@@ -37,7 +37,7 @@ function Desmos.DesmosState(
             idx = JuMP.index(vp).value
             val = JuMP.parameter_value(vp)
             name = JuMP.name(vp)
-            name == "$objective_value_variable" && error("The parameter name `$objective_value_variable` is reserved.")  #FIXME: better error
+            name == "$objective_value_variable" && desmos_error("The parameter name `$objective_value_variable` is reserved. Rename the parameter or set `objective_value_variable`.")
             push!(
                 expressions, Desmos.DesmosExpression(;
                     latex = desmos_latexify(:($name = $val)),
@@ -49,7 +49,7 @@ function Desmos.DesmosState(
             push!(variables, vp)
         end
     end
-    length(variables) == 2 || error("JuMP model must have exactly two variables.")
+    length(variables) == 2 || desmos_error("JuMP model must have exactly two decision variables.")
     x, y = variables[1], variables[2]
     x_str = JuMP.function_string(DESMOS_MIME, x)
     y_str = JuMP.function_string(DESMOS_MIME, y)
@@ -60,8 +60,8 @@ function Desmos.DesmosState(
     con_texs = []
     for con in JuMP.all_constraints(model, include_variable_in_set_constraints = true)
         co = JuMP.constraint_object(con)
-        co.func isa SUPPORTED_FUNCS{T} || error("Got unsupported function $(co.func) of type $(typeof(co.func))")
-        co.set isa SUPPORTED_SETS{T} || error("Got unsupported set $(co.set) of type $(typeof(co.set))")
+        co.func isa SUPPORTED_FUNCS{T} || desmos_error("Got unsupported function $(co.func) of type $(typeof(co.func))")
+        co.set isa SUPPORTED_SETS{T} || desmos_error("Got unsupported set $(co.set) of type $(typeof(co.set))")
         co.set isa JuMP.MOI.Parameter && continue  # already handled above
         con_str = JuMP.constraint_string(DESMOS_MIME, "", co)  # ignore constraint names
         con_tex = parse_desmos_latexify(con_str)
@@ -101,8 +101,8 @@ function Desmos.DesmosState(
     # 4. build solution and objective expressions
 
     if !isempty(parametric_solution)
-        haskey(parametric_solution, x) || error("Parametric solution is incomplete: $x not found")
-        haskey(parametric_solution, y) || error("Parametric solution is incomplete: $y not found")
+        haskey(parametric_solution, x) || desmos_error("Parametric solution is incomplete: key `$x` not found")
+        haskey(parametric_solution, y) || desmos_error("Parametric solution is incomplete: key `$y` not found")
         x_ostr = JuMP.function_string(OPREFIX_DESMOS_MIME, x)
         y_ostr = JuMP.function_string(OPREFIX_DESMOS_MIME, y)
         obj_ostr = JuMP.function_string(OPREFIX_DESMOS_MIME, obj)
@@ -181,6 +181,7 @@ end
 # FIXME: support this in Desmos.jl?
 wrap_for_domain(s) = "\\left\\{$s\\right\\}"
 parse_desmos_latexify(s) = desmos_latexify(Meta.parse(s))
+desmos_error(s) = throw(UnsupportedDesmosSyntaxError(s))
 
 # JuMP printing patches
 function JuMP._math_symbol(::AnyDesmosMIME, name::Symbol)
@@ -192,7 +193,7 @@ function JuMP._math_symbol(::AnyDesmosMIME, name::Symbol)
         return "=="
     else
         # desmos: x² -> x^2
-        name == :sq || error("DesmosJuMP does not support the symbol $name.")
+        name == :sq || desmos_error("DesmosJuMP does not support the symbol $name.")
         return "^2"
     end
 end
@@ -200,13 +201,13 @@ function JuMP._term_string(mode::AnyDesmosMIME, coef, factor)
     if JuMP._is_one_for_printing(coef)
         return factor
     else
-        JuMP._is_im_for_printing(coef) && error("DesmosJuMP does not support complex numbers.")
+        JuMP._is_im_for_printing(coef) && desmos_error("DesmosJuMP does not support complex numbers.")
         # desmos: `4 x` -> `4*x`
         return string(JuMP._string_round(mode, abs, coef), "*", factor)
     end
 end
 function JuMP.function_string(mode::AnyDesmosMIME, v::JuMP.AbstractVariableRef)
-    JuMP.is_valid(JuMP.owner_model(v), v) || error("Invalid variable $v.")
+    JuMP.is_valid(JuMP.owner_model(v), v) || desmos_error("Invalid variable $v.")
     idx = JuMP.index(v).value
     if JuMP.is_parameter(v)
         return JuMP.name(v)

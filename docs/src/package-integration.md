@@ -79,17 +79,49 @@ The [JuMP.jl](https://github.com/jump-dev/JuMP.jl) package is a modeling languag
 Desmos.jl provides basic support for visualizing two-dimensional JuMP optimization problems.
 
 When you create a `DesmosState` from a JuMP model, it visualizes:
-- Constraint boundaries (inequalities and equalities)
-- Objective function level curves
-- Solution points (if the model has been solved)
+- The feasible region defined by the constraints
+- Objective function level curve(s)
+- Solution point (if the model has been solved)
 - Parameters with sliders (if using JuMP parameters)
 
 ### Basic usage
 
-```julia
-using Desmos, JuMP
+To plot a JuMP model in Desmos, first create a model with two decision variables, then pass it to `Desmos.DesmosState`:
 
-# TODO: Add example
+```@example jump
+using Desmos, IntervalSets
+using JuMP
+set_desmos_display_config(width=0,height=400,clipboard=false,api_version=10,api_key="dcb31709b452b1cf9dc26972add0fda6") # hide
+
+m = Model()
+
+@variable   m  x₁
+@variable   m  x₂
+
+@variable   m  p ∈ Parameter(5/4)
+@variable   m  a ∈ Parameter(1/2)
+@variable   m  b ∈ Parameter(3/2)
+
+@constraint m       abs(x₁)^p + abs(x₂)^p ≤ 1
+@objective  m  Min     a * x₁ + b * x₂
+
+state = Desmos.DesmosState(m)
+```
+
+### Parametric solutions
+You can also pass closed-form solution expressions in terms of the parameters, so the solution point and objective level updates with the sliders:
+```@example jump
+q = p / (p - 1)
+denom = (abs(a)^q + abs(b)^q)^(1 / q)
+solution = Dict(
+    x₁ => -sign(a) * (abs(a) / denom)^(q - 1),
+    x₂ => -sign(b) * (abs(b) / denom)^(q - 1),
+)
+
+state2 = Desmos.DesmosState(m,
+    parameter_ranges = Dict(p => 1..3),
+    parametric_solution = solution,
+)
 ```
 
 ## Your package

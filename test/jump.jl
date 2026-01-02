@@ -15,7 +15,7 @@ using IntervalSets
         @variable m x
         @variable m y
         @test_throws UnsupportedDesmosSyntaxError Desmos.DesmosState(m)
-        state = Desmos.DesmosState(m, objective_value_variable="d")
+        state = Desmos.DesmosState(m, objective_value_variable = "d")
         exprs = [expr.latex for expr in state.expressions.list]
         @test exprs == [
             "c=1.0",

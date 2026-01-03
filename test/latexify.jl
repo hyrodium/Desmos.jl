@@ -249,6 +249,7 @@
 
     @testset "Special values" begin
         @test desmos_latexify(:(Inf)) == "\\infty"
+        @test desmos_latexify(:(NaN)) == "\\frac{0}{0}"
         @test desmos_latexify(:(1.5)) == "1.5"
         @test desmos_latexify(:(42)) == "42"
         @test desmos_latexify(:(-3.14)) == "-3.14"

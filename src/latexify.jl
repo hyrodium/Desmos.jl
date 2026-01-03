@@ -74,6 +74,8 @@ function desmos_latexify(str::AbstractString)
     # Special case: Inf
     if str == "Inf"
         return "\\infty"
+    elseif str == "NaN"
+        return "\\frac{0}{0}"
     end
 
     chars = collect(str)

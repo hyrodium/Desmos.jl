@@ -10,11 +10,11 @@ state = @desmos begin
     @expression $ex1
     @expression $ex2 color = RGB(1,0,0)
     @expression $ex3
-end</code></pre>    <div class="desmos-container" id="desmos-12356133256860662103" style="width:100%;max-width:100%;min-width:400px;height:400px;"></div>
+end</code></pre>    <div class="desmos-container" id="desmos-4376467452871121183" style="width:100%;max-width:100%;min-width:400px;height:400px;"></div>
     <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     <script>
         (function() {
-            var elt = document.getElementById("desmos-12356133256860662103");
+            var elt = document.getElementById("desmos-4376467452871121183");
             var calculator = Desmos.GraphingCalculator(elt);
             calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"text","id":"1","text":"LaTeXStrings example"},{"type":"expression","id":"2","color":"#000000","latex":"\\sin(x)"},{"type":"expression","id":"3","color":"#FF0000","latex":"\\frac{d}{dx}\\left(x^2\\right)"},{"type":"expression","id":"4","color":"#000000","latex":"\\operatorname{tone}\\left(440\\right)"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
 
@@ -43,11 +43,11 @@ state = @desmos begin
     @expression $ex1 color = &quot;#888800&quot;
     @expression $ex2 color = &quot;#008888&quot;
     @expression $ex3 color = &quot;#880088&quot;
-end</code></pre>    <div class="desmos-container" id="desmos-3875192998954268417" style="width:100%;max-width:100%;min-width:400px;height:400px;"></div>
+end</code></pre>    <div class="desmos-container" id="desmos-8803162570431485347" style="width:100%;max-width:100%;min-width:400px;height:400px;"></div>
     <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     <script>
         (function() {
-            var elt = document.getElementById("desmos-3875192998954268417");
+            var elt = document.getElementById("desmos-8803162570431485347");
             var calculator = Desmos.GraphingCalculator(elt);
             calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"text","id":"1","text":"Symbolics.jl integration"},{"type":"expression","id":"2","color":"#888800","latex":"-4\\cos\\left(x\\right)+\\frac{x^{2}}{5}+\\sin\\left(2x\\right)^{2}"},{"type":"expression","id":"3","color":"#008888","latex":"\\frac{\\left(x+y\\right)^{6}}{\\left(x-y\\right)^{4}}=1"},{"type":"expression","id":"4","color":"#880088","latex":"\\frac{d}{dx}\\left(-4\\cos\\left(x\\right)+\\frac{x^{2}}{5}+\\sin\\left(2x\\right)^{2}\\right)"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
 
@@ -74,11 +74,11 @@ state = @desmos begin
     @expression $(q1) color = &quot;#555555&quot;
     @text &quot;2D Quadratic&quot;
     @expression $(q2) = 0 color = &quot;#bbbbbb&quot;
-end</code></pre>    <div class="desmos-container" id="desmos-4157197138703634818" style="width:100%;max-width:100%;min-width:400px;height:400px;"></div>
+end</code></pre>    <div class="desmos-container" id="desmos-8152621383440343202" style="width:100%;max-width:100%;min-width:400px;height:400px;"></div>
     <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     <script>
         (function() {
-            var elt = document.getElementById("desmos-4157197138703634818");
+            var elt = document.getElementById("desmos-8152621383440343202");
             var calculator = Desmos.GraphingCalculator(elt);
             calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"text","id":"1","text":"1D Quadratic"},{"type":"expression","id":"2","color":"#555555","latex":"\\frac{1}{2}\\left(2.0\\right)x^2+3.0x+1.0"},{"type":"text","id":"3","text":"2D Quadratic"},{"type":"expression","id":"4","color":"#bbbbbb","latex":"\\frac{1}{2}\\left(\\left(1.0\\right)x^2+2\\left(2.0\\right)xy+\\left(3.0\\right)y^2\\right)+4.0x+5.0y+6.0=0"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
 
@@ -95,9 +95,74 @@ end</code></pre>    <div class="desmos-container" id="desmos-4157197138703634818
             }, false); // Use bubble phase, not capture
         })();
     </script>
-<h2 id="JuMP.jl"><a class="docs-heading-anchor" href="#JuMP.jl">JuMP.jl</a><a id="JuMP.jl-1"></a><a class="docs-heading-anchor-permalink" href="#JuMP.jl" title="Permalink"></a></h2><div class="admonition is-warning" id="Work-in-Progress-8b887b9793586e50"><header class="admonition-header">Work in Progress<a class="admonition-anchor" href="#Work-in-Progress-8b887b9793586e50" title="Permalink"></a></header><div class="admonition-body"><p>JuMP.jl integration is currently under development. The following features may be incomplete or subject to change.</p></div></div><p>The <a href="https://github.com/jump-dev/JuMP.jl">JuMP.jl</a> package is a modeling language for mathematical optimization. Desmos.jl provides basic support for visualizing two-dimensional JuMP optimization problems.</p><p>When you create a <code>DesmosState</code> from a JuMP model, it visualizes:</p><ul><li>Constraint boundaries (inequalities and equalities)</li><li>Objective function level curves</li><li>Solution points (if the model has been solved)</li><li>Parameters with sliders (if using JuMP parameters)</li></ul><h3 id="Basic-usage"><a class="docs-heading-anchor" href="#Basic-usage">Basic usage</a><a id="Basic-usage-1"></a><a class="docs-heading-anchor-permalink" href="#Basic-usage" title="Permalink"></a></h3><pre><code class="language-julia hljs">using Desmos, JuMP
+<h2 id="JuMP.jl"><a class="docs-heading-anchor" href="#JuMP.jl">JuMP.jl</a><a id="JuMP.jl-1"></a><a class="docs-heading-anchor-permalink" href="#JuMP.jl" title="Permalink"></a></h2><div class="admonition is-warning" id="Work-in-Progress-8b887b9793586e50"><header class="admonition-header">Work in Progress<a class="admonition-anchor" href="#Work-in-Progress-8b887b9793586e50" title="Permalink"></a></header><div class="admonition-body"><p>JuMP.jl integration is currently under development. The following features may be incomplete or subject to change.</p></div></div><p>The <a href="https://github.com/jump-dev/JuMP.jl">JuMP.jl</a> package is a modeling language for mathematical optimization. Desmos.jl provides basic support for visualizing two-dimensional JuMP optimization problems.</p><p>When you create a <code>DesmosState</code> from a JuMP model, it visualizes:</p><ul><li>The feasible region defined by the constraints</li><li>Objective function level curve(s)</li><li>Solution point (if the model has been solved)</li><li>Parameters with sliders (if using JuMP parameters)</li></ul><h3 id="Basic-usage"><a class="docs-heading-anchor" href="#Basic-usage">Basic usage</a><a id="Basic-usage-1"></a><a class="docs-heading-anchor-permalink" href="#Basic-usage" title="Permalink"></a></h3><p>To plot a JuMP model in Desmos, first create a model with two decision variables, then pass it to <code>Desmos.DesmosState</code>:</p><pre><code class="language-julia hljs">using Desmos, IntervalSets
+using JuMP
 
-# TODO: Add example</code></pre><h2 id="Your-package"><a class="docs-heading-anchor" href="#Your-package">Your package</a><a id="Your-package-1"></a><a class="docs-heading-anchor-permalink" href="#Your-package" title="Permalink"></a></h2><p>You can add Desmos.jl support to your own package by implementing the <code>desmos_latexify</code> method. This allows your custom types to be seamlessly integrated into Desmos visualizations.</p><h3 id="Practical-example:-OpenDisks.jl"><a class="docs-heading-anchor" href="#Practical-example:-OpenDisks.jl">Practical example: <code>OpenDisks.jl</code></a><a id="Practical-example:-OpenDisks.jl-1"></a><a class="docs-heading-anchor-permalink" href="#Practical-example:-OpenDisks.jl" title="Permalink"></a></h3><p>Here&#39;s a complete example showing how to add Desmos.jl support to a custom package for visualizing open disks in the plane:</p><pre><code class="language-julia hljs"># src/OpenDisks.jl
+m = Model()
+
+@variable   m  x₁
+@variable   m  x₂
+
+@variable   m  p ∈ Parameter(5/4)
+@variable   m  a ∈ Parameter(1/2)
+@variable   m  b ∈ Parameter(3/2)
+
+@constraint m       abs(x₁)^p + abs(x₂)^p ≤ 1
+@objective  m  Min     a * x₁ + b * x₂
+
+state = Desmos.DesmosState(m)</code></pre>    <div class="desmos-container" id="desmos-6205485848036216537" style="width:100%;max-width:100%;min-width:400px;height:400px;"></div>
+    <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+    <script>
+        (function() {
+            var elt = document.getElementById("desmos-6205485848036216537");
+            var calculator = Desmos.GraphingCalculator(elt);
+            calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"expression","id":"parameter 3","color":"#000000","latex":"p=1.25","slider":{"hardMin":true,"hardMax":true,"min":"-10","max":"10"}},{"type":"expression","id":"parameter 4","color":"#000000","latex":"a=0.5","slider":{"hardMin":true,"hardMax":true,"min":"-10","max":"10"}},{"type":"expression","id":"parameter 5","color":"#000000","latex":"b=1.5","slider":{"hardMin":true,"hardMax":true,"min":"-10","max":"10"}},{"type":"expression","id":"constraint 1","color":"#000000","latex":"\\left(\\operatorname{abs}\\left(x_{1}\\right)\\right)^{p}+\\left(\\operatorname{abs}\\left(x_{2}\\right)\\right)^{p}-1.0\\le 0"},{"type":"expression","id":"objective function","color":"green","latex":"ax_{1}+bx_{2}=c"},{"type":"expression","id":"objective level","color":"#000000","latex":"c=0"},{"type":"expression","id":"xmap","color":"#000000","hidden":true,"latex":"x_{1}=x"},{"type":"expression","id":"ymap","color":"#000000","hidden":true,"latex":"x_{2}=y"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
+
+            // Prevent VSCode Plot Pane from capturing arrow key events
+            // Strategy: Always stop propagation and let Desmos handle it
+            // This prevents VSCode from intercepting before Desmos can process
+            elt.addEventListener('keydown', function(e) {
+                if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                    // Stop event from reaching VSCode Plot Pane
+                    e.stopPropagation();
+                    // Let the event continue to Desmos's internal handlers
+                    // by NOT calling preventDefault()
+                }
+            }, false); // Use bubble phase, not capture
+        })();
+    </script>
+<h3 id="Parametric-solutions"><a class="docs-heading-anchor" href="#Parametric-solutions">Parametric solutions</a><a id="Parametric-solutions-1"></a><a class="docs-heading-anchor-permalink" href="#Parametric-solutions" title="Permalink"></a></h3><p>You can also pass closed-form solution expressions in terms of the parameters, so the solution point and objective level updates with the sliders:</p><pre><code class="language-julia hljs">q = p / (p - 1)
+denom = (abs(a)^q + abs(b)^q)^(1 / q)
+solution = Dict(
+    x₁ =&gt; -sign(a) * (abs(a) / denom)^(q - 1),
+    x₂ =&gt; -sign(b) * (abs(b) / denom)^(q - 1),
+)
+
+state2 = Desmos.DesmosState(m,
+    parameter_ranges = Dict(p =&gt; 1..3),
+    parametric_solution = solution,
+)</code></pre>    <div class="desmos-container" id="desmos-15863604495463685154" style="width:100%;max-width:100%;min-width:400px;height:400px;"></div>
+    <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+    <script>
+        (function() {
+            var elt = document.getElementById("desmos-15863604495463685154");
+            var calculator = Desmos.GraphingCalculator(elt);
+            calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"expression","id":"parameter 3","color":"#000000","latex":"p=1.25","slider":{"hardMin":true,"hardMax":true,"min":"1","max":"3"}},{"type":"expression","id":"parameter 4","color":"#000000","latex":"a=0.5","slider":{"hardMin":true,"hardMax":true,"min":"-10","max":"10"}},{"type":"expression","id":"parameter 5","color":"#000000","latex":"b=1.5","slider":{"hardMin":true,"hardMax":true,"min":"-10","max":"10"}},{"type":"expression","id":"constraint 1","color":"#000000","latex":"\\left(\\operatorname{abs}\\left(x_{1}\\right)\\right)^{p}+\\left(\\operatorname{abs}\\left(x_{2}\\right)\\right)^{p}-1.0\\le 0"},{"type":"expression","id":"objective function","color":"green","latex":"ax_{1}+bx_{2}=c"},{"type":"expression","id":"solution x","color":"#000000","latex":"o_{x1}=\\left(-\\operatorname{sign}\\left(a\\right)\\right)\\left(\\frac{\\operatorname{abs}\\left(a\\right)}{\\left(\\left(\\operatorname{abs}\\left(a\\right)\\right)^{\\frac{p}{p-1}}+\\left(\\operatorname{abs}\\left(b\\right)\\right)^{\\frac{p}{p-1}}\\right)^{\\frac{1.0}{\\frac{p}{p-1}}}}\\right)^{\\frac{p}{p-1}-1.0}"},{"type":"expression","id":"solution y","color":"#000000","latex":"o_{x2}=\\left(-\\operatorname{sign}\\left(b\\right)\\right)\\left(\\frac{\\operatorname{abs}\\left(b\\right)}{\\left(\\left(\\operatorname{abs}\\left(a\\right)\\right)^{\\frac{p}{p-1}}+\\left(\\operatorname{abs}\\left(b\\right)\\right)^{\\frac{p}{p-1}}\\right)^{\\frac{1.0}{\\frac{p}{p-1}}}}\\right)^{\\frac{p}{p-1}-1.0}"},{"type":"expression","id":"parametric solution","color":"red","latex":"\\left(o_{x1},o_{x2}\\right)"},{"type":"expression","id":"objective level","color":"#000000","latex":"c=ao_{x1}+bo_{x2}"},{"type":"expression","id":"xmap","color":"#000000","hidden":true,"latex":"x_{1}=x"},{"type":"expression","id":"ymap","color":"#000000","hidden":true,"latex":"x_{2}=y"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
+
+            // Prevent VSCode Plot Pane from capturing arrow key events
+            // Strategy: Always stop propagation and let Desmos handle it
+            // This prevents VSCode from intercepting before Desmos can process
+            elt.addEventListener('keydown', function(e) {
+                if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                    // Stop event from reaching VSCode Plot Pane
+                    e.stopPropagation();
+                    // Let the event continue to Desmos's internal handlers
+                    // by NOT calling preventDefault()
+                }
+            }, false); // Use bubble phase, not capture
+        })();
+    </script>
+<h2 id="Your-package"><a class="docs-heading-anchor" href="#Your-package">Your package</a><a id="Your-package-1"></a><a class="docs-heading-anchor-permalink" href="#Your-package" title="Permalink"></a></h2><p>You can add Desmos.jl support to your own package by implementing the <code>desmos_latexify</code> method. This allows your custom types to be seamlessly integrated into Desmos visualizations.</p><h3 id="Practical-example:-OpenDisks.jl"><a class="docs-heading-anchor" href="#Practical-example:-OpenDisks.jl">Practical example: <code>OpenDisks.jl</code></a><a id="Practical-example:-OpenDisks.jl-1"></a><a class="docs-heading-anchor-permalink" href="#Practical-example:-OpenDisks.jl" title="Permalink"></a></h3><p>Here&#39;s a complete example showing how to add Desmos.jl support to a custom package for visualizing open disks in the plane:</p><pre><code class="language-julia hljs"># src/OpenDisks.jl
 module OpenDisks
 
 using Desmos
@@ -128,11 +193,11 @@ disk_p = OpenDisks.OpenDisk(√3, -1, 1.5)
     @expression $disk_r color = &quot;#CB3C33&quot;
     @expression $disk_g color = &quot;#389826&quot;
     @expression $disk_p color = &quot;#9558B2&quot;
-end</code></pre>    <div class="desmos-container" id="desmos-5969721823620077839" style="width:100%;max-width:100%;min-width:400px;height:400px;"></div>
+end</code></pre>    <div class="desmos-container" id="desmos-17222782917177898748" style="width:100%;max-width:100%;min-width:400px;height:400px;"></div>
     <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
     <script>
         (function() {
-            var elt = document.getElementById("desmos-5969721823620077839");
+            var elt = document.getElementById("desmos-17222782917177898748");
             var calculator = Desmos.GraphingCalculator(elt);
             calculator.setState({"version":11,"randomSeed":"00000000000000000000000000000000","graph":{},"expressions":{"list":[{"type":"text","id":"1","text":"Julia logo"},{"type":"expression","id":"2","color":"#CB3C33","latex":"\\left(x--1.7320508075688772\\right)^{2}+\\left(y--1.0\\right)^{2}<1.5^{2}"},{"type":"expression","id":"3","color":"#389826","latex":"\\left(x-0.0\\right)^{2}+\\left(y-2.0\\right)^{2}<1.5^{2}"},{"type":"expression","id":"4","color":"#9558B2","latex":"\\left(x-1.7320508075688772\\right)^{2}+\\left(y--1.0\\right)^{2}<1.5^{2}"}]},"includeFunctionParametersInRandomSeed":true,"doNotMigrateMovablePointStyle":true});
 
@@ -149,4 +214,4 @@ end</code></pre>    <div class="desmos-container" id="desmos-5969721823620077839
             }, false); // Use bubble phase, not capture
         })();
     </script>
-<h3 id="Guidelines-for-extension-authors"><a class="docs-heading-anchor" href="#Guidelines-for-extension-authors">Guidelines for extension authors</a><a id="Guidelines-for-extension-authors-1"></a><a class="docs-heading-anchor-permalink" href="#Guidelines-for-extension-authors" title="Permalink"></a></h3><ul><li><strong>The <code>oneterm</code> argument</strong><ul><li>When <code>oneterm=true</code>, wrap multi-term expressions in <code>\left(...\right)</code> to ensure proper precedence in compound expressions.</li><li>Try <code>desmos_latexify(:(1+2))</code> and <code>desmos_latexify(:(1+2), true)</code>. (Default: <code>oneterm=false</code>)</li></ul></li><li><strong>Testing</strong><ul><li>Add tests to verify your LaTeX output is valid Desmos syntax.</li><li>See <code>test/latexify.jl</code> and <code>test/generate_html.jl</code> in Desmos.jl for examples.</li></ul></li><li><strong>Package extensions</strong><ul><li>Use package extensions to minimize loading overhead.</li><li>Check the existing extensions in Desmos.jl&#39;s <code>ext/</code> directory for complete implementation examples.</li></ul></li></ul></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../function-compatibility/">« Function Compatibility</a><a class="docs-footer-nextpage" href="../examples/">Example Gallery »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Friday 2 January 2026 15:38">Friday 2 January 2026</span>. Using Julia version 1.12.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+<h3 id="Guidelines-for-extension-authors"><a class="docs-heading-anchor" href="#Guidelines-for-extension-authors">Guidelines for extension authors</a><a id="Guidelines-for-extension-authors-1"></a><a class="docs-heading-anchor-permalink" href="#Guidelines-for-extension-authors" title="Permalink"></a></h3><ul><li><strong>The <code>oneterm</code> argument</strong><ul><li>When <code>oneterm=true</code>, wrap multi-term expressions in <code>\left(...\right)</code> to ensure proper precedence in compound expressions.</li><li>Try <code>desmos_latexify(:(1+2))</code> and <code>desmos_latexify(:(1+2), true)</code>. (Default: <code>oneterm=false</code>)</li></ul></li><li><strong>Testing</strong><ul><li>Add tests to verify your LaTeX output is valid Desmos syntax.</li><li>See <code>test/latexify.jl</code> and <code>test/generate_html.jl</code> in Desmos.jl for examples.</li></ul></li><li><strong>Package extensions</strong><ul><li>Use package extensions to minimize loading overhead.</li><li>Check the existing extensions in Desmos.jl&#39;s <code>ext/</code> directory for complete implementation examples.</li></ul></li></ul></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../function-compatibility/">« Function Compatibility</a><a class="docs-footer-nextpage" href="../examples/">Example Gallery »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Saturday 3 January 2026 11:11">Saturday 3 January 2026</span>. Using Julia version 1.12.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

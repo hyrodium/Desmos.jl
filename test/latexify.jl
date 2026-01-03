@@ -288,9 +288,11 @@
 
         # Irrational numbers
         @test desmos_latexify(π) == "\\pi"
+        @test desmos_latexify(pi) == "\\pi"
         @test desmos_latexify(ℯ) == "e"
         # Irrational numbers in expressions
         @test desmos_latexify(:(1 + π)) == "1+\\pi"
+        @test desmos_latexify(:(1 + pi)) == "1+\\pi"
         @test desmos_latexify(:(ℯ^x)) == "e^{x}"
     end
 

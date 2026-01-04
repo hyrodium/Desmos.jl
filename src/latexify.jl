@@ -65,6 +65,14 @@ function desmos_latexify(n::Rational)
     return "\\frac{$(numerator(n))}{$(denominator(n))}"
 end
 
+function desmos_latexify(::Irrational{:π})
+    return "\\pi"
+end
+
+function desmos_latexify(::Irrational{:ℯ})
+    return "e"
+end
+
 function desmos_latexify(s::Symbol)
     str = string(s)
     return desmos_latexify(str)
@@ -76,6 +84,12 @@ function desmos_latexify(str::AbstractString)
         return "\\infty"
     elseif str == "NaN"
         return "\\frac{0}{0}"
+    elseif str == "ℯ"
+        return "e"
+    elseif str == "pi"
+        return "\\pi"
+    elseif str == "π"
+        return "\\pi"
     end
 
     chars = collect(str)

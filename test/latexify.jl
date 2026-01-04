@@ -286,9 +286,14 @@
         @test desmos_latexify(3 // 4) == "\\frac{3}{4}"
         @test desmos_latexify(-5 // 7) == "\\frac{-5}{7}"
 
-        # Real (dispatch to Float64)
-        @test desmos_latexify(π) == string(Float64(π))
-        @test desmos_latexify(ℯ) == string(Float64(ℯ))
+        # Irrational numbers
+        @test desmos_latexify(π) == "\\pi"
+        @test desmos_latexify(pi) == "\\pi"
+        @test desmos_latexify(ℯ) == "e"
+        # Irrational numbers in expressions
+        @test desmos_latexify(:(1 + π)) == "1+\\pi"
+        @test desmos_latexify(:(1 + pi)) == "1+\\pi"
+        @test desmos_latexify(:(ℯ^x)) == "e^{x}"
     end
 
     @testset "Tuples and arrays" begin

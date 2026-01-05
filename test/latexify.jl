@@ -47,7 +47,7 @@
 
     @testset "LIST OPERATIONS" begin
         @test desmos_latexify(:(fill(a, 5))) == "\\operatorname{repeat}\\left(a,5\\right)"
-        @test desmos_latexify(:(hcat(u, v))) == "\\operatorname{join}\\left(u,v\\right)"
+        @test desmos_latexify(:(vcat(u, v))) == "\\operatorname{join}\\left(u,v\\right)"
         @test desmos_latexify(:(sort(v))) == "\\operatorname{sort}\\left(v\\right)"
         @test desmos_latexify(:(shuffle(v))) == "\\operatorname{shuffle}\\left(v\\right)"
         @test desmos_latexify(:(unique(v))) == "\\operatorname{unique}\\left(v\\right)"

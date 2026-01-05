@@ -264,5 +264,5 @@ const DESMOS_FUNCTIONS_nARG = Dict{Symbol, String}(
     :max => "\\max\\left(ARGS\\right)",
 
     # LIST OPERATIONS
-    :hcat => "\\operatorname{join}\\left(ARGS\\right)",
+    :vcat => "\\operatorname{join}\\left(ARGS\\right)",
 )

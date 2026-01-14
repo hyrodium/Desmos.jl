@@ -312,8 +312,13 @@
         @test desmos_latexify(:(v[1])) == "v\\left[1\\right]"
         @test desmos_latexify(:(v[1 + i])) == "v\\left[1+i\\right]"
         @test desmos_latexify(:(v[1:5])) == "v\\left[\\left[1,...,5\\right]\\right]"
-        @test desmos_latexify(:(v[1:2:5])) == "v\\left[\\left[1,1+2...,5\\right]\\right]"
-        @test desmos_latexify(:(v[1, 3, 5])) == "v\\left[\\left[1,3,5\\right]\\right]"
+        @test desmos_latexify(:(v[1:2:5])) == "v\\left[\\left[1,1+2,...,5\\right]\\right]"
+        @test desmos_latexify(:(v[[1, 3, 5]])) == "v\\left[\\left[1,3,5\\right]\\right]"
+        @test desmos_latexify(:(getindex(v, 1))) == "v\\left[1\\right]"
+        @test desmos_latexify(:(getindex(v, 1 + i))) == "v\\left[1+i\\right]"
+        @test desmos_latexify(:(getindex(v, 1:5))) == "v\\left[\\left[1,...,5\\right]\\right]"
+        @test desmos_latexify(:(getindex(v, 1:2:5))) == "v\\left[\\left[1,1+2,...,5\\right]\\right]"
+        @test desmos_latexify(:(getindex(v, [1, 3, 5]))) == "v\\left[\\left[1,3,5\\right]\\right]"
     end
 
     @testset "Assignments" begin

@@ -164,6 +164,7 @@ function _latexify_ref(ex::Expr)
     # v[1] -> v\left[1\right]
     # v[i] -> v\left[i\right]
     # v[1:5] -> v\left[\left[1,...,5\right]\right]
+    # v[[1, 3, 5]] -> v\left[\left[1,3,5\right]\right]
     array = desmos_latexify(ex.args[1])
     index = desmos_latexify(ex.args[2])
     return "$array\\left[$index\\right]"

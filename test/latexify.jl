@@ -308,6 +308,19 @@
         @test desmos_latexify(Base.OneTo(8)) == "\\left[1,...,8\\right]"
     end
 
+    @testset "Array indexing" begin
+        @test desmos_latexify(:(v[1])) == "v\\left[1\\right]"
+        @test desmos_latexify(:(v[1 + i])) == "v\\left[1+i\\right]"
+        @test desmos_latexify(:(v[1:5])) == "v\\left[\\left[1,...,5\\right]\\right]"
+        @test desmos_latexify(:(v[1:2:5])) == "v\\left[\\left[1,1+2,...,5\\right]\\right]"
+        @test desmos_latexify(:(v[[1, 3, 5]])) == "v\\left[\\left[1,3,5\\right]\\right]"
+        @test desmos_latexify(:(getindex(v, 1))) == "v\\left[1\\right]"
+        @test desmos_latexify(:(getindex(v, 1 + i))) == "v\\left[1+i\\right]"
+        @test desmos_latexify(:(getindex(v, 1:5))) == "v\\left[\\left[1,...,5\\right]\\right]"
+        @test desmos_latexify(:(getindex(v, 1:2:5))) == "v\\left[\\left[1,1+2,...,5\\right]\\right]"
+        @test desmos_latexify(:(getindex(v, [1, 3, 5]))) == "v\\left[\\left[1,3,5\\right]\\right]"
+    end
+
     @testset "Assignments" begin
         @test desmos_latexify(:(x = 5)) == "x=5"
         @test desmos_latexify(:(y = x + 1)) == "y=x+1"

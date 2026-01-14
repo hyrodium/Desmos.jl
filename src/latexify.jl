@@ -143,6 +143,8 @@ function desmos_latexify(ex::Expr, oneterm::Bool = false)
         return _latexify_block(ex)
     elseif ex.head == :(=)
         return _latexify_assignment(ex)
+    elseif ex.head == :ref
+        return _latexify_ref(ex)
     else
         throw(UnsupportedDesmosSyntaxError("Unsupported expression head: $(ex.head)"))
     end
@@ -156,6 +158,16 @@ end
 function _latexify_vect(ex::Expr)
     elements = [desmos_latexify(arg) for arg in ex.args]
     return "\\left[$(join(elements, ","))\\right]"
+end
+
+function _latexify_ref(ex::Expr)
+    # v[1] -> v\left[1\right]
+    # v[i] -> v\left[i\right]
+    # v[1:5] -> v\left[\left[1,...,5\right]\right]
+    # v[[1, 3, 5]] -> v\left[\left[1,3,5\right]\right]
+    array = desmos_latexify(ex.args[1])
+    index = desmos_latexify(ex.args[2])
+    return "$array\\left[$index\\right]"
 end
 
 function _latexify_comprehension(ex::Expr)

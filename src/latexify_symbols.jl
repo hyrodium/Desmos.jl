@@ -214,6 +214,9 @@ const DESMOS_FUNCTIONS_2ARG = Dict{Symbol, String}(
     :/ => "\\frac{ARG1}{ARG2}",  # Division
     :(:) => "\\left[ARG1,...,ARG2\\right]",  # Range with step 1
 
+    # LIST OPERATIONS
+    :getindex => "ARG1\\left[ARG2\\right]",  # Array indexing
+
     # STATISTICS
     :cov => "\\operatorname{cov}\\left(ARG1,ARG2\\right)",
     ## There may be Julia (package) function for this ## :covp => "\\operatorname{covp}\\left(ARG1,ARG2\\right)",

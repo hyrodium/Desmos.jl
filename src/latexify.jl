@@ -73,6 +73,10 @@ function desmos_latexify(::Irrational{:ℯ})
     return "e"
 end
 
+function desmos_latexify(::Bool)
+    throw(ArgumentError("Boolean values are not supported in desmos_latexify"))
+end
+
 function desmos_latexify(s::Symbol)
     str = string(s)
     return desmos_latexify(str)

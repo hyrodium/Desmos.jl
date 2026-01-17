@@ -184,11 +184,11 @@
         @test desmos_latexify(:(x >= 1)) == "x\\ge 1"
         @test desmos_latexify(:(x <= 1)) == "x\\le 1"
         # != and ≠ are not supported by Desmos
-        @test_throws UnsupportedDesmosSyntaxError desmos_latexify(:(a != b))
+        @test_throws ArgumentError desmos_latexify(:(a != b))
         # Unicode operators
         @test desmos_latexify(:(x ≥ 1)) == "x\\ge 1"
         @test desmos_latexify(:(x ≤ 1)) == "x\\le 1"
-        @test_throws UnsupportedDesmosSyntaxError desmos_latexify(:(a ≠ b))
+        @test_throws ArgumentError desmos_latexify(:(a ≠ b))
     end
 
     @testset "Multi-argument functions" begin
@@ -224,18 +224,18 @@
         @test desmos_latexify("hₐ") == "h_{a}"
 
         # Error cases: Greek letters in subscripts are not allowed
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(xα))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(x_α))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(xᵦ))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(aβ))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(nθ))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify("hα")
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify("xπ")
+        @test_throws ArgumentError desmos_latexify(:(xα))
+        @test_throws ArgumentError desmos_latexify(:(x_α))
+        @test_throws ArgumentError desmos_latexify(:(xᵦ))
+        @test_throws ArgumentError desmos_latexify(:(aβ))
+        @test_throws ArgumentError desmos_latexify(:(nθ))
+        @test_throws ArgumentError desmos_latexify("hα")
+        @test_throws ArgumentError desmos_latexify("xπ")
 
         # Error cases: Invalid special characters in subscripts
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify("x!")
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify("a#")
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify("h@")
+        @test_throws ArgumentError desmos_latexify("x!")
+        @test_throws ArgumentError desmos_latexify("a#")
+        @test_throws ArgumentError desmos_latexify("h@")
     end
 
     @testset "Superscripts (via ^ operator only)" begin
@@ -459,14 +459,14 @@
     @testset "Edge cases: Mixed Greek and Latin" begin
         # Multi-character identifiers with Greek letters are not supported
         # Greek letters can only appear in subscripts via explicit underscore
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(aα))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Γθ))
+        @test_throws ArgumentError desmos_latexify(:(aα))
+        @test_throws ArgumentError desmos_latexify(:(Γθ))
     end
 
     @testset "Edge cases: Subscripts and superscripts combinations" begin
         @test desmos_latexify(:(x_a_b)) == "x_{ab}"
         # Greek letters not allowed in subscripts (use explicit underscore instead)
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(α_β))
+        @test_throws ArgumentError desmos_latexify(:(α_β))
         @test desmos_latexify(:(x₁₂₃₄₅)) == "x_{12345}"
         # Superscript Unicode no longer supported - use ^ operator
         @test desmos_latexify(:(a^2)) == "a^{2}"
@@ -515,27 +515,27 @@
         @test desmos_latexify(:(ω)) == "\\omega"
         # Uppercase
         # Greek letters that look like Latin letters are not supported by Desmos
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Α))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Β))
+        @test_throws ArgumentError desmos_latexify(:(Α))
+        @test_throws ArgumentError desmos_latexify(:(Β))
         @test desmos_latexify(:(Γ)) == "\\Gamma"
         @test desmos_latexify(:(Δ)) == "\\Delta"
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Ε))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Ζ))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Η))
+        @test_throws ArgumentError desmos_latexify(:(Ε))
+        @test_throws ArgumentError desmos_latexify(:(Ζ))
+        @test_throws ArgumentError desmos_latexify(:(Η))
         @test desmos_latexify(:(Θ)) == "\\Theta"
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Ι))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Κ))
+        @test_throws ArgumentError desmos_latexify(:(Ι))
+        @test_throws ArgumentError desmos_latexify(:(Κ))
         @test desmos_latexify(:(Λ)) == "\\Lambda"
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Μ))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Ν))
+        @test_throws ArgumentError desmos_latexify(:(Μ))
+        @test_throws ArgumentError desmos_latexify(:(Ν))
         @test desmos_latexify(:(Ξ)) == "\\Xi"
         @test desmos_latexify(:(Π)) == "\\Pi"
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Ρ))
+        @test_throws ArgumentError desmos_latexify(:(Ρ))
         @test desmos_latexify(:(Σ)) == "\\Sigma"
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Τ))
+        @test_throws ArgumentError desmos_latexify(:(Τ))
         @test desmos_latexify(:(Υ)) == "\\Upsilon"
         @test desmos_latexify(:(Φ)) == "\\Phi"
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(Χ))
+        @test_throws ArgumentError desmos_latexify(:(Χ))
         @test desmos_latexify(:(Ψ)) == "\\Psi"
         @test desmos_latexify(:(Ω)) == "\\Omega"
     end
@@ -543,8 +543,8 @@
     @testset "Edge cases: Multiple Unicode subscripts/superscripts" begin
         @test desmos_latexify(:(x₀₁₂₃₄₅₆₇₈₉)) == "x_{0123456789}"
         # Superscript Unicode characters now cause errors
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(y⁰¹²³⁴⁵⁶⁷⁸⁹))
-        @test_throws Desmos.UnsupportedDesmosSyntaxError desmos_latexify(:(α₁²))
+        @test_throws ArgumentError desmos_latexify(:(y⁰¹²³⁴⁵⁶⁷⁸⁹))
+        @test_throws ArgumentError desmos_latexify(:(α₁²))
     end
 
     @testset "Edge cases: Arrays with complex elements" begin

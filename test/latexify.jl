@@ -255,6 +255,12 @@
         @test desmos_latexify(:(-3.14)) == "-3.14"
     end
 
+    @testset "Boolean values" begin
+        # Boolean values are not supported
+        @test_throws ArgumentError desmos_latexify(true)
+        @test_throws ArgumentError desmos_latexify(false)
+    end
+
     @testset "Number types (Real, Integer, AbstractFloat, Rational)" begin
         # Integer
         @test desmos_latexify(42) == "42"

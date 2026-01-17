@@ -181,7 +181,7 @@ end
 # FIXME: support this in Desmos.jl?
 wrap_for_domain(s) = "\\left\\{$s\\right\\}"
 parse_desmos_latexify(s) = desmos_latexify(Meta.parse(s))
-desmos_error(s) = throw(UnsupportedDesmosSyntaxError(s))
+desmos_error(s) = throw(ArgumentError(s))
 
 # JuMP printing patches
 function JuMP._math_symbol(::AnyDesmosMIME, name::Symbol)

@@ -101,7 +101,7 @@ function desmos_latexify(str::AbstractString)
     elseif (isletter(first_char) || isdigit(first_char)) && isascii(first_char)
         result = string(first_char)
     else
-        throw(UnsupportedDesmosSyntaxError("Invalid identifier character: '$first_char'"))
+        throw(ArgumentError("Invalid identifier character: '$first_char'"))
     end
 
     # If there's only one character, return it
@@ -123,7 +123,7 @@ function desmos_latexify(str::AbstractString)
             subscript *= string(c)
         else
             # Any other character is not allowed
-            throw(UnsupportedDesmosSyntaxError("Invalid subscript character: '$c'. Only Latin letters, digits, and underscore are allowed."))
+            throw(ArgumentError("Invalid subscript character: '$c'. Only Latin letters, digits, and underscore are allowed."))
         end
     end
 
@@ -146,7 +146,7 @@ function desmos_latexify(ex::Expr, oneterm::Bool = false)
     elseif ex.head == :ref
         return _latexify_ref(ex)
     else
-        throw(UnsupportedDesmosSyntaxError("Unsupported expression head: $(ex.head)"))
+        throw(ArgumentError("Unsupported expression head: $(ex.head)"))
     end
 end
 
@@ -175,7 +175,7 @@ function _latexify_comprehension(ex::Expr)
     # The comprehension has a generator expression as its only argument
     gen = ex.args[1]
     if gen.head != :generator
-        throw(UnsupportedDesmosSyntaxError("Expected generator expression in comprehension"))
+        throw(ArgumentError("Expected generator expression in comprehension"))
     end
 
     # Extract the term and iterator
@@ -187,7 +187,7 @@ function _latexify_comprehension(ex::Expr)
         collection = desmos_latexify(iter.args[2])
         return "\\left[$term\\ \\operatorname{for}\\ $var=$collection\\right]"
     else
-        throw(UnsupportedDesmosSyntaxError("Unsupported iterator syntax in comprehension"))
+        throw(ArgumentError("Unsupported iterator syntax in comprehension"))
     end
 end
 
@@ -220,7 +220,7 @@ function _latexify_call(ex::Expr, oneterm::Bool = false)
     if func isa Symbol
         # Check for unsupported operators first
         if func in UNSUPPORTED_OPERATORS
-            throw(UnsupportedDesmosSyntaxError("The inequality operator '$func' (\\ne) is not supported by Desmos. Use other comparison operators instead."))
+            throw(ArgumentError("The inequality operator '$func' (\\ne) is not supported by Desmos. Use other comparison operators instead."))
         end
 
         # Binary operators
@@ -327,7 +327,7 @@ function _latexify_call(ex::Expr, oneterm::Bool = false)
         end
     end
 
-    throw(UnsupportedDesmosSyntaxError("Unsupported function type in call expression: $(typeof(func))"))
+    throw(ArgumentError("Unsupported function type in call expression: $(typeof(func))"))
 end
 
 function _latexify_multiply(ex::Expr)
@@ -395,7 +395,7 @@ function _latexify_prod(ex::Expr)
         return "\\prod_{$var=$start}^{$stop}$term"
     end
 
-    throw(UnsupportedDesmosSyntaxError("Unsupported prod syntax"))
+    throw(ArgumentError("Unsupported prod syntax"))
 end
 
 function _latexify_integrate(ex::Expr)
@@ -416,5 +416,5 @@ function _latexify_integrate(ex::Expr)
         end
     end
 
-    throw(UnsupportedDesmosSyntaxError("Unsupported integrate syntax"))
+    throw(ArgumentError("Unsupported integrate syntax"))
 end

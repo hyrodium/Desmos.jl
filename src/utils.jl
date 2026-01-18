@@ -1,20 +1,3 @@
-"""
-    UnsupportedDesmosSyntaxError
-
-Exception thrown when attempting to use Julia syntax that cannot be converted to Desmos-compatible LaTeX.
-
-# Example
-```julia
-# This will throw UnsupportedDesmosSyntaxError because Desmos doesn't support \\ne
-desmos_latexify(:(a != b))
-```
-"""
-struct UnsupportedDesmosSyntaxError <: Exception
-    msg::String
-end
-
-Base.showerror(io::IO, e::UnsupportedDesmosSyntaxError) = print(io, "UnsupportedDesmosSyntaxError: ", e.msg)
-
 eval_dollar!(::Module, ex) = ex
 function eval_dollar!(target_module::Module, ex::Expr)
     if ex.head === :($)

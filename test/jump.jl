@@ -8,13 +8,13 @@ using IntervalSets
         @variable m x
         @variable m y
         @variable m z
-        @test_throws UnsupportedDesmosSyntaxError Desmos.DesmosState(m)
+        @test_throws ArgumentError Desmos.DesmosState(m)
 
         m = Model()
         @variable m c in Parameter(1)
         @variable m x
         @variable m y
-        @test_throws UnsupportedDesmosSyntaxError Desmos.DesmosState(m)
+        @test_throws ArgumentError Desmos.DesmosState(m)
         state = Desmos.DesmosState(m, objective_value_variable = "d")
         exprs = [expr.latex for expr in state.expressions.list]
         @test exprs == [
